@@ -4,7 +4,7 @@ Date: 2026-10-28
 
 ## Status
 
-Accepted. Amends ADR-0006 (the 30-second API cache). Depends on Spike SP4.
+Accepted. Amends ADR-0006 (the 30-second API cache). Depends on Spike SP4. Added to on 2026-11-02 (shared Upstash database); the original text is unchanged.
 
 ## Context
 
@@ -27,6 +27,7 @@ With steady visitors, that means a database read every 30 seconds, which keeps N
 - **Admin pages read Neon directly.** That's a person doing something, which is an acceptable reason to wake it. Admin pages never poll.
 - **Weekly Neon usage check.** A GitHub Actions job runs every Monday at an odd minute and fails, which emails Henry, if projected use is over 70% of the allowance. It never prints the project ID or the key.
 - **Site Doctor checks static URLs.** For sites with a database, the hourly uptime check hits a static URL such as `/robots.txt`, never a page or API that queries the database.
+- **Added 2 Nov 2026: Agent Lab shares the chatbot's Upstash database.** The free plan allowed only one database, and the chatbot already has it. Every Agent Lab key starts with `lab:` (for example `lab:snapshot`, `lab:ratelimit:…`). Agent Lab code never reads, writes or deletes a key without that prefix. Agents and `/api/lab` use the full token, because the rate limiter writes counters; checking scripts and debugging use the read-only token. Where Upstash's Redis ACL works on this plan, a restricted user limited to `lab:*` replaces the full token.
 
 ## Consequences
 
@@ -35,3 +36,4 @@ With steady visitors, that means a database read every 30 seconds, which keeps N
 - **One more secret** (an Upstash write token in GitHub Actions), and a new rule for the leak test: it now checks the snapshot.
 - **One more key** for the weekly check (`NEON_API_KEY`). Use the narrowest-scoped key Neon offers, and check Neon's docs for project-scoped keys before creating it.
 - **Rate-limit traffic grows a little in Upstash.** It's checked monthly with the other free-tier usage.
+- **Added 2 Nov 2026: the shared database has two costs.** The monthly command allowance now covers both projects, so the monthly check reads the combined count. And until a restricted `lab:*` user is tested and in use, the full token can reach the chatbot's keys. The existing safeguards apply to it: GitHub secrets only, never logged, `pull_request` workflows only.

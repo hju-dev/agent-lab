@@ -12,9 +12,9 @@ Reviewed 29 October 2026 against Henry's tech-stack notes. Limits are in `docs/S
 | Runtime | **Node 24 LTS** + TypeScript, run with `tsx` | Node 20 reached end of life on 30 April 2026. Node 24 is supported until 30 April 2028 | — |
 | Code and checks | GitHub (public repo) + Actions | Free for public repos; runs schedules and CI | ADR-0003 |
 | Agent loop | Hand-written, Gemini function calling | Explainable in interviews; no framework | ADR-0001 |
-| LLM | Gemini free tier, personal details removed first | $0 | ADR-0002 |
-| Database | Neon free, its own project, three roles + RLS | Visitors never wake it (snapshot) | ADR-0005, ADR-0011 |
-| Public data | Upstash Redis: snapshot + rate limits | Keeps visitor traffic off Neon | ADR-0011 |
+| LLM | Gemini free tier, personal details removed first. Lead Scout: 3.5 Flash Lite, with 3.1 Flash Lite as the fallback. Eval grader: a different model, probably Gemma 4 31B (SP1 tests it) | $0 | ADR-0002 |
+| Database | Neon free, its own project, three roles + RLS. Direct connection for migrations and agents, pooled for admin functions | Visitors never wake it (snapshot) | ADR-0005, ADR-0011 |
+| Public data | Upstash Redis: snapshot + rate limits, in the database shared with the chatbot. Every Agent Lab key starts with `lab:` | Keeps visitor traffic off Neon | ADR-0011 |
 | /lab frontend | React + TypeScript, built with Vite in the site repo's `lab/` folder | Shows React to recruiters; one framework with Studio's demos | ADR-0013 |
 | Hosting | Vercel Hobby: the site, /lab's Vite build, and `/api/lab` | Already the hju-dev host; non-commercial use only | ADR-0006 |
 | Admin login | Clerk, locked to `ADMIN_USER_ID` | Already used on client sites | — |

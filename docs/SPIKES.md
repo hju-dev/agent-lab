@@ -12,14 +12,17 @@ Several spikes need time to collect data (SP3, SP4). Start those first on Day 0 
 
 **Why it's risky:** the whole Lead Scout design depends on it, and Google's docs don't say which free-tier models support function calling ([SOURCES.md](SOURCES.md#gemini-api-lead-scouts-model)).
 
-**Test:** `spikes/sp1-tools.ts`. Declare the real six tools (`fetch_page`, `run_pagespeed`, `check_links`, `check_ssl`, `detect_platform`, `finish`) with their real argument schemas. Send 20 prompts of the shape "Audit https://example-business.com", using a fixed fake tool result for each call. Parse every `functionCall` with the real zod schemas.
+**Test:** `spikes/sp1-tools.ts`, on **Gemini 3.5 Flash Lite**, with calls at least 4.5 seconds apart. Declare the real six tools (`fetch_page`, `run_pagespeed`, `check_links`, `check_ssl`, `detect_platform`, `finish`) with their real argument schemas. Send 20 prompts of the shape "Audit https://example-business.com", using a fixed fake tool result for each call and looping until the model calls `finish` or reaches the 8-step cap. Parse every `functionCall` with the real zod schemas.
 
-**Record:** the exact model id used, how many of the 20 returned a valid tool call, whether the model ever called a tool not on the list, and the limits shown on [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limit) for that model.
+**Grader test:** send 5 sample drafts and the rubric in [EVALS.md](EVALS.md) to **Gemma 4 31B**, asking for a 1–5 score on each of the four criteria as JSON, and parse each reply with zod. This only tests whether the output is usable. Whether the grader can be trusted is settled later by calibration (EVALS section 5).
 
-**Pass:** at least 19 of 20 return a tool call that passes zod, **and** 0 calls to tools not on the list, **and** the free-tier daily request limit is at least 2× what one day needs (10 leads × 8 steps + 10 = 90 requests, so ≥ 180).
+**Record:** the exact model id used, how many of the 20 runs had only valid tool calls, whether the model ever called a tool not on the list, which of the six tools were called, how many runs hit the 8-step cap, and the limits shown on [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limit) for that model. For the grader: its exact model id, how many of the 5 replies parsed, and the tokens per minute at peak.
+
+**Pass:** at least 19 of 20 runs have only tool calls that pass zod, **and** 0 calls to tools not on the list, **and** each of the six tools is called at least once across the 20 runs, **and** the free-tier daily request limit is at least 2× what one day needs (10 leads × 8 steps + 10 = 90 requests, so ≥ 180), **and** all 5 grader replies parse with Gemma's peak under its limit of 16K tokens a minute.
 
 **If it fails:**
-- Invalid calls but some work → try the next free model listed in SOURCES.md and re-run.
+- Invalid calls but some work → try 3.1 Flash Lite, then any other free model listed in SOURCES.md, and re-run.
+- The grader test fails → try Gemma 4 26B. If that fails too, Henry scores drafts by hand (EVALS section 5).
 - No free model works → switch to structured JSON output: the model returns `{ "next_tool": "...", "args": {...} }`, zod validates it, and the code dispatches. The loop, logs and evals stay the same. Record this as an amendment to ADR-0001.
 - Daily limit too low → cut to 5 leads a day (change the S6 cap).
 
@@ -41,7 +44,7 @@ Several spikes need time to collect data (SP3, SP4). Start those first on Day 0 
 
 **Test:** in the agent-lab repo, a workflow `spike-schedule.yml` on `cron: '17,47 * * * *'` that writes the scheduled time and the real start time (`date -u`) to a table or an artifact. Run it for 48 hours. Delete it afterwards.
 
-**Record:** number of runs expected (96) vs started, and the delay of each run.
+**Record:** number of runs expected (96) vs started, and the delay of each run. Then set the final period and grace of the Healthchecks check `agent-lab heartbeat` from these delays, and write them here. Until then it stays at period 1 hour, grace 1 hour.
 
 **Pass:** at least 92 of 96 runs start (≥ 95%), and 95% of them start within 20 minutes of the scheduled time.
 

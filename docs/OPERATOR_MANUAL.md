@@ -30,8 +30,8 @@ Do these in order and tick each one off. If a step goes wrong, stop and ask in a
 
 Keep every key in a password manager, never in a note or a chat.
 
-- [ ] **Gemini API key:** you already have one from the chatbot. Reuse it or make a second one in Google AI Studio. While you're there, open aistudio.google.com/rate-limit and write down the free-tier limits for the Flash models (Spike SP1 needs them).
-- [ ] **PageSpeed Insights API key:** in Google Cloud Console, enable the PageSpeed Insights API under APIs & Services, then create an API key under Credentials. Check its quota on the Quotas page and write it in `docs/SOURCES.md`.
+- [ ] **Gemini API key:** make a new key in Google AI Studio, in its own Google Cloud project (`agent-lab`), not the chatbot's. Restrict it to the Gemini API only. While you're there, open aistudio.google.com/rate-limit and write down the free-tier limits for the Flash models (Spike SP1 needs them).
+- [ ] **PageSpeed Insights API key:** in Google Cloud Console, in the same project, enable the PageSpeed Insights API under APIs & Services, then create a second, separate API key under Credentials, restricted to the PageSpeed Insights API only. That makes two keys, each restricted to one API. Check its quota on the Quotas page and write it in `docs/SOURCES.md`.
 - [ ] **Resend:** skip for now. Resend only sends from a domain you own (checked 17 Oct 2026). Your alerts come from GitHub and Healthchecks instead (ADR-0007).
 - [ ] **Healthchecks.io:** create a free account and one check called "agent-lab heartbeat". Copy its ping URL. Spike SP6 tests whether its alert emails reach you.
 - [ ] **GA4:** add a data stream for hju-dev.vercel.app, or reuse your existing property.
@@ -44,6 +44,7 @@ Keep every key in a password manager, never in a note or a chat.
 
 - [ ] On GitHub, create a **public** repo called `agent-lab` with a README and a Node `.gitignore`.
 - [ ] Turn on **secret scanning** and **Dependabot alerts** in the repo's Settings → Code security.
+- [ ] Add the ruleset `protect main` in Settings → Rules → Rulesets: active, no bypass, on the default branch. Require a pull request with 0 approvals (you're the only developer), require conversation resolution, allow squash merge only, restrict deletions, block force pushes, require linear history. Status checks get added once the walking skeleton's CI works; Claude Code gives you the exact check names.
 - [ ] Clone it to your computer: `git clone https://github.com/hju-dev/agent-lab.git`
 - [ ] Copy in the files I sent: `CLAUDE.md` into the root, and the whole `docs/` folder (PRD, journal, skills guide, audits, ADRs, spikes, evals, threat model and the rest) into `docs/`. `docs/README.md` lists what each file is for.
 - [ ] Commit and push: `git add . && git commit -m "Add plan and instructions" && git push`
@@ -58,6 +59,8 @@ Keep every key in a password manager, never in a note or a chat.
 ### 4. Database
 
 - [ ] In the Neon console, create a new project called agent-lab (separate from the chatbot, so each gets its own free compute hours), go to **Branches** and create a branch called `dev`. Claude Code creates the tables and roles in phase 1. Your job is to copy the connection strings it asks for.
+- [ ] Enable only the Postgres service. Save both owner connection strings: **direct** (no `-pooler`) for migrations, SP4 and agents on GitHub Actions, and **pooled** (`-pooler`) for the Phase 5 admin functions. The owner role is for migrations only; the three working roles come from numbered migrations in Phase 1 (ADR-0005).
+- [ ] If Neon's onboarding offers a setup prompt (`neon init` / `neon deploy`), don't run it. It adds files and Neon skills to the repo, writes the owner string to `.env.local` and starts writing app code. You can install the Neon CLI later for dev branches, but read any skill it offers before installing.
 
 ### 5. Skills
 
@@ -171,7 +174,7 @@ No command and no gates. Write your own brief, build in Claude Code sessions as 
 ### First Sunday of each month (30 minutes)
 
 - [ ] Neon branches: delete any test branch you're not using, since every running branch spends the same compute allowance
-- [ ] Free-tier usage: Neon compute hours (the weekly check should already have warned you), Gemini (AI Studio), Upstash and PageSpeed. Re-run the eval golden set to catch model changes
+- [ ] Free-tier usage: Neon compute hours (the weekly check should already have warned you), Gemini (AI Studio), Upstash (the count covers both Agent Lab and the chatbot, which share the database) and PageSpeed. Re-run the eval golden set to catch model changes
 - [ ] Quality page: approval rate, and reply rate per segment and per touch (pitch, follow-up 1, follow-up 2). Drop a segment with no replies after 6 weeks
 - [ ] Pipeline: has the constraint moved since last month? If the same stage has been slowest for 4+ weeks, revisit its offer sheet in `docs/OFFERS.md`
 - [ ] Queue: nothing older than 14 days

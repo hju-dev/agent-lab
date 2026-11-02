@@ -4,18 +4,18 @@ Every claim the plan rests on, what the evidence is, and how sure we are. Update
 
 **Verified** = primary source read, or test passed. **Testing** = a spike, test or conversation will settle it, and it's scheduled. **Assumption** = believed but not yet tested; it says what would test it. **Failed → changed** = tested, didn't hold, and the plan changed.
 
-Last updated: 28 October 2026.
+Last updated: 2 November 2026.
 
 | # | Claim | Evidence | Status |
 | --- | --- | --- | --- |
 | 1 | GitHub Actions is free for this repo | GitHub billing docs: free on standard runners for public repos | Verified |
 | 2 | Schedules run roughly on time | GitHub docs say delays and drops happen; size unknown | Testing (SP3) |
 | 3 | Schedules stop after 60 days without activity | GitHub docs | Verified |
-| 4 | Gemini free tier supports function calling for our tools | Docs describe function calling; free-tier support not stated | Testing (SP1) |
-| 5 | Gemini free limits cover 10 leads a day | Limits not published; shown in AI Studio only | Testing (SP1, SP5, Henry checks AI Studio) |
+| 4 | Gemini free tier supports function calling for our tools | Docs describe function calling; free-tier support not stated. SP1 tests it on 3.5 Flash Lite | Testing (SP1) |
+| 5 | Gemini free limits cover 10 leads a day | AI Studio, 2 Nov 2026: 3.5 Flash Lite allows 500 requests a day against the 90 a day needs (SOURCES) | Verified for limits; tokens per run still Testing (SP5) |
 | 6 | Free-tier inputs may be used and human-reviewed | Gemini API terms | Verified → S25 added |
 | 7 | Chatbot on free tier may conflict with EEA/UK/Swiss terms | Gemini API terms | Verified (outside scope; flagged) |
-| 8 | PageSpeed quota is 25,000/day | Third-party page only | Assumption → Henry checks Cloud Console |
+| 8 | PageSpeed quota is 25,000/day | Cloud Console, 2 Nov 2026: 25,000 a day and 30 a minute | Verified |
 | 9 | PageSpeed scores are stable enough to flag drops | Google says treat as a distribution | Testing (SP2) |
 | 10 | Neon free compute is enough | 100 CU-h per project (verified); our use unknown | Testing (SP4) |
 | 11 | Resend can send without a domain | Resend docs: a verified domain is required | Failed → changed (ADR-0007) |
@@ -68,4 +68,6 @@ Last updated: 28 October 2026.
 | 49 | Programmatic tool calling can be used on the $0 setup | Claude docs: it runs inside the API's code execution tool, which needs an API key | Failed → changed (ADR-0014: code-first habits instead) |
 | 50 | Claude Code defers MCP tool details until needed (tool search) | Third-party guide (ClaudeLog): on by default, about a 10% context threshold | Assumption → check the current Claude Code docs |
 
-**Counts today:** Verified 11 · Testing 16 · Assumption 18 · Failed → changed 5. (Rows with two parts are counted by the first status.)
+| 51 | A shared Upstash database is enough for Agent Lab and the chatbot | The free plan allowed one database, so they share its monthly commands; combined use unknown | Assumption → check monthly usage |
+
+**Counts today:** Verified 13 · Testing 15 · Assumption 18 · Failed → changed 5. (Rows with two parts are counted by the first status.)

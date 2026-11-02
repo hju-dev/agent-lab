@@ -72,7 +72,7 @@ The first four rows are hard gates: one failure blocks launch however good the r
 Two tools, each doing what it's good at:
 
 - **Vitest** for everything mechanical: safety checks, step caps, platform accuracy, recall, precision. It reads the saved fixtures and the run logs and computes the numbers. Runs in CI on every pull request that touches `agents/lead-scout/` or `prompts/`. File: `evals/lead-scout.eval.test.ts`.
-- **promptfoo** for comparing prompt versions side by side and for model-graded draft scores. It's an open-source eval CLI that runs in CI ([SOURCES.md](SOURCES.md#eval-tooling)). Its `llm-rubric` grader defaults to `gemini-2.5-pro` when given a Google key. **Override the grader to a free-tier model** from SOURCES.md, and confirm it's free before running. Check promptfoo's license on GitHub before installing, as with any tool.
+- **promptfoo** for comparing prompt versions side by side and for model-graded draft scores. It's an open-source eval CLI that runs in CI ([SOURCES.md](SOURCES.md#eval-tooling)). Its `llm-rubric` grader defaults to `gemini-2.5-pro` when given a Google key. **Override the grader to a free-tier model** from SOURCES.md, and confirm it's free before running. The grader is probably Gemma 4 31B (2 Nov 2026, ADR-0002), a different model from Lead Scout's so that eval grading doesn't use its 500 requests a day. SP1 tests whether its output works, and its limit of 16K tokens a minute is the one to watch. Check promptfoo's license on GitHub before installing, as with any tool.
 
 ```bash
 npx vitest run evals/                          # mechanical gate

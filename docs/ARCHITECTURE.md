@@ -62,7 +62,7 @@ C4Container
     Container(admin, "Admin API and /lab/admin", "Vercel functions + Clerk", "Queue, decisions, reports")
   }
   ContainerDb(db, "Neon Postgres, Agent Lab project", "lab schema", "Private tables + 4 public views, 3 roles, RLS")
-  ContainerDb(redis, "Upstash Redis", "Rate-limit counters and the public /lab snapshot")
+  ContainerDb(redis, "Upstash Redis", "Rate-limit counters and the public /lab snapshot. Shared with the chatbot; Agent Lab uses lab: keys only")
   System_Ext(gemini, "Gemini API")
   System_Ext(psi, "PageSpeed API")
   System_Ext(hc, "Healthchecks.io")
@@ -92,7 +92,7 @@ C4Container
 | Public API | Vercel functions | Upstash snapshot only (never Neon) | — | 0006, 0011 |
 | Admin API + page | Vercel functions, Clerk | Neon | `lab_admin` | 0005, 0008 |
 | Neon | Postgres, separate project | — | — | 0005 |
-| Upstash | Redis | — | — | 0006 |
+| Upstash | Redis, one database shared with the chatbot; Agent Lab uses `lab:` keys only | — | — | 0006, 0011 |
 | Alerts | GitHub emails + Healthchecks | Henry | — | 0007 |
 
 Studio (phases 11–14) is not a container of Agent Lab: it runs locally in Claude Code on Henry's computer (ADR-0010) and only writes a public log line to /lab in Phase 14.
