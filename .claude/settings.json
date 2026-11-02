@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./node_modules/**)",
+      "Read(./.next/**)",
+      "Read(./dist/**)",
+      "Read(./coverage/**)",
+      "Read(./playwright-report/**)",
+      "Read(./.lighthouseci/**)",
+      "Read(./docs/validation/**)"
+    ]
+  }
+}
