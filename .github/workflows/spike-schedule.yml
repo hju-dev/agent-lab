@@ -1,0 +1,54 @@
+# SP3 and SP4 (docs/SPIKES.md). Temporary: deleted when the Day 0 results are recorded.
+# SP3 reads every run's timing from GitHub's run records. SP4 writes on the :17 runs only.
+name: spike-schedule
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+    - cron: '47 * * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: spike-schedule
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Log the start time
+        run: echo "run_id=$GITHUB_RUN_ID event=$GITHUB_EVENT_NAME started_at=$(date -u +%FT%TZ)"
+
+      - name: Write a row to Neon and publish the snapshot
+        if: github.event.schedule != '47 * * * *'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_OWNER_DIRECT }}
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+        run: |
+          # Logs are public, so error details stay hidden and only a plain message prints.
+          snapshot=$(psql "$DATABASE_URL" -X -q -t -A -1 -v ON_ERROR_STOP=1 2>/dev/null <<SQL
+            create schema if not exists spike;
+            create table if not exists spike.schedule_runs (
+              run_id bigint primary key,
+              event text not null,
+              written_at timestamptz not null default now()
+            );
+            insert into spike.schedule_runs (run_id, event)
+              values ($GITHUB_RUN_ID, '$GITHUB_EVENT_NAME')
+              on conflict (run_id) do nothing;
+            select json_build_object('rows', count(*), 'last_written_at', max(written_at))
+              from spike.schedule_runs;
+          SQL
+          ) || { echo "Neon write failed"; exit 1; }
+
+          jq -nc --arg value "$snapshot" '["SET", "lab:spike:snapshot", $value, "EX", "604800"]' \
+            | curl -s --fail --max-time 10 --retry 3 -o /dev/null \
+                -H "Authorization: Bearer $UPSTASH_REDIS_REST_TOKEN" \
+                -d @- "$UPSTASH_REDIS_REST_URL" \
+            || { echo "Upstash publish failed"; exit 1; }
+
+          echo "wrote one row, published one snapshot"
