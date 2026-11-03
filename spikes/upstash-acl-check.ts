@@ -24,4 +24,4 @@ const outsideLab = await allowed(['GET', 'acl-check-outside-lab'])
 console.log(`lab: key:     ${insideLab ? 'allowed' : 'refused'} (want allowed)`)
 console.log(`outside lab:  ${outsideLab ? 'allowed' : 'refused'} (want refused)`)
 console.log(insideLab && !outsideLab ? 'PASS' : 'FAIL')
-process.exit(insideLab && !outsideLab ? 0 : 1)
+process.exitCode = insideLab && !outsideLab ? 0 : 1
