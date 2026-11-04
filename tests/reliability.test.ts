@@ -2,7 +2,7 @@
 import { createServer, type Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
-import { fetchWithTimeout, isQuotaError, withRetry } from '../lib/reliability.ts'
+import { REQUEST_TIMEOUT_MS, SLOW_API_TIMEOUT_MS, fetchWithTimeout, isQuotaError, withRetry } from '../lib/reliability.ts'
 
 // Records each wait instead of really waiting.
 function fakeSleep() {
@@ -27,6 +27,16 @@ describe('fetchWithTimeout (S11)', () => {
     const started = Date.now()
     await expect(fetchWithTimeout(url, {}, 100)).rejects.toThrow()
     expect(Date.now() - started).toBeLessThan(2_000)
+  })
+})
+
+describe('slow API exceptions (S11, ADR-0015)', () => {
+  test('only named APIs get longer, and none waits more than 60 seconds', () => {
+    expect(Object.keys(SLOW_API_TIMEOUT_MS).sort()).toEqual(['gemmaGrader', 'pagespeed'])
+    for (const ms of Object.values(SLOW_API_TIMEOUT_MS)) {
+      expect(ms).toBeGreaterThan(REQUEST_TIMEOUT_MS)
+      expect(ms).toBeLessThanOrEqual(60_000)
+    }
   })
 })
 

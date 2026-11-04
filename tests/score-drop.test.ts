@@ -1,6 +1,6 @@
 // S7: the sustained-drop rule on sample data.
 import { describe, expect, test } from 'vitest'
-import { median, sustainedDrop } from '../lib/score-drop.ts'
+import { dropThreshold, median, sustainedDrop } from '../lib/score-drop.ts'
 
 describe('median', () => {
   test('odd and even lengths', () => {
@@ -37,5 +37,20 @@ describe('sustainedDrop (S7)', () => {
 
   test('a rising score never flags', () => {
     expect(sustainedDrop([60, 60, 60, 90, 90, 90])?.flagged).toBe(false)
+  })
+})
+
+describe('dropThreshold (S7, ADR-0015)', () => {
+  test('is 10 unless the site’s own range is bigger', () => {
+    expect(dropThreshold()).toBe(10)
+    expect(dropThreshold(6)).toBe(10)
+    expect(dropThreshold(14)).toBe(14)
+  })
+
+  test('a 12-point drop on a site with range 14 does not flag; a 15-point drop does', () => {
+    const twelve = [49, 50, 47, 37, 38, 36]
+    expect(sustainedDrop(twelve)?.flagged).toBe(true) // the plain 10-point rule would flag it
+    expect(sustainedDrop(twelve, dropThreshold(14))?.flagged).toBe(false)
+    expect(sustainedDrop([49, 50, 47, 34, 33, 35], dropThreshold(14))?.flagged).toBe(true)
   })
 })

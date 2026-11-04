@@ -82,7 +82,7 @@ Read these when the phase touches them:
 ## Reliability (see the safeguards register in the journal)
 
 - A `concurrency` group per workflow. Unique keys plus insert-or-ignore, so retries are safe.
-- A 10-second timeout per request, a 10-minute cap per run, and 3 retries with increasing waits.
+- A 10-second timeout per request (named slow APIs up to 60, ADR-0015), a 10-minute cap per run, and 3 retries with increasing waits.
 - A zod check of every environment variable at startup, with a plain-English error.
 - Numbered SQL migrations only. Never edit the database by hand.
 - Store times in UTC, show them in ICT. Commit the lockfile, use `npm ci`, and pin the Node version.

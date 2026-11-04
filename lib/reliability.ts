@@ -3,6 +3,13 @@
 
 export const REQUEST_TIMEOUT_MS = 10_000 // S11: CLAUDE.md, "Reliability"
 
+// S11 exception (ADR-0015): only these named APIs may wait longer than 10 seconds.
+// The Day 0 spikes measured them as slower; everything else keeps the 10-second limit.
+export const SLOW_API_TIMEOUT_MS = {
+  pagespeed: 60_000, // SP2: PageSpeed calls took longer than 10 s; all 25 finished within 60 s
+  gemmaGrader: 60_000, // SP1: the Gemma 4 grader's replies took about 35 s
+} as const
+
 // S11: a request that hangs is cut off instead of freezing the run.
 export function fetchWithTimeout(url: string | URL, init: RequestInit = {}, timeoutMs = REQUEST_TIMEOUT_MS) {
   return fetch(url, { ...init, signal: AbortSignal.timeout(timeoutMs) })

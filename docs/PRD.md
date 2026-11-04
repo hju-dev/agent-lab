@@ -28,7 +28,7 @@ Watches every site you're responsible for and flags problems before the client n
 
 - Hourly: checks each active site is up (HTTP status and response time). For sites with a database, it checks a static URL such as /robots.txt, never a page or API that queries the database, because frequent uptime checks can keep a client's Neon database awake (Neon playbook).
 - Daily: runs a full check. That means SSL days left, Google PageSpeed scores (performance, accessibility, SEO, on mobile), and broken links on the homepage (capped at 50 links).
-- When the 3-day median score drops by 10 or more, or a site is down twice in a row, it writes a short plain-English finding with Gemini. The finding goes to your approval queue as a suggested fix.
+- When the 3-day median score drops by 10 or more (or by the site's own measured range, if that's bigger; ADR-0015), or a site is down twice in a row, it writes a short plain-English finding with Gemini. The finding goes to your approval queue as a suggested fix.
 - **Done when:** a deliberately broken test URL shows as down within one hourly run, and a suggestion appears in the queue.
 
 ### F2 · Lead Scout agent
@@ -227,7 +227,7 @@ These are standard fixes for problems that hit almost every scheduled system. Ea
 
 - **No overlapping runs:** each workflow has a GitHub Actions `concurrency` group, so a slow run and the next scheduled one never write at the same time. Schedules run at odd minutes such as :17 and :43, because GitHub says runs can be delayed under load, especially at the start of each hour, and queued jobs can even be dropped.
 - **Safe to retry:** unique keys and insert-or-ignore writes, so a retried run never creates duplicate rows.
-- **Nothing hangs:** a 10-second timeout per request and a 10-minute cap per run.
+- **Nothing hangs:** a 10-second timeout per request (named slow APIs such as PageSpeed get up to 60; ADR-0015) and a 10-minute cap per run.
 - **Flaky APIs don't fail a run:** up to 3 retries, waiting longer each time.
 - **Fail fast on bad setup:** a zod check of every environment variable at startup, with a plain error message if one is missing.
 - **Tracked database changes:** numbered SQL migration files only, never hand edits. The dev branch can be rebuilt from them at any time.

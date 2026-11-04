@@ -81,3 +81,4 @@ Every doc here follows one rule: **replace judgement with evidence, and assumpti
 | [0012](adr/0012-platform-leads-no-cold-email.md) | Find clients through platforms like Fiverr; no cold email | Accepted |
 | [0013](adr/0013-lab-built-in-react.md) | /lab is built in React + TypeScript with Vite | Accepted (replaces ADR-0006's frontend choice) |
 | [0014](adr/0014-code-first-tool-use.md) | Code-first tool use; no programmatic tool calling on $0 | Accepted |
+| [0015](adr/0015-slow-api-timeouts-and-per-site-drop-threshold.md) | Longer timeouts for named slow APIs; per-site drop threshold | Accepted |
