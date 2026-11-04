@@ -81,7 +81,7 @@ Every protection against a known problem, the threat it answers (IDs from `docs/
 
 | # | Threat | Problem it prevents | Safeguard | Where in the code | Test | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| S1 | T-P1 | Private data shown on /lab | Public API reads only the public views | | Leak test | Planned |
+| S1 | T-P1 | Private data shown on /lab | Public API reads only the public views | `lab_public` has no table grants, only `public_state` and `public_events` (`migrations/001_init.sql`, `002_core_tables.sql`); snapshot allowlist in `lib/snapshot.ts` | `tests/db/roles.test.ts` (every `lab` table refuses `lab_public` and has RLS on; runs in CI on a throwaway Postgres); `tests/leak.test.ts` | Database half built and tested (4 Nov); API leak test in Phase 3 |
 | S2 | T-P2 | Business names or URLs in public text | public_text scanner rejects URLs, emails and lead names | | Unit test | Planned |
 | S3 | T-G4 | Private data in the public GitHub Actions logs | Logs record counts and IDs only | | Log test + review at each gate | Planned |
 | S4 | T-L1 | Web pages giving the AI instructions | Strip HTML, cap at 4,000 characters, wrap as data, tool allowlist | | Injection site in the eval gate | Planned |
@@ -90,7 +90,7 @@ Every protection against a known problem, the threat it answers (IDs from `docs/
 | S7 | — (reliability) | False alarms from noisy scores | 3-day median, sustained-drop rule; threshold is the larger of 10 and the site's SP2 range (ADR-0015) | `lib/score-drop.ts` (`sustainedDrop`, `dropThreshold`) | `tests/score-drop.test.ts` | Built and tested (4 Nov); not yet used by Site Doctor |
 | S8 | T-L4 | Pitches with made-up facts | Evidence check: every number and platform name must appear in the tool results | | Unit test; eval gate (0 fabricated) | Planned |
 | S9 | — (reliability) | Two runs overlapping | GitHub Actions `concurrency` group per workflow | | Manual double trigger | Planned |
-| S10 | — (reliability) | Duplicate rows after a retry | Unique keys, insert-or-ignore | | Run twice and compare counts | Planned |
+| S10 | — (reliability) | Duplicate rows after a retry | Unique keys, insert-or-ignore | Keys: `runs.id`, `events.id` (run id plus a counter), `site_checks (site_id, checked_at)`; `scripts/seed-sites.ts` uses `on conflict do nothing` | Run twice and compare counts: seeding checked by hand (4 Nov); Site Doctor's test in Phase 2 | Keys built (4 Nov); agent writes in Phase 2 |
 | S11 | T-L6 | A hung request freezing a run | 10-second timeout per request (named slow APIs up to 60 s, ADR-0015), 10-minute cap per run | `lib/reliability.ts` (`fetchWithTimeout`, `SLOW_API_TIMEOUT_MS`); cap: `timeout-minutes: 10` in each workflow | `tests/reliability.test.ts` (server that never answers; slow-API list capped at 60 s) | Built and tested (4 Nov); Site Doctor still sets its timeouts inline |
 | S12 | T-L6 | Flaky APIs failing a whole run | Up to 3 retries with increasing waits | `lib/reliability.ts` (`withRetry`) | `tests/reliability.test.ts` | Built and tested (4 Nov); not yet used by Site Doctor |
 | S13 | T-G1 | Missing or wrong environment variables | zod check at startup with a clear error message | | Run with a key removed | Planned |
@@ -101,7 +101,7 @@ Every protection against a known problem, the threat it answers (IDs from `docs/
 | S18 | T-D1 | Testing touching live data | Neon development branch for local work and preview deploys | | Check the preview's database URL | Planned |
 | S19 | T-L6 | Queue overload | 20-item cap, agents pause when it's full, 14-day expiry | | Fill the queue in dev | Planned |
 | S20 | T-L4 | Misleading quality figure | Shows sample size, hidden below 20 decisions | | Unit test | Planned |
-| S21 | T-D3 | Untracked database changes | Numbered migrations only, no hand edits; `pg_dump` before production migrations | | Rebuild the dev branch from migrations | Planned |
+| S21 | T-D3 | Untracked database changes | Numbered migrations only, no hand edits; `pg_dump` before production migrations | `migrations/`, applied by `scripts/migrate.ts` | CI rebuilds a fresh database from the migrations on every PR (`.github/workflows/ci.yml`) | Built (4 Nov); `pg_dump` step when production is first migrated |
 | S22 | — (reliability) | Time-zone confusion | Store UTC, display ICT | | Unit test | Planned |
 | S23 | T-L4, T-L9 | Prompt changes making quality worse | 24-site golden set with saved fixtures; new versions must pass the eval gate and not score worse (`docs/EVALS.md`) | | Eval run in CI | Planned (was a 10-site set) |
 | S24 | T-L2 | Being unwelcome on sites we audit | Obey robots.txt, honest user agent linking to /lab | | Unit test; robots site in the eval gate | Planned |
