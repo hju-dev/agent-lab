@@ -257,7 +257,7 @@ Two deliberate breakages in the throwaway database (RLS off on `sites`; a read g
 Row 28 ("The public role can't read private data"): Verified for the database (this check). The API half stays Testing until Phase 3's leak test.
 
 **Time**
-Planned: 1 day in the original sprint table. Actual: _Henry to fill in_.
+Planned: 1 day in the original sprint table. Actual: about 1 hour of Henry's time (4 Nov), mostly setting up the dev branch and running the check on his machine. The code was written in the same session.
 
 **Quiz**
 1. `lab_public` can read `public_events` but not `events`, even though the view reads from that table. Why does that work?
