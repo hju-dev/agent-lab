@@ -32,11 +32,15 @@ These rows are folded into the PRD's risk table. **Likelihood** and **impact** a
 
 For each past build, fill in what you can. Rough is fine; "about 3 weekends" is useful.
 
-| Build | Start date | Launch date | Hours per week you worked on it | What it included | What took longer than expected |
-| --- | --- | --- | --- | --- | --- |
-| RAG chatbot | | | | | |
-| Big T's | | | | | |
-| Grass Roots | | | | | |
+Filled in from Henry's answers on 4 Nov 2026, with start dates checked against each repo's git history.
+
+| Build | Start date | Launch date | Hours per week | Expected | Overrun (calendar) | What took longer than expected |
+| --- | --- | --- | --- | --- | --- | --- |
+| hju.dev website | 14 May 2026 | 21 Aug 2026 (Vercel project created) | ~6 | 1 week | ~14 weeks → **14×** | The chatbot. The site grew in scope (multi-page, then the chatbot) |
+| Raeng | 10 Aug 2026 | 25 Sep 2026 (latest release) | not given | 3 weeks | ~6.6 weeks → **2.2×** | UI and UX |
+| RAG chatbot | 24 Sep 2026 (Henry); git shows `api/` work from 22 Aug | 24 Sep 2026 | ~6 hours total | 1 week | **Unclear**: dates don't match git (22 Aug–11 Oct) | Learning how AI works |
+| Big T's | 8 Aug 2026 | 8 Sep 2026 | ~12 | 3 weeks | ~4.4 weeks → **1.5×** | UI and UX, backend and database problems |
+| Grass Roots | 5 Aug 2026 | 6 Aug 2026 (Henry) | ~6 | 3 weeks | **Unclear**: the site repo says "awaiting launch", and git shows work to 28 Oct | UI and UX, backend and database problems |
 
 If you remember what you **expected** at the start ("I thought it'd take a week"), add that too. It's the most useful number.
 
@@ -52,7 +56,13 @@ Three builds is a small sample. Treat the result as a better guess, not a measur
 
 ### Re-estimated sprint
 
-*To be filled in once you send the dates above.*
+*First pass, 4 Nov 2026. Redo it once the two unclear rows are confirmed.*
+
+- **P50 (median of the three clear builds): about 2×** (1.5×, 2.2×, 14×). Big T's and Raeng had clear endpoints and are the best comparison.
+- **Worst: 14× (hju.dev).** It mostly measures scope growth, not speed, so read it as a warning about adding features mid-build rather than as a multiplier.
+- **Pattern:** UI and UX took longest in four of five builds, plus backend and database problems in two. Expect /lab (all UI) and the Phase 1 roles to overrun first.
+- **The 30 Nov target at 2×:** the four steps of the revised plan don't fit in about 13 hours, and Day 0 alone has taken 4 hours so far. Plan to the PRD's fallback, Day 0, Phase 1 and the Site Doctor half of Phase 2 with a screenshot instead of a live /lab, and treat the live page as a stretch.
+- After Phase 1, Agent Lab's own phase times replace this estimate (Part 2, step 6 above).
 
 | Phase | Planned days | × P50 | × P80 | Fits in 14 days at P80? |
 | --- | --- | --- | --- | --- |
