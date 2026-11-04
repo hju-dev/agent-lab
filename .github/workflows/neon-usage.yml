@@ -1,0 +1,38 @@
+# S42: weekly Neon compute check (docs/playbooks/neon-free-tier.md, section 6). Fails, so GitHub emails Henry,
+# when the month is projected to use over 70% of the free allowance. Calls Neon's management API only,
+# which doesn't wake the database. Logs print the used and projected CU-hours, nothing else.
+name: neon-usage
+
+on:
+  schedule:
+    - cron: '29 2 * * 1' # Mondays 09:29 ICT, an odd minute (S27)
+  workflow_dispatch:
+    inputs:
+      allowance:
+        description: 'Allowance in CU-hours (use 1 to test that the check fails)'
+        default: '100'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neon-usage
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Check Neon's projected compute use
+        run: node scripts/neon-usage.ts
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
+          ALLOWANCE_CU_HOURS: ${{ inputs.allowance || '100' }}

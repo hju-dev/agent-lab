@@ -1,0 +1,31 @@
+# A button for the Phase 1 database check on production: Actions → db-check → Run workflow.
+# Connects as lab_public (the DATABASE_URL_PUBLIC secret) and checks that every lab table refuses it,
+# has RLS on, and that the public views answer. Read-only. It wakes Neon for about 5 minutes per click;
+# there's no schedule. Logs show test names and pass or fail only.
+name: db-check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: db-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Check lab_public can only read the public views
+        run: npx vitest run tests/db/roles.test.ts
+        env:
+          LAB_PUBLIC_URL: ${{ secrets.DATABASE_URL_PUBLIC }}
