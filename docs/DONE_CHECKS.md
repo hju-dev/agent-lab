@@ -32,7 +32,7 @@ npx vitest run tests/db/roles.test.ts
 - `vitest`: for a site marked as having a database, the uptime check calls its static check URL, never the home page (S43).
 - The weekly Neon usage workflow runs once by hand (`workflow_dispatch`), prints only the used and projected CU-hours, and fails when given a fake allowance of 1 CU-hour (S42).
 - `vitest`: a simulated 402 "exceeded the quota" error marks the run failed once, with a plain message, and isn't retried 3 times (S44).
-- `vitest`: sustained-drop rule on sample data (S7), retry and timeout behaviour (S11, S12), env check fails with a clear message when a key is missing (S13), insert-or-ignore makes a second run add no rows (S10).
+- `vitest`: sustained-drop rule on sample data (S7), retry and timeout behavior (S11, S12), env check fails with a clear message when a key is missing (S13), insert-or-ignore makes a second run add no rows (S10).
 - `vitest tests/logs.test.ts`: runs Site Doctor with a fake lead name in the data and asserts the name never appears in stdout (S3).
 - **Manual:** 3 days of runs in `lab.runs`; a deliberately broken URL produces a failure email (SP6 method).
 

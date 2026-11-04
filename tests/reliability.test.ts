@@ -73,7 +73,7 @@ describe('withRetry (S12)', () => {
 describe('quota error (S44)', () => {
   const quotaError = () => Object.assign(new Error('Your project has exceeded the quota'), { status: 402 })
 
-  test('is recognised by its status or its message', () => {
+  test('is recognized by its status or its message', () => {
     expect(isQuotaError(quotaError())).toBe(true)
     expect(isQuotaError(Object.assign(new Error('Payment required'), { status: 402 }))).toBe(true)
     expect(isQuotaError(new Error('compute time quota: exceeded the quota'))).toBe(true)

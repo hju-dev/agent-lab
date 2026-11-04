@@ -20,7 +20,7 @@ If SP1 shows free-tier function calling doesn't work, the same loop takes struct
 
 ## Consequences
 
-- Henry can explain and debug every step; the loop is the centrepiece of the case study.
+- Henry can explain and debug every step; the loop is the centerpiece of the case study.
 - Retries, timeouts and caps are our code to maintain (S6, S11, S12).
 - No built-in tracing UI. `run_steps` and replay (F9) replace it.
 - Switching model providers means changing one wrapper file.

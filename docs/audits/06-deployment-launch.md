@@ -89,7 +89,7 @@ System design & architecture · Frontend · APIs & backend logic · Databases & 
 Hide API keys · Purge Git secrets · Use a public-safe database key client-side · Enable row level security (RLS) · Encrypt sensitive data · Enforce server-side auth · Lock down record access · Block field tampering · Secure session cookies · Hash passwords · Rate limit login attempts · Add bot protection · Parameterize queries · Validate all input · Escape user content · Restrict file uploads · Trim unnecessary fields from API responses · Add security headers · Force HTTPS · Scan dependencies
 
 ### Reference — Build/Tooling Knowledge Base (bring in as needed per project)
-Infrastructure: Kubernetes · Docker · S3 · FTP · CI/CD · Cloud hosting · Containerisation · Firewalls · Serverless · Lambda · Load balancer · Proxy · Sharding · Partitioning · Availability
+Infrastructure: Kubernetes · Docker · S3 · FTP · CI/CD · Cloud hosting · Containerization · Firewalls · Serverless · Lambda · Load balancer · Proxy · Sharding · Partitioning · Availability
 Data: Databases (relational + embedded) · DynamoDB · Caching · Kafka/RabbitMQ · SQS · Encryption
 Dev workflow: Git/GitHub · Cherry-pick · Staging environments · PyCharm or equivalent IDE
 AI/ML: TensorFlow (where relevant)

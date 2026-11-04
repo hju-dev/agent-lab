@@ -4,7 +4,7 @@ Every fact the plan depends on that comes from outside the project, with the pri
 
 **Status key:** **Verified** = read on the provider's own page. **Secondary** = only found on a third-party page. **Unpublished** = the provider doesn't state it; a spike or console check must measure it.
 
-Checked: 17 October 2026.
+Checked: October 17, 2026.
 
 ## Gemini API (Lead Scout's model)
 
@@ -20,7 +20,7 @@ Checked: 17 October 2026.
 
 ### Limits shown in AI Studio for Agent Lab's project
 
-Read from [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limit) by Henry on 2 November 2026. These apply to this project and are "not guaranteed", so re-check them monthly. RPM = requests a minute, TPM = tokens a minute, RPD = requests a day.
+Read from [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limit) by Henry on November 2, 2026. These apply to this project and are "not guaranteed", so re-check them monthly. RPM = requests a minute, TPM = tokens a minute, RPD = requests a day.
 
 | Model | RPM | TPM | RPD | Use |
 | --- | --- | --- | --- | --- |
@@ -37,7 +37,7 @@ Read from [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limi
 | Fact | Status | Source |
 | --- | --- | --- |
 | An API key is recommended for automated queries but not required. | Verified | [Get started](https://developers.google.com/speed/docs/insights/v5/get-started) |
-| Quota for Agent Lab's project: 25,000 queries a day and 30 queries a minute. Agent Lab needs about 50 a day, with calls at least 2 seconds apart and a 429 treated as wait and retry. | Verified | Read by Henry in Google Cloud Console → APIs → Quotas, 2 Nov 2026 |
+| Quota for Agent Lab's project: 25,000 queries a day and 30 queries a minute. Agent Lab needs about 50 a day, with calls at least 2 seconds apart and a 429 treated as wait and retry. | Verified | Read by Henry in Google Cloud Console → APIs → Quotas, Nov 2, 2026 |
 | Lighthouse performance scores vary between runs; Google recommends treating them as a distribution, not a single number. | Verified | [Performance scoring](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring) → Spike SP2 |
 
 ## GitHub Actions (schedules)
@@ -56,7 +56,7 @@ Read from [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limi
 | --- | --- | --- |
 | Free plan: 100 compute-unit hours per project per month and 1 GB of storage per project. | Verified | [Neon pricing](https://neon.com/pricing) |
 | 10 branches per project; scale to zero after 5 minutes idle, which can't be turned off on Free; 6-hour restore window. | Verified | [Neon pricing](https://neon.com/pricing) |
-| Project-scoped API keys have Editor access to one project and can't delete it. Only organization admins can create them, and they belong to the organization that owns the project (checked 2 Nov 2026). | Verified | [Manage API keys](https://neon.com/docs/manage/api-keys) |
+| Project-scoped API keys have Editor access to one project and can't delete it. Only organization admins can create them, and they belong to the organization that owns the project (checked Nov 2, 2026). | Verified | [Manage API keys](https://neon.com/docs/manage/api-keys) |
 
 ### From Henry's own incident (October 2026)
 
@@ -82,8 +82,8 @@ Read from [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limi
 | Resend: "You must add and verify at least one domain" to send; `onboarding@resend.dev` is for testing only. | Verified | [Resend domains](https://resend.com/docs/dashboard/domains/introduction) → ADR-0007 |
 | Healthchecks.io free (Hobbyist): 20 checks, 100 log entries per check. Whether email alerts are included on free isn't stated on the pricing page. | Verified / Unpublished | [Healthchecks pricing](https://healthchecks.io/pricing/) → Spike SP6 |
 | Upstash Redis free: 500K commands a month, 250 MB data, 10 GB bandwidth. The page gives conflicting database counts. | Verified (count unclear) | [Upstash pricing](https://upstash.com/pricing/redis) |
-| Upstash's free plan allowed Henry only one database, so Agent Lab shares the chatbot's (2 Nov 2026). | Observed by Henry | Upstash console |
-| Upstash supports Redis ACL users limited to a key pattern (`ACL SETUSER`, e.g. `~cache:*`). `ACL SETUSER` rejects made-up passwords: the value must come from `ACL GENTOKEN`, and that token also works as the REST token. The Read-only access page's `>somesecurepassword` example was rejected on this database. The docs don't mention plan limits or show a key pattern used over REST (checked 2 Nov 2026). Tested on the shared free database on 3 Nov 2026 with `spikes/upstash-acl-check.ts`: a `lab_agent` user limited to `~lab:*` could set a `lab:` key over REST and was refused (403) for other keys, `DBSIZE` and `ACL WHOAMI`. | Verified; tested on this database | [ACL SETUSER](https://upstash.com/docs/redis/commands/server/acl-setuser), [ACL GENTOKEN](https://upstash.com/docs/redis/commands/server/acl-gentoken), [Read-only access](https://upstash.com/docs/redis/troubleshooting/readonly_connection) |
+| Upstash's free plan allowed Henry only one database, so Agent Lab shares the chatbot's (Nov 2, 2026). | Observed by Henry | Upstash console |
+| Upstash supports Redis ACL users limited to a key pattern (`ACL SETUSER`, e.g. `~cache:*`). `ACL SETUSER` rejects made-up passwords: the value must come from `ACL GENTOKEN`, and that token also works as the REST token. The Read-only access page's `>somesecurepassword` example was rejected on this database. The docs don't mention plan limits or show a key pattern used over REST (checked Nov 2, 2026). Tested on the shared free database on Nov 3, 2026 with `spikes/upstash-acl-check.ts`: a `lab_agent` user limited to `~lab:*` could set a `lab:` key over REST and was refused (403) for other keys, `DBSIZE` and `ACL WHOAMI`. | Verified; tested on this database | [ACL SETUSER](https://upstash.com/docs/redis/commands/server/acl-setuser), [ACL GENTOKEN](https://upstash.com/docs/redis/commands/server/acl-gentoken), [Read-only access](https://upstash.com/docs/redis/troubleshooting/readonly_connection) |
 | Cloudflare Pages free: 500 builds a month, 100 projects, 20,000 files per site. The limits page doesn't address commercial use. | Verified / Unpublished | [Cloudflare Pages limits](https://developers.cloudflare.com/pages/platform/limits/) |
 
 ## Law and licensing
@@ -99,8 +99,8 @@ Read from [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limi
 | Fact | Status | Source |
 | --- | --- | --- |
 | Pro has a 5-hour session limit and a weekly limit, shared between Claude Code and claude.ai. `/status` shows remaining usage. If `ANTHROPIC_API_KEY` is set, Claude Code uses the API and bills it. | Verified | [Use Claude Code with your Pro or Max plan](https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan) |
-| Programmatic tool calling: code running inside the API's code execution tool (`code_execution_20260120` or later) can call tools listed in `allowed_callers`. It's part of the Claude API (checked 1 Nov 2026) | Verified | [Tool reference](https://platform.claude.com/docs/en/docs/agents-and-tools/tool-use/tool-reference) |
-| Cloudflare Code Mode: over 2,500 endpoints through `search()` and `execute()` in about 1,000 tokens, compared with an estimated 1.17 million (the page's summary says "over 2 million"); runs in a V8 sandbox with no file system and outside network access off by default. Post dated 20 Feb 2026 | Verified (vendor's own figures) | [Code Mode: give agents an entire API in 1,000 tokens](https://blog.cloudflare.com/code-mode-mcp/) |
+| Programmatic tool calling: code running inside the API's code execution tool (`code_execution_20260120` or later) can call tools listed in `allowed_callers`. It's part of the Claude API (checked Nov 1, 2026) | Verified | [Tool reference](https://platform.claude.com/docs/en/docs/agents-and-tools/tool-use/tool-reference) |
+| Cloudflare Code Mode: over 2,500 endpoints through `search()` and `execute()` in about 1,000 tokens, compared with an estimated 1.17 million (the page's summary says "over 2 million"); runs in a V8 sandbox with no file system and outside network access off by default. Post dated Feb 20, 2026 | Verified (vendor's own figures) | [Code Mode: give agents an entire API in 1,000 tokens](https://blog.cloudflare.com/code-mode-mcp/) |
 | Claude Code tool search defers MCP tool details, on by default at about a 10% context threshold | Third-party only; check Claude Code docs | [ClaudeLog](https://claudelog.com/faqs/what-is-tool-search-in-claude-code/) |
 
 ## Security standards
@@ -123,7 +123,7 @@ Read from [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limi
 - **Your existing RAG chatbot** uses the Gemini free tier on a public site. The terms require Paid Services for API clients made available to users in the EEA, Switzerland or the UK. Ask the lawyer or senior dev how to handle this (for example, blocking those regions, or a paid key).
 - **Big T's and Grass Roots:** if either site takes payments or advertises the business and is hosted on Vercel Hobby, it falls under Vercel's "commercial usage" wording. Check which plan each is on.
 
-## Studio design tools (checked 18 October 2026)
+## Studio design tools (checked October 18, 2026)
 
 | Fact | Status | Source |
 | --- | --- | --- |
@@ -131,7 +131,7 @@ Read from [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limi
 | img2threejs is an agent skill that turns one image into a procedural Three.js model; Apache 2.0; core scripts are Python 3.10+ standard library; the optional img2glb plugin uses a hosted service | Verified | [github.com/img2threejs/img2threejs](https://github.com/img2threejs/img2threejs) |
 | "Image 23 js" on your list is img2threejs (image-to-Three.js) | Assumption: the name matches and nothing else by that name turned up. Confirm it's the one you meant | — |
 
-## Motion sources (checked 18 October 2026)
+## Motion sources (checked October 18, 2026)
 
 | Fact | Status | Source |
 | --- | --- | --- |
@@ -140,7 +140,7 @@ Read from [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limi
 | animos: browser-based motion templates exporting MP4/WebM showcase videos | Verified (homepage) | [animos.app](https://animos.app/) |
 | animos pricing and commercial terms | Not on the homepage | Henry checks before using exports in a pitch |
 
-## Stack review (checked 29 October 2026)
+## Stack review (checked October 29, 2026)
 
 | Fact | Status | Source |
 | --- | --- | --- |
@@ -153,7 +153,7 @@ Read from [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limi
 | Langfuse Hobby: 50k units a month, 30 days of data, 2 users; self-hosting free | Verified | [Langfuse pricing](https://langfuse.com/pricing) |
 | Sentry free Developer plan: 5,000 errors a month, 1 user | Secondary only (page contradicts itself) | [costbench](https://costbench.com/software/developer-tools/sentry/free-plan/) |
 
-## Design sources (checked 1 November 2026)
+## Design sources (checked November 1, 2026)
 
 | Fact | Status | Source |
 | --- | --- | --- |
@@ -170,4 +170,4 @@ These are well-known references for the methods used; they're named so you can l
 - **Kappa agreement bands** ("substantial" from 0.61): J. R. Landis and G. G. Koch, "The Measurement of Observer Agreement for Categorical Data", *Biometrics*, 1977. Used in EVALS.md.
 - **Planning fallacy:** Daniel Kahneman and Amos Tversky's work on intuitive prediction (1970s). **Reference-class forecasting:** developed in practice by Bent Flyvbjerg. Used in PREMORTEM.md.
 - **Pre-mortem:** Gary Klein, "Performing a Project Premortem", *Harvard Business Review*, 2007.
-- **C4 model:** Simon Brown (c4model.com). **ADR format:** Michael Nygard, "Documenting Architecture Decisions" (2011 blog post). **STRIDE:** Microsoft's threat modelling method.
+- **C4 model:** Simon Brown (c4model.com). **ADR format:** Michael Nygard, "Documenting Architecture Decisions" (2011 blog post). **STRIDE:** Microsoft's threat modeling method.

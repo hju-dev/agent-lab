@@ -19,7 +19,7 @@ Read these when the phase touches them:
 
 ## Evidence rules
 
-- **Don't state an outside fact from memory.** Free-tier limits, pricing, terms and API behaviour come from `docs/SOURCES.md`. If it isn't there, check the provider's own page, add it with the link and date, or tell Henry it's unverified.
+- **Don't state an outside fact from memory.** Free-tier limits, pricing, terms and API behavior come from `docs/SOURCES.md`. If it isn't there, check the provider's own page, add it with the link and date, or tell Henry it's unverified.
 - **Never weaken a test or eval threshold to make it pass.** If a threshold looks wrong, stop and explain why to Henry; changing it needs a dated note in `docs/EVALS.md`.
 - **Changing a recorded decision** means writing a new ADR that supersedes the old one, not editing history.
 - When a test or spike settles a claim, update its row in `docs/EVIDENCE_LEDGER.md`.
@@ -101,9 +101,9 @@ Studio is the site-building team in the PRD's "Studio" section. It runs locally 
 - Install a third-party skill only after a SkillSpector scan and Henry's OK.
 - **Never set `ANTHROPIC_API_KEY`.** If it's set, Claude Code bills the API instead of Henry's plan. Run one role at a time and `/compact` between roles.
 
-## Priorities until 30 November 2026
+## Priorities until November 30, 2026
 
-Agent Lab is a portfolio piece for Henry's job search first. About 3 hours a week. The committed target (decided 4 Nov 2026, PRD sprint) is Day 0, Phase 1 and Site Doctor, shown with a screenshot; a minimal live /lab and a 2-minute demo video are a stretch. Every change goes through a PR with the template filled in and CI passing, because tests, PRs and CI are his top job-search skill gap. Don't start Lead Scout, Studio or Showpieces before the 30 Nov review. Never set up anything aimed at Thai clients.
+Agent Lab is a portfolio piece for Henry's job search first. About 3 hours a week. The committed target (decided Nov 4, 2026, PRD sprint) is Day 0, Phase 1 and Site Doctor, shown with a screenshot; a minimal live /lab and a 2-minute demo video are a stretch. Every change goes through a PR with the template filled in and CI passing, because tests, PRs and CI are his top job-search skill gap. Don't start Lead Scout, Studio or Showpieces before the Nov 30 review. Never set up anything aimed at Thai clients.
 
 ## Before you write code
 
@@ -115,7 +115,8 @@ Agent Lab is a portfolio piece for Henry's job search first. About 3 hours a wee
 
 ## While you build
 
-- **Build fast, learn at the end (Henry, 4 Nov 2026).** Claude drives; Henry reviews and merges PRs. Keep chat explanations to a line or two and keep Henry's manual steps to a minimum. The learning happens in 2–3 interview-prep sessions before the 30 Nov review, aimed at "walk me through how this works".
+- **Build fast, learn at the end (Henry, Nov 4, 2026).** Claude drives; Henry reviews and merges PRs. Keep chat explanations to a line or two and keep Henry's manual steps to a minimum. The learning happens in 2–3 interview-prep sessions before the Nov 30 review, aimed at "walk me through how this works".
+- **Write in American English (Henry, Nov 4, 2026)** in docs, code, comments, commit messages, PRs and chat: American spelling (behavior, labeled, license), American words (résumé, not CV) and dates as "Nov 4, 2026". Leave quotes, names and API fields exactly as their source wrote them.
 - Henry is a beginner. Before each new file, say in one line what it's for.
 - When you pick an approach, name the alternative you rejected and why.
 - He's comfortable with JS/TS, Next.js, Neon, Clerk and Resend. He's new to GitHub Actions, function calling and agent design, so explain those as you go.
@@ -126,7 +127,7 @@ Run the six spikes in `docs/SPIKES.md` and build the walking skeleton. Record ra
 
 ## After every phase
 
-1. Draw what this phase built as a Mermaid diagram in `docs/diagrams/phase-N.md` (changed 4 Nov 2026: Archify is on hold because its SkillSpector scan couldn't complete; Henry decides on it before /lab/how-it-works). At a stage gate (after phases 4, 7 and 10), also regenerate the architecture, agent-loop and approval-flow diagrams for /lab/how-it-works.
+1. Draw what this phase built as a Mermaid diagram in `docs/diagrams/phase-N.md` (changed Nov 4, 2026: Archify is on hold because its SkillSpector scan couldn't complete; Henry decides on it before /lab/how-it-works). At a stage gate (after phases 4, 7 and 10), also regenerate the architecture, agent-loop and approval-flow diagrams for /lab/how-it-works.
 2. Add a phase entry to `docs/BUILD_JOURNAL.md` using its template:
    - file by file: what it does, the key lines, why it's written that way, and the alternatives rejected
    - what broke and the fix
@@ -135,5 +136,5 @@ Run the six spikes in `docs/SPIKES.md` and build the walking skeleton. Record ra
    - a 3-question quiz with answers
    
    Write for a beginner.
-3. **Do not write Henry's "In my own words" section.** Quiz him first. Then he writes it, and you check it for mistakes. (From 4 Nov 2026, both wait for the interview-prep sessions; the journal entry and its quiz are still written each phase as study material.)
+3. **Do not write Henry's "In my own words" section.** Quiz him first. Then he writes it, and you check it for mistakes. (From Nov 4, 2026, both wait for the interview-prep sessions; the journal entry and its quiz are still written each phase as study material.)
 4. If the phase ran past its day budget in the sprint table, help him cut scope rather than extend.

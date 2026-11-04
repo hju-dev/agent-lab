@@ -1,6 +1,6 @@
 # Hero wireframes: ten layouts to start from
 
-**Used by:** Studio's Designer (choosing each direction's hero) and Builder (building it), alongside the PRD's "Hero layouts" menu and `accent-palettes.md`. Added 1 November 2026 from wireframes Henry saved: W1–W5 are from an Instagram post by @iggykos, W6–W10 from a second post with no visible credit. They're structure only. Borrow the arrangement, never a finished design.
+**Used by:** Studio's Designer (choosing each direction's hero) and Builder (building it), alongside the PRD's "Hero layouts" menu and `accent-palettes.md`. Added November 1, 2026 from wireframes Henry saved: W1–W5 are from an Instagram post by @iggykos, W6–W10 from a second post with no visible credit. They're structure only. Borrow the arrangement, never a finished design.
 
 **Terms.** *Micro item* is the wireframes' "microritm" (read here as "micro item"): a small label such as a scroll cue, a location, a rating, "Open today", or a short social-proof line. *Background shape* is a decorative CSS or SVG shape, hidden from screen readers. *CTA* is the call to action.
 

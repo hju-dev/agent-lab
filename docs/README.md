@@ -2,7 +2,7 @@
 
 **This folder is the source of truth.** The "Agent Lab — PRD & Build Plan" doc on claude.ai is a mirror for reading and commenting. If they differ, this folder wins; re-sync the mirror after changing anything here.
 
-Every doc here follows one rule: **replace judgement with evidence, and assumptions with tests.** An outside fact has a source and a date. A claim we can't source yet has a spike, a test or a conversation that will settle it, and it's tracked in the evidence ledger.
+Every doc here follows one rule: **replace judgment with evidence, and assumptions with tests.** An outside fact has a source and a date. A claim we can't source yet has a spike, a test or a conversation that will settle it, and it's tracked in the evidence ledger.
 
 ## Start here
 
@@ -21,7 +21,7 @@ Every doc here follows one rule: **replace judgement with evidence, and assumpti
 | [SOURCES.md](SOURCES.md) | Every outside fact (free tiers, terms, law, standards), with primary-source links and check dates |
 | [ROLES_MATRIX.md](ROLES_MATRIX.md) | 10 real job postings, quoted exactly, mapped to the features that prove each requirement, with the gaps |
 | [SPIKES.md](SPIKES.md) | Six Day 0 experiments with pass/fail thresholds and plan changes, plus the walking skeleton |
-| [EVALS.md](EVALS.md) | Lead Scout's golden set, labelling rubric, metrics, harness, grader calibration and the eval gate |
+| [EVALS.md](EVALS.md) | Lead Scout's golden set, labeling rubric, metrics, harness, grader calibration and the eval gate |
 | [DONE_CHECKS.md](DONE_CHECKS.md) | Each phase gate as commands (Vitest, Playwright, axe-core, Lighthouse CI, psql), plus the manual list |
 
 ## Design and risk
@@ -50,11 +50,11 @@ Every doc here follows one rule: **replace judgement with evidence, and assumpti
 | [playbooks/accent-palettes.md](playbooks/accent-palettes.md) | Henry's nine approved palettes (two base colors + one surprise accent), why they work, contrast results, and the three-color rules. Used by Studio's Designer, Builder and Auditor |
 | `diagrams/` | Mermaid diagrams, one per phase (created during the build) |
 
-## Later list (ideas parked until after the 30 Nov review)
+## Later list (ideas parked until after the Nov 30 review)
 
 - **To do: client process templates** (from `claude/client-process.md` in the hju.dev project): contract and statement-of-work template (lawyer-reviewed), welcome pack with access checklist, package menu first; then Notion portal, kickoff agenda, brief, change order, delivery guide, thank-you note, feedback questions
 
-- Job-search agents (need Henry's OK): a weekly posting refresh against the shortlist criteria; a tracker summary before the 30 Nov review; a recruiter-email digest (better as a scheduled task than inside Agent Lab, which runs in a public repo)
+- Job-search agents (need Henry's OK): a weekly posting refresh against the shortlist criteria; a tracker summary before the Nov 30 review; a recruiter-email digest (better as a scheduled task than inside Agent Lab, which runs in a public repo)
 - Studio (Stage D) and Showpieces (Stage E)
 - Netlify for Studio demo previews (ADR-0009), after checking its terms on commercial use and its credit limit
 - Sentry on the Vercel functions

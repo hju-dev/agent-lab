@@ -2,17 +2,17 @@
 
 **For agents:** use only what's listed under "In the stack". Don't add a tool from "Not in the stack" without Henry's OK. Budget is $0, so no tool may have a payment card on file (Neon, Gemini/Google Cloud, Vercel, Upstash, GitHub, Clerk). Without a card, hitting a free limit stops the service instead of billing.
 
-Reviewed 29 October 2026 against Henry's tech-stack notes. Limits are in `docs/SOURCES.md`.
+Reviewed October 29, 2026 against Henry's tech-stack notes. Limits are in `docs/SOURCES.md`.
 
 ## In the stack: Agent Lab
 
 | Layer | Tool | Why this one | Decision |
 | --- | --- | --- | --- |
 | Builder | Claude Code on Henry's Pro plan | Already paid for. Never set `ANTHROPIC_API_KEY` | ADR-0010 |
-| Runtime | **Node 24 LTS** + TypeScript, run with `tsx` | Node 20 reached end of life on 30 April 2026. Node 24 is supported until 30 April 2028 | — |
+| Runtime | **Node 24 LTS** + TypeScript, run with `tsx` | Node 20 reached end of life on April 30, 2026. Node 24 is supported until April 30, 2028 | — |
 | Code and checks | GitHub (public repo) + Actions | Free for public repos; runs schedules and CI | ADR-0003 |
 | Agent loop | Hand-written, Gemini function calling | Explainable in interviews; no framework | ADR-0001 |
-| LLM | Gemini free tier, personal details removed first. Lead Scout: 3.5 Flash Lite, with 3.1 Flash Lite as the fallback. Eval grader: a different model, Gemma 4 26B (SP1, 4 Nov 2026) | $0 | ADR-0002 |
+| LLM | Gemini free tier, personal details removed first. Lead Scout: 3.5 Flash Lite, with 3.1 Flash Lite as the fallback. Eval grader: a different model, Gemma 4 26B (SP1, Nov 4, 2026) | $0 | ADR-0002 |
 | Database | Neon free, its own project, three roles + RLS. Direct connection for migrations and agents, pooled for admin functions | Visitors never wake it (snapshot) | ADR-0005, ADR-0011 |
 | Public data | Upstash Redis: snapshot + rate limits, in the database shared with the chatbot. Every Agent Lab key starts with `lab:` | Keeps visitor traffic off Neon | ADR-0011 |
 | /lab frontend | React + TypeScript, built with Vite in the site repo's `lab/` folder | Shows React to recruiters; one framework with Studio's demos | ADR-0013 |
@@ -38,7 +38,7 @@ Demos are static Next.js with no database. For real client builds:
 | Errors | Sentry free, with rate limits on repeating errors | Free plan reported at 5,000 errors a month (secondary source). One error looping can use the quota up (playbook lesson) |
 | Email | Resend, on the client's verified domain | Needs a domain the client owns |
 
-## SEO toolbelt (added 1 Nov 2026)
+## SEO toolbelt (added Nov 1, 2026)
 
 All free. Agents never hold Google credentials: Henry signs in and exports, and agents work from the exported files, which stay in `private/` or the client's private folder and are never committed.
 

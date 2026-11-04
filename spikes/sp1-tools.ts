@@ -5,7 +5,7 @@ import { writeFileSync } from 'node:fs'
 import { z } from 'zod'
 
 const MODEL = 'gemini-3.5-flash-lite'
-// gemma-4-31b-it was tried first on 4 Nov 2026 and timed out or returned 500s, so this is SPIKES.md's fallback.
+// gemma-4-31b-it was tried first on Nov 4, 2026 and timed out or returned 500s, so this is SPIKES.md's fallback.
 const GRADER = 'gemma-4-26b-a4b-it'
 const RUNS = 20
 const MAX_STEPS = 8

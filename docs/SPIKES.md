@@ -42,7 +42,7 @@ Several spikes need time to collect data (SP3, SP4). Start those first on Day 0 
 
 **Why it's risky:** GitHub says scheduled runs can be delayed, especially at the top of the hour, and can even be dropped ([SOURCES.md](SOURCES.md#github-actions-schedules)). Site Doctor's "hourly" uptime promise depends on it.
 
-**Test:** in the agent-lab repo, a workflow `spike-schedule.yml` on `cron: '17,47 * * * *'` that writes the scheduled time and the real start time (`date -u`) to a table or an artifact. Run it for 48 hours. Delete it afterwards.
+**Test:** in the agent-lab repo, a workflow `spike-schedule.yml` on `cron: '17,47 * * * *'` that writes the scheduled time and the real start time (`date -u`) to a table or an artifact. Run it for 48 hours. Delete it afterward.
 
 **Record:** number of runs expected (96) vs started, and the delay of each run. Then set the final period and grace of the Healthchecks check `agent-lab heartbeat` from these delays, and write them here. Until then it stays at period 1 hour, grace 1 hour.
 
@@ -56,7 +56,7 @@ Several spikes need time to collect data (SP3, SP4). Start those first on Day 0 
 
 **Test:** in the new Agent Lab Neon project, let SP3's workflow write a row every run for 48 hours, then publish the snapshot. Also run a script that calls the deployed `/api/lab/state` once a minute for 1 hour, to prove visitor traffic never wakes Neon. The awake ratio shouldn't move during that hour.
 
-**Note, 2 Nov 2026, written before the run:** SP3's workflow fires every 30 minutes and Neon stays awake about 5 minutes after each write ([SOURCES.md](SOURCES.md#neon-database)). Writing on every run would mean at least 5 ÷ 30 = 16.7% awake, failing the 15% rule by arithmetic without measuring the real hourly plan. Henry decided that only the `:17` runs write and publish, which matches production's hourly writes. The pass rule is unchanged. SP3's timing still covers all 96 runs, read from GitHub's run records, because the `:47` runs don't touch the table. Rows go in a throwaway `spike` schema, dropped when the spike ends. The one-hour `/api/lab/state` test runs once the walking skeleton has deployed that endpoint, so SP4 can't pass before then.
+**Note, Nov 2, 2026, written before the run:** SP3's workflow fires every 30 minutes and Neon stays awake about 5 minutes after each write ([SOURCES.md](SOURCES.md#neon-database)). Writing on every run would mean at least 5 ÷ 30 = 16.7% awake, failing the 15% rule by arithmetic without measuring the real hourly plan. Henry decided that only the `:17` runs write and publish, which matches production's hourly writes. The pass rule is unchanged. SP3's timing still covers all 96 runs, read from GitHub's run records, because the `:47` runs don't touch the table. Rows go in a throwaway `spike` schema, dropped when the spike ends. The one-hour `/api/lab/state` test runs once the walking skeleton has deployed that endpoint, so SP4 can't pass before then.
 
 **Record:** from the Neon API (`docs/playbooks/neon-free-tier.md` section 3.1, script `spikes/sp4-usage.ts`): `compute_time_seconds` and `active_time_seconds` at the start and after 48 hours, the awake ratio (time awake ÷ time elapsed) and the projected month. Also list every branch and compute, since all of them count against the same allowance.
 
@@ -84,7 +84,7 @@ Several spikes need time to collect data (SP3, SP4). Start those first on Day 0 
 1. A workflow that always fails (`exit 1`), triggered by a schedule you created. Check your inbox.
 2. A Healthchecks check with a 10-minute period and 5-minute grace that's never pinged. Check your inbox.
 
-**Note, 4 Nov 2026, before the re-run:** a check that has never been pinged stays "New" and never goes down, so step 2 as written can't send an alert ([Healthchecks docs](https://healthchecks.io/docs/) define the New state; the down timer counts from the last ping). The first attempt got no email for that reason. The method is now: ping the check once, then never again. It goes down 15 minutes after that ping. The pass rule is unchanged.
+**Note, Nov 4, 2026, before the re-run:** a check that has never been pinged stays "New" and never goes down, so step 2 as written can't send an alert ([Healthchecks docs](https://healthchecks.io/docs/) define the New state; the down timer counts from the last ping). The first attempt got no email for that reason. The method is now: ping the check once, then never again. It goes down 15 minutes after that ping. The pass rule is unchanged.
 
 **Pass:** both emails arrive within 20 minutes, and neither lands in spam (if one does, add a filter and re-test).
 

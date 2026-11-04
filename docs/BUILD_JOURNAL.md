@@ -71,7 +71,7 @@ Claude Code adds new terms as they come up. Each definition is one or two plain 
 | Scale to zero | Neon puts the database to sleep after 5 minutes with no activity. Asleep, it uses no compute hours. Anything that touches it every few minutes stops it ever sleeping. |
 | CU-hour | Neon's unit of compute time: one compute unit running for one hour. The free plan gives a fixed number per month. |
 | Snapshot | A saved copy of the public data, written once per agent run, so visitors can read it without touching the database. |
-| Mom Test | A way of interviewing people about their past behaviour rather than asking if they like your idea, so they can't just be polite. |
+| Mom Test | A way of interviewing people about their past behavior rather than asking if they like your idea, so they can't just be polite. |
 | Grant | Permission for a role to use a table or view at all (read, insert, update). No grant means "permission denied" before RLS is even checked. |
 | Policy | An RLS rule saying which rows a role may see or change. With RLS on, a role needs a grant *and* a matching policy. |
 | Seed | Putting starting data into a database, such as Henry's list of sites. |
@@ -86,27 +86,27 @@ Every protection against a known problem, the threat it answers (IDs from `docs/
 
 | # | Threat | Problem it prevents | Safeguard | Where in the code | Test | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| S1 | T-P1 | Private data shown on /lab | Public API reads only the public views | `lab_public` has no table grants, only `public_state` and `public_events` (`migrations/001_init.sql`, `002_core_tables.sql`); snapshot allowlist in `lib/snapshot.ts` | `tests/db/roles.test.ts` (every `lab` table refuses `lab_public` and has RLS on; runs in CI on a throwaway Postgres); `tests/leak.test.ts` | Database half built and tested (4 Nov); API leak test in Phase 3 |
+| S1 | T-P1 | Private data shown on /lab | Public API reads only the public views | `lab_public` has no table grants, only `public_state` and `public_events` (`migrations/001_init.sql`, `002_core_tables.sql`); snapshot allowlist in `lib/snapshot.ts` | `tests/db/roles.test.ts` (every `lab` table refuses `lab_public` and has RLS on; runs in CI on a throwaway Postgres); `tests/leak.test.ts` | Database half built and tested (Nov 4); API leak test in Phase 3 |
 | S2 | T-P2 | Business names or URLs in public text | public_text scanner rejects URLs, emails and lead names | | Unit test | Planned |
-| S3 | T-G4 | Private data in the public GitHub Actions logs | Logs record counts and IDs only | `agents/site-doctor/run.ts` (counts only); `index.ts` prints only an error's type and Postgres code in CI, because database messages can quote site ids | `tests/site-doctor.test.ts` (a fake private site's id and address never reach the log or snapshot) | Built and tested for Site Doctor (4 Nov) |
+| S3 | T-G4 | Private data in the public GitHub Actions logs | Logs record counts and IDs only | `agents/site-doctor/run.ts` (counts only); `index.ts` prints only an error's type and Postgres code in CI, because database messages can quote site ids | `tests/site-doctor.test.ts` (a fake private site's id and address never reach the log or snapshot) | Built and tested for Site Doctor (Nov 4) |
 | S4 | T-L1 | Web pages giving the AI instructions | Strip HTML, cap at 4,000 characters, wrap as data, tool allowlist | | Injection site in the eval gate | Planned |
 | S5 | T-L2 | Agent fetching internal or unrelated addresses | http/https only, private IPs blocked after DNS lookup, max 3 redirects each re-checked, lead's own domain only | | One test per rule | Planned |
 | S6 | T-L6 | Runaway costs or quota | Max 8 steps per lead, 10 leads a day, 40 Gemini calls per run, stop after 5 errors | | Unit test | Planned |
-| S7 | — (reliability) | False alarms from noisy scores | 3-day median, sustained-drop rule; threshold is the larger of 10 and the site's SP2 range (ADR-0015) | `lib/score-drop.ts` (`sustainedDrop`, `dropThreshold`); used by `agents/site-doctor/findings.ts` (`scoreDrop`) with each site's `perf_range` (migration 004) | `tests/score-drop.test.ts`; `tests/site-audit.test.ts` (a 12-point drop flags a quiet site but not one with range 14) | Built and tested; used by the daily audit (4 Nov) |
+| S7 | — (reliability) | False alarms from noisy scores | 3-day median, sustained-drop rule; threshold is the larger of 10 and the site's SP2 range (ADR-0015) | `lib/score-drop.ts` (`sustainedDrop`, `dropThreshold`); used by `agents/site-doctor/findings.ts` (`scoreDrop`) with each site's `perf_range` (migration 004) | `tests/score-drop.test.ts`; `tests/site-audit.test.ts` (a 12-point drop flags a quiet site but not one with range 14) | Built and tested; used by the daily audit (Nov 4) |
 | S8 | T-L4 | Pitches with made-up facts | Evidence check: every number and platform name must appear in the tool results | | Unit test; eval gate (0 fabricated) | Planned |
 | S9 | — (reliability) | Two runs overlapping | GitHub Actions `concurrency` group per workflow | `concurrency` in `.github/workflows/site-doctor.yml` and `ci.yml` | Manual double trigger | Built; manual test pending |
-| S10 | — (reliability) | Duplicate rows after a retry | Unique keys, insert-or-ignore | Keys: `runs.id`, `events.id` (run id plus a counter), `site_checks (site_id, checked_at)`; `scripts/seed-sites.ts` uses `on conflict do nothing` | `tests/db/agent.test.ts`: as `lab_agent`, saving the same run, check and event twice adds each once (CI). Seeding checked by hand (4 Nov) | Built and tested (4 Nov). Inserts use `on conflict do nothing` with no named columns: naming them needs read access `lab_agent` doesn't have |
-| S11 | T-L6 | A hung request freezing a run | 10-second timeout per request (named slow APIs up to 60 s, ADR-0015), 10-minute cap per run | `lib/reliability.ts` (`fetchWithTimeout`, `SLOW_API_TIMEOUT_MS`); cap: `timeout-minutes: 10` in each workflow | `tests/reliability.test.ts` (server that never answers; slow-API list capped at 60 s) | Built and tested; Site Doctor's checks and the audit's PageSpeed calls use it, and the audit stops starting sites after 7 minutes (`AUDIT_DEADLINE_MS`, `tests/site-audit.test.ts`) (4 Nov) |
-| S12 | T-L6 | Flaky APIs failing a whole run | Up to 3 retries with increasing waits | `lib/reliability.ts` (`withRetry`, with `shouldRetry` so errors a retry can't fix fail at once) | `tests/reliability.test.ts`; `tests/site-doctor.test.ts` (down after 4 tries); `tests/site-audit.test.ts` (PageSpeed 429 retried, 400 not) | Built and tested; used by uptime and PageSpeed (4 Nov) |
-| S13 | T-G1 | Missing or wrong environment variables | zod check at startup with a clear error message | `agents/site-doctor/index.ts` | `tests/site-doctor.test.ts` (no settings: exit 1, plain message, no stack trace) | Built and tested for Site Doctor (4 Nov) |
+| S10 | — (reliability) | Duplicate rows after a retry | Unique keys, insert-or-ignore | Keys: `runs.id`, `events.id` (run id plus a counter), `site_checks (site_id, checked_at)`; `scripts/seed-sites.ts` uses `on conflict do nothing` | `tests/db/agent.test.ts`: as `lab_agent`, saving the same run, check and event twice adds each once (CI). Seeding checked by hand (Nov 4) | Built and tested (Nov 4). Inserts use `on conflict do nothing` with no named columns: naming them needs read access `lab_agent` doesn't have |
+| S11 | T-L6 | A hung request freezing a run | 10-second timeout per request (named slow APIs up to 60 s, ADR-0015), 10-minute cap per run | `lib/reliability.ts` (`fetchWithTimeout`, `SLOW_API_TIMEOUT_MS`); cap: `timeout-minutes: 10` in each workflow | `tests/reliability.test.ts` (server that never answers; slow-API list capped at 60 s) | Built and tested; Site Doctor's checks and the audit's PageSpeed calls use it, and the audit stops starting sites after 7 minutes (`AUDIT_DEADLINE_MS`, `tests/site-audit.test.ts`) (Nov 4) |
+| S12 | T-L6 | Flaky APIs failing a whole run | Up to 3 retries with increasing waits | `lib/reliability.ts` (`withRetry`, with `shouldRetry` so errors a retry can't fix fail at once) | `tests/reliability.test.ts`; `tests/site-doctor.test.ts` (down after 4 tries); `tests/site-audit.test.ts` (PageSpeed 429 retried, 400 not) | Built and tested; used by uptime and PageSpeed (Nov 4) |
+| S13 | T-G1 | Missing or wrong environment variables | zod check at startup with a clear error message | `agents/site-doctor/index.ts` | `tests/site-doctor.test.ts` (no settings: exit 1, plain message, no stack trace) | Built and tested for Site Doctor (Nov 4) |
 | S14 | — (reliability) | Gemini changing its output format | Pinned model version, zod validation of tool arguments, alert on parse failures | | Malformed-response test | Planned |
 | S15 | T-L6 | Free tier changes | One LLM wrapper file, usage counted per run, alert at 80% of the limits recorded in SP1 | | Monthly check | Planned |
-| S16 | T-A3, T-G5 | Schedule silently paused | Heartbeat ping after every run | `agents/site-doctor/index.ts` (`HEALTHCHECK_URL` after a successful run) | SP6, then pause the workflow and expect an email | Built (4 Nov); test waits for SP6 |
+| S16 | T-A3, T-G5 | Schedule silently paused | Heartbeat ping after every run | `agents/site-doctor/index.ts` (`HEALTHCHECK_URL` after a successful run) | SP6, then pause the workflow and expect an email | Built (Nov 4); test waits for SP6 |
 | S17 | T-A3 | /lab broken during an interview | Static demo run, stale-data badge | | Playwright: API down, replay still plays | Planned |
 | S18 | T-D1 | Testing touching live data | Neon development branch for local work and preview deploys | | Check the preview's database URL | Planned |
 | S19 | T-L6 | Queue overload | 20-item cap, agents pause when it's full, 14-day expiry | | Fill the queue in dev | Planned |
 | S20 | T-L4 | Misleading quality figure | Shows sample size, hidden below 20 decisions | | Unit test | Planned |
-| S21 | T-D3 | Untracked database changes | Numbered migrations only, no hand edits; `pg_dump` before production migrations | `migrations/`, applied by `scripts/migrate.ts` | CI rebuilds a fresh database from the migrations on every PR (`.github/workflows/ci.yml`) | Built (4 Nov); `pg_dump` step when production is first migrated |
+| S21 | T-D3 | Untracked database changes | Numbered migrations only, no hand edits; `pg_dump` before production migrations | `migrations/`, applied by `scripts/migrate.ts` | CI rebuilds a fresh database from the migrations on every PR (`.github/workflows/ci.yml`) | Built (Nov 4); `pg_dump` step when production is first migrated |
 | S22 | — (reliability) | Time-zone confusion | Store UTC, display ICT | | Unit test | Planned |
 | S23 | T-L4, T-L9 | Prompt changes making quality worse | 24-site golden set with saved fixtures; new versions must pass the eval gate and not score worse (`docs/EVALS.md`) | | Eval run in CI | Planned (was a 10-site set) |
 | S24 | T-L2 | Being unwelcome on sites we audit | Obey robots.txt, honest user agent linking to /lab | | Unit test; robots site in the eval gate | Planned |
@@ -121,12 +121,12 @@ Every protection against a known problem, the threat it answers (IDs from `docs/
 | S33 | T-L8 | Compromised dependency | Lockfile, `npm ci`, pinned Node, Dependabot; SkillSpector for skills | | CI uses `npm ci` | Planned (was a rule, now registered) |
 | S34 | T-L1, T-L5 | AI output acting on its own | Model output only goes to the approval queue; never sent or executed | | Code review; no send path exists | Planned (was a rule, now registered) |
 | S35 | T-L1, T-L4 | Releasing a worse or unsafe Lead Scout | Eval gate before go-live and before every prompt change | | `npx vitest run evals/` in CI | Planned (new) |
-| S41 | T-D4 | Visitors waking Neon until the month's compute runs out | /lab and the public API read a snapshot in Upstash, published at the end of each run; no public route imports the database client | | Import test; 30-minute no-wake check | Planned (28 Oct) |
-| S42 | T-D4 | Running out of Neon compute without warning | Weekly Neon usage check fails above a 70% projection | `lib/neon-usage.ts` (`projectUsage`), `scripts/neon-usage.ts`, `.github/workflows/neon-usage.yml` (Mondays 09:29 ICT) | `tests/setup-checks.test.ts` (72 projected fails, 69 passes, fake allowance of 1 fails); manual run with `allowance: 1` | Built and tested (4 Nov); manual run waits for the `NEON_API_KEY` and `NEON_PROJECT_ID` secrets |
-| S43 | T-D4 | Uptime checks keeping a client's database awake | Database-backed sites are checked on a static URL | `migrations/003_site_check_targets.sql` (`has_database` defaults to true, optional `check_url`); `agents/site-doctor/uptime.ts` (`checkTarget`: `check_url` or `/robots.txt`) | `tests/site-doctor.test.ts` (a full run never requests a database site's home page) | Built and tested (4 Nov) |
-| S44 | T-D4, T-A3 | A quota lockout flooding errors or alerts | 402 "exceeded the quota" caught, shown plainly, reported once, not retried | `lib/reliability.ts` (`isQuotaError`, `withRetry`); `agents/site-doctor/index.ts` | `tests/reliability.test.ts`; `tests/site-doctor.test.ts` (a quota error on save fails the run once, not retried, nothing published) | Built and tested (4 Nov) |
-| S36 | — (quality) | Lazy follow-ups that add nothing ("just following up") | Phrase filter rejects banned phrases before a follow-up reaches the queue; every follow-up must carry a new finding, tip or example | | Unit test per phrase | Planned (18 Oct) |
-| S37 | T-A6 | Pestering businesses, or emailing after an opt-out | At most 2 follow-ups, none after a reply or opt-out; follow-ups held behind `pitches_enabled` | | Unit test | Planned (18 Oct) |
+| S41 | T-D4 | Visitors waking Neon until the month's compute runs out | /lab and the public API read a snapshot in Upstash, published at the end of each run; no public route imports the database client | | Import test; 30-minute no-wake check | Planned (Oct 28) |
+| S42 | T-D4 | Running out of Neon compute without warning | Weekly Neon usage check fails above a 70% projection | `lib/neon-usage.ts` (`projectUsage`), `scripts/neon-usage.ts`, `.github/workflows/neon-usage.yml` (Mondays 09:29 ICT) | `tests/setup-checks.test.ts` (72 projected fails, 69 passes, fake allowance of 1 fails); manual run with `allowance: 1` | Built and tested (Nov 4); manual run waits for the `NEON_API_KEY` and `NEON_PROJECT_ID` secrets |
+| S43 | T-D4 | Uptime checks keeping a client's database awake | Database-backed sites are checked on a static URL | `migrations/003_site_check_targets.sql` (`has_database` defaults to true, optional `check_url`); `agents/site-doctor/uptime.ts` (`checkTarget`: `check_url` or `/robots.txt`) | `tests/site-doctor.test.ts` (a full run never requests a database site's home page) | Built and tested (Nov 4) |
+| S44 | T-D4, T-A3 | A quota lockout flooding errors or alerts | 402 "exceeded the quota" caught, shown plainly, reported once, not retried | `lib/reliability.ts` (`isQuotaError`, `withRetry`); `agents/site-doctor/index.ts` | `tests/reliability.test.ts`; `tests/site-doctor.test.ts` (a quota error on save fails the run once, not retried, nothing published) | Built and tested (Nov 4) |
+| S36 | — (quality) | Lazy follow-ups that add nothing ("just following up") | Phrase filter rejects banned phrases before a follow-up reaches the queue; every follow-up must carry a new finding, tip or example | | Unit test per phrase | Planned (Oct 18) |
+| S37 | T-A6 | Pestering businesses, or emailing after an opt-out | At most 2 follow-ups, none after a reply or opt-out; follow-ups held behind `pitches_enabled` | | Unit test | Planned (Oct 18) |
 
 **Proposed, waiting for Henry's yes or no** (from the threat model's unmitigated list): P1 pin third-party Actions to a commit SHA (T-G2); P2 `permissions: contents: read` in every workflow (T-G3); P3 model and database text only ever rendered as text, never HTML (T-L5, T-P4). If accepted, they become S38–S40.
 
@@ -191,7 +191,7 @@ Agent Lab is two AI workers plus a public page that shows them working. Site Doc
 - **Hiring goal:** a hand-written agent loop and measured AI quality are skills I can explain and prove.
 - **Safety:** three database roles, public views only, and human approval on everything.
 
-**Evidence, not guesses (17 Oct 2026):** every outside fact the plan depends on was checked against the provider's own page (`docs/SOURCES.md`). Two assumptions failed and changed the plan: Resend needs a domain I own, and Vercel's free plan can't host commercial demo previews. Anything still unproven is a spike (`docs/SPIKES.md`), an eval (`docs/EVALS.md`) or a conversation (`docs/VALIDATION_PLAN.md`), and its status is in `docs/EVIDENCE_LEDGER.md`.
+**Evidence, not guesses (Oct 17, 2026):** every outside fact the plan depends on was checked against the provider's own page (`docs/SOURCES.md`). Two assumptions failed and changed the plan: Resend needs a domain I own, and Vercel's free plan can't host commercial demo previews. Anything still unproven is a spike (`docs/SPIKES.md`), an eval (`docs/EVALS.md`) or a conversation (`docs/VALIDATION_PLAN.md`), and its status is in `docs/EVIDENCE_LEDGER.md`.
 
 **Full plan:** `docs/PRD.md`, with decisions in `docs/adr/` and the index in `docs/README.md`.
 
@@ -200,7 +200,7 @@ Agent Lab is two AI workers plus a public page that shows them working. Site Doc
 
 ---
 
-### Phase 1: Database core (4 November 2026)
+### Phase 1: Database core (November 4, 2026)
 
 **What we built**
 The database now has its core tables: `agents` and `runs` from migration 001, plus `sites`, `site_checks` and `events` from migration 002. Every table has row-level security (RLS) switched on, and the visitor role, `lab_public`, can't read any of them. It can only read two views, `public_state` and `public_events`, which show safe columns only. A test proves this on every pull request, using a throwaway Postgres inside GitHub Actions, and Henry ran the same test once on the Neon dev branch. Henry's sites are on the dev branch, added from a private file so client names never enter the public repo.
@@ -231,10 +231,10 @@ docs/diagrams/phase-1.md (Mermaid)
 **Decisions**
 | Decision | Alternatives rejected | Why |
 | --- | --- | --- |
-| Test against a throwaway Postgres in CI (Henry's OK, 4 Nov) | The Neon dev branch from CI | No secrets in CI, no Neon compute used |
+| Test against a throwaway Postgres in CI (Henry's OK, Nov 4) | The Neon dev branch from CI | No secrets in CI, no Neon compute used |
 | CI on Postgres 18.6 | 16.15 (what this container had) | Neon reports `show server_version` = 18.6 |
 | Seed sites from `private/sites.json` | A seed migration | The repo is public |
-| Public sites: Memory Matters (with live status), Big T's Bakery, Grass Roots Sports (Henry, 4 Nov) | All public, or none | Henry's call; the rest stay private |
+| Public sites: Memory Matters (with live status), Big T's Bakery, Grass Roots Sports (Henry, Nov 4) | All public, or none | Henry's call; the rest stay private |
 
 **What broke and how we fixed it**
 - The RLS test said no table had RLS on, in this container → a boolean joined onto text reads `true`, not `t` → compare with `'true'`.
@@ -245,7 +245,7 @@ docs/diagrams/phase-1.md (Mermaid)
 S1 (database half), S10 (keys and the seed script), S21 (CI rebuilds the database from the migrations on every PR). The register above is updated.
 
 **The check**
-On the Neon dev branch, 4 Nov 2026, from Henry's machine → **PASSED**:
+On the Neon dev branch, Nov 4, 2026, from Henry's machine → **PASSED**:
 - `psql "$LAB_PUBLIC_URL" -c 'select 1 from lab.runs limit 1'` → `ERROR: permission denied for table runs`
 - `psql "$LAB_PUBLIC_URL" -c 'select count(*) from lab.public_state'` → `2`
 - `npx vitest run tests/db/roles.test.ts` → 6 passed
@@ -257,7 +257,7 @@ Two deliberate breakages in the throwaway database (RLS off on `sites`; a read g
 Row 28 ("The public role can't read private data"): Verified for the database (this check). The API half stays Testing until Phase 3's leak test.
 
 **Time**
-Planned: 1 day in the original sprint table. Actual: about 1 hour of Henry's time (4 Nov), mostly setting up the dev branch and running the check on his machine. The code was written in the same session.
+Planned: 1 day in the original sprint table. Actual: about 1 hour of Henry's time (Nov 4), mostly setting up the dev branch and running the check on his machine. The code was written in the same session.
 
 **Quiz**
 1. `lab_public` can read `public_events` but not `events`, even though the view reads from that table. Why does that work?
@@ -271,4 +271,4 @@ Planned: 1 day in the original sprint table. Actual: about 1 hour of Henry's tim
 </details>
 
 **In my own words** (Henry writes this)
-Written during the interview-prep sessions before the 30 Nov review (Henry, 4 Nov 2026).
+Written during the interview-prep sessions before the Nov 30 review (Henry, Nov 4, 2026).

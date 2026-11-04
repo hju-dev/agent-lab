@@ -2,7 +2,7 @@
 
 **Audience:** Studio's Builder and Auditor, and Claude Code on any of Henry's apps with a login (client web apps, PWAs like Raeng, /lab/admin).
 **Purpose:** make an app usable within moments of opening, even on a slow phone connection, a plane or a weak signal, not just on the fast wifi it was tested on.
-**Origin:** Henry's notes, 1 Nov 2026, adapted for web apps and checked for security.
+**Origin:** Henry's notes, Nov 1, 2026, adapted for web apps and checked for security.
 
 ## The problem
 

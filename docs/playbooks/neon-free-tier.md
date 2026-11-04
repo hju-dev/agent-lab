@@ -2,10 +2,10 @@
 
 **Audience:** a coding agent (Claude Code or similar) working in a project whose database is on Neon, and the developer reviewing its work.
 **Purpose:** find and remove everything that keeps a Neon compute awake, so the project stays inside the Free plan's monthly compute allowance and never gets locked out.
-**Origin:** written on 28 October 2026 after this failure took down a production site (case study at the end).
+**Origin:** written on October 28, 2026 after this failure took down a production site (case study at the end).
 
 
-> **Copied into agent-lab on 28 October 2026** from Henry's own playbook (kept in a private client repo). The case study is anonymized for this public repo. Free-plan figures here were Henry's at the time of writing; `docs/SOURCES.md` holds the verified ones. Agent Lab applies this playbook in ADR-0011; Studio's Builder and Auditor apply it to any client build with a database.
+> **Copied into agent-lab on October 28, 2026** from Henry's own playbook (kept in a private client repo). The case study is anonymized for this public repo. Free-plan figures here were Henry's at the time of writing; `docs/SOURCES.md` holds the verified ones. Agent Lab applies this playbook in ADR-0011; Studio's Builder and Auditor apply it to any client build with a database.
 ---
 
 ## 1. How the Free plan fails
@@ -201,7 +201,7 @@ Apply only what the audit found and the developer approved. In order of typical 
 
 ## 7. Case study: a small bakery shop (October 2026)
 
-A small Next.js shop on Vercel and Neon Free. It used about 7.5 CU-hours in its first three weeks (September). From 1 October it ran at about 6 CU-hours a day, was awake roughly 97% of the time, and was locked out at 19:05 UTC on 18 October with 110 CU-hours used. Online ordering, the admin dashboard and the nightly backups failed for the rest of the month. No alert reached anyone: the error tracker's free quota was used up by the same error within two days.
+A small Next.js shop on Vercel and Neon Free. It used about 7.5 CU-hours in its first three weeks (September). From October 1 it ran at about 6 CU-hours a day, was awake roughly 97% of the time, and was locked out at 19:05 UTC on October 18 with 110 CU-hours used. Online ordering, the admin dashboard and the nightly backups failed for the rest of the month. No alert reached anyone: the error tracker's free quota was used up by the same error within two days.
 
 | Wake source found | Why it kept the database awake | Fix |
 |---|---|---|

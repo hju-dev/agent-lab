@@ -28,4 +28,4 @@ Row-level security on every table. The public API connects as `lab_public`, so a
 - The leak protection is enforced by the database, not just by code, which is testable with one SQL check.
 - Three connection strings to manage as secrets.
 - The free plan's restore window is 6 hours, so take a `pg_dump` before each production migration.
-- **Fallback (29 Oct 2026):** if Spike SP4 still projects over 40 CU-hours after ADR-0011's fixes, move to Supabase's free plan. It's Postgres, so the roles, RLS and views carry over. Its free projects pause after 7 days of low activity, which hourly agent writes prevent. Check its free limits on its pricing page before switching (see `docs/STACK.md`).
+- **Fallback (Oct 29, 2026):** if Spike SP4 still projects over 40 CU-hours after ADR-0011's fixes, move to Supabase's free plan. It's Postgres, so the roles, RLS and views carry over. Its free projects pause after 7 days of low activity, which hourly agent writes prevent. Check its free limits on its pricing page before switching (see `docs/STACK.md`).

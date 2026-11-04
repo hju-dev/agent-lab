@@ -4,7 +4,7 @@
 
 These guide every decision about the freelancing business, in Agent Lab and outside it. They're working rules from advice Henry adopted, not proven facts, so each is tested against his own numbers once pitching is allowed (Agent Lab evidence ledger, rows 31–37).
 
-## How the business is organized (Jamie Bridle's three moves, as Henry summarized them, 18 Oct 2026)
+## How the business is organized (Jamie Bridle's three moves, as Henry summarized them, Oct 18, 2026)
 
 ### Move 1 · Design the offer around the buying decision, not my skill set
 - Reverse-engineer how the client says yes: who decides, who else must approve, what makes the decision feel safe, what risk they're avoiding.
@@ -26,20 +26,20 @@ These guide every decision about the freelancing business, in Agent Lab and outs
 - Revenue stalls → value isn't being captured clearly.
 - Fix one constraint at a time.
 
-## Outreach rules (adopted 18 Oct 2026)
+## Outreach rules (adopted Oct 18, 2026)
 
 - **Lead with their problem, not with me.** Open with something specific that's wrong on their side, what it likely costs them, and how it gets fixed. Position myself as the person who fixes it. Every claim verified.
 - **Follow up with a new reason to be helpful.** Never "just following up", "checking in", "circling back", "touching base" or "bumping this". Starting limits to test: first follow-up about a week later, at most 2, none after a reply or opt-out.
 - **My first job is keeping myself employed.** Measured by the pipeline (Move 3), not by hours. This replaces the earlier "match hours finding work to hours delivering" rule.
 
-## Finding clients (decided 29 Oct 2026)
+## Finding clients (decided Oct 29, 2026)
 
 - **No cold email for now.** Leads come from freelance platforms such as Fiverr: buyer requests, messages and orders.
 - All proposals, replies and follow-ups go through the platform's own messaging, never email or off-platform. Read the platform's terms and fees before the first gig.
 - Offer sheets (Move 1) become gig packages: fixed scope and price in tiers, with a small safe first step as the basic package.
 - Agent Lab's Lead Scout audits only sites a buyer has shared, to make proposals problem-first. It never scrapes platforms (ADR-0012).
 
-## Current limits (as of 29 Oct 2026)
+## Current limits (as of Oct 29, 2026)
 
 - Paid freelancing and pitching wait for a Thai immigration lawyer's confirmation of work status. Until then: stranger → lead = posts about projects and Lead Scout in learning mode; lead → client = business conversations and offer sheets, no pitching; client → lifetime = looking after existing clients.
 - If cold email is ever turned back on, US emails must follow CAN-SPAM (postal address, ad notice, opt-out).

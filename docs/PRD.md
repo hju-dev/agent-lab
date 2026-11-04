@@ -13,7 +13,7 @@ Agent Lab is a small team of AI agents that do real freelance groundwork, plus a
 - **Problem:** A static portfolio shows finished work. It doesn't show a system running, or how you work with AI day to day. A plain script with one API call wouldn't convince a technical interviewer either.
 - **The two agents differ on purpose:** Site Doctor is a plain scheduled script, because monitoring needs no judgment. Lead Scout is a real agent that chooses its own tools, because audits do. Explaining that choice is part of the pitch.
 - **v1 ships:** both agents, a human approval step, quality tracking, run replays, alerts for you, monthly client health reports, the public /lab page and a private admin page.
-- **First launch comes early:** Site Doctor plus the /lab page goes live after phase 4, so something is on your CV within the first few weeks. Everything else is added on top.
+- **First launch comes early:** Site Doctor plus the /lab page goes live after phase 4, so something is on your résumé within the first few weeks. Everything else is added on top.
 - **Budget:** $0 a month, all on free tiers. Their limits are listed under Open questions and need checking before you build.
 - **Success (proposed):** /lab shows activity every day for 30 days in a row. The share of drafts approved without edits rises month over month, and that number is shown publicly. Site Doctor catches at least one real client issue. One client receives a monthly health report as part of a paid care plan.
 - **Out of scope for v1:** sending pitches automatically, scraping freelance platforms, agents changing client sites, true real-time (websockets), more than two agents.
@@ -42,7 +42,7 @@ A real tool-using agent. Gemini decides which checks to run on each site, reads 
 - **The loop:** the model picks a tool, your code runs it and returns the result, and this repeats until `finish` or 8 steps, whichever comes first. The loop is hand-written (about 150 lines) rather than a framework, so you can explain every line in an interview.
 - **Every step is logged** with the tool used, a one-line public summary and private inputs and outputs. That log is what Run replay (F9) plays back.
 - **Output:** a 0 to 100 "needs help" score with the 3 reasons behind it, and a 120-word pitch draft sent to your queue, written to the problem-first structure in Pitching rules below. Before queuing, code checks that every number and platform name in the draft appears in the tool results, and flags the draft if anything doesn't.
-- **Markets:** any kind of business or organization, tested in segments. Run 2 or 3 segments at a time, for example nonprofits (warm, through Memory Matters referrals), local service businesses and small product brands, and compare approval, reply and win rates per segment before choosing where to focus. **No cold email (decided 29 Oct 2026).** Leads come from freelance platforms such as Fiverr: buyer requests, messages and orders. Every reply and proposal goes through the platform's own messaging, never by email or off-platform, and follows the platform's rules (check its terms on outside contact). Overseas buyers only, because of the work permit (ADR-0012). No Thai clients or buyers, paid or unpaid, until the lawyer confirms what your status allows.
+- **Markets:** any kind of business or organization, tested in segments. Run 2 or 3 segments at a time, for example nonprofits (warm, through Memory Matters referrals), local service businesses and small product brands, and compare approval, reply and win rates per segment before choosing where to focus. **No cold email (decided Oct 29, 2026).** Leads come from freelance platforms such as Fiverr: buyer requests, messages and orders. Every reply and proposal goes through the platform's own messaging, never by email or off-platform, and follows the platform's rules (check its terms on outside contact). Overseas buyers only, because of the work permit (ADR-0012). No Thai clients or buyers, paid or unpaid, until the lawyer confirms what your status allows.
 - **Done when:** 5 URLs give 5 scored audits and 5 drafts, the step counts differ between sites (proof the agent is choosing), and no business name appears on /lab or in the Actions logs.
 
 ### F3 · Approval queue
@@ -165,7 +165,7 @@ Turns Site Doctor into part of a product you sell, the care plan.
 Most hiring managers will spend under a minute on /lab, and won't read code.
 
 - A "What am I looking at?" panel, open by default on the first visit, with 3 sentences and a 60-second video walkthrough you record.
-- A persistent "Hire me / Work with me" button linking to your contact section. Until a lawyer confirms your work status, it reads "Get in touch" and points to job enquiries rather than freelance work, because /lab is public and your employer and school can see it.
+- A persistent "Hire me / Work with me" button linking to your contact section. Until a lawyer confirms your work status, it reads "Get in touch" and points to job inquiries rather than freelance work, because /lab is public and your employer and school can see it.
 - A "How it's built" link to /lab/how-it-works, which has Archify diagrams of the architecture, the agent loop and the approval flow, plus the agent-versus-script reasoning. The repo README links there too.
 - **Done when:** a non-technical friend can explain what the page shows after 60 seconds on it.
 
@@ -182,10 +182,10 @@ The agents write to every table. Visitors reach only the public snapshot, which 
 | Agent code | Node 24 LTS + TypeScript, run with `tsx` | Same language as your Next.js client work |
 | Agent loop | Hand-written, about 150 lines, no framework | You can explain every line. Frameworks hide exactly what interviewers ask about |
 | Agent repo | New public repo `hju-dev/agent-lab` | The code is part of the portfolio |
-| Scheduler | GitHub Actions scheduled workflows: hourly uptime, daily audits, monthly reports | Free for public repos on standard runners (verified 17 Oct 2026). Vercel Hobby cron runs at most once a day (verified), too limited for hourly checks |
+| Scheduler | GitHub Actions scheduled workflows: hourly uptime, daily audits, monthly reports | Free for public repos on standard runners (verified Oct 17, 2026). Vercel Hobby cron runs at most once a day (verified), too limited for hourly checks |
 | LLM | Gemini API free tier with function calling (tool use) for Lead Scout, plain calls for findings and reports | Already in use for the chatbot. Check that function calling is on the free tier |
 | Site checks | PageSpeed Insights API v5, plain `fetch` for status and links, Node `tls` for SSL | Free with an API key |
-| Email | GitHub's built-in failure emails plus Healthchecks.io for now (ADR-0007). Resend later | Resend requires a verified domain you own to send email (checked 17 Oct 2026). Revisit when you buy one |
+| Email | GitHub's built-in failure emails plus Healthchecks.io for now (ADR-0007). Resend later | Resend requires a verified domain you own to send email (checked Oct 17, 2026). Revisit when you buy one |
 | Database | Neon Postgres, new `lab` schema in a new Neon project | Already in use. A separate Neon project from the chatbot, because the free plan's 100 compute-hours are per project (ADR-0005) |
 | Public API | Vercel functions under `/api/lab`, reading a public snapshot from Upstash, CDN-cached for 60 seconds. They never query Neon | Neon's free compute only lasts if the database can sleep: it bills while awake and sleeps after 5 minutes idle. Visitors never wake it (ADR-0011, Neon playbook) |
 | Rate limiting | Upstash Redis, already set up for the chatbot. Also holds the public /lab snapshot | Public endpoint has no login |
@@ -259,7 +259,7 @@ Visitors get one public page with an orientation, a floor and two detail panels.
 
 ### States every public view handles
 
-- **Loading:** grey outline stations, no spinners.
+- **Loading:** gray outline stations, no spinners.
 - **API unreachable:** keep showing the last data and add a "reconnecting" badge. Never a blank page.
 - **Agent not run yet:** "First run scheduled for 14:00 ICT."
 - **Agent error:** red light plus a public message ("Run failed. Retrying next hour."). No error details or stack traces.
@@ -410,13 +410,13 @@ RLS is on for every table, in line with your habit. Each role gets its own conne
 
 ## Implementation plan
 
-The build runs in ten phases across three stages, and each phase ends with a check that has to pass before the next starts. The first public launch comes after phase 4, so a working /lab with real data is on your CV early. The agent, replays and quality tracking come next. They handle the most private data, so the leak test has to exist first.
+The build runs in ten phases across three stages, and each phase ends with a check that has to pass before the next starts. The first public launch comes after phase 4, so a working /lab with real data is on your résumé early. The agent, replays and quality tracking come next. They handle the most private data, so the leak test has to exist first.
 
 *Roadmap (diagram in the planning doc):* Stage A · Launch the lab (phases 1–4) → gate: First launch → Stage B · Add the agent (phases 5–7) → gate: Agent live → Stage C · Prove it, sell it (phases 8–10) → gate: Full launch after 30 days.
 
 ### Two-week sprint
 
-**Revised 29 Oct 2026: about 3 hours a week until the 30 November job-search review.** The two-week break is over, so the table below is the original full-time plan, kept for reference. Until 30 Nov, Agent Lab gets about 3 hours a week so it doesn't crowd out job applications. The 30 Nov target is a small but real first launch, not all of Stage A:
+**Revised Oct 29, 2026: about 3 hours a week until the November 30 job-search review.** The two-week break is over, so the table below is the original full-time plan, kept for reference. Until Nov 30, Agent Lab gets about 3 hours a week so it doesn't crowd out job applications. The Nov 30 target is a small but real first launch, not all of Stage A:
 
 1. Day 0: the 48-hour spikes (SP3 schedules, SP4 Neon) plus SP1 (Gemini tool calling), and the walking skeleton.
 2. Phase 1 (database core) and the Site Doctor half of Phase 2.
@@ -425,7 +425,7 @@ The build runs in ten phases across three stages, and each phase ends with a che
 
 Every phase goes through a pull request with a written description (`.github/pull_request_template.md`) and passing CI, because tests, PRs and CI are the top skill gap in the job search. Lead Scout, replay, quality tracking and Studio wait until after the review. About 13 hours may not fit all four steps; that's a guess until your past build dates are in. If it doesn't fit, ship steps 1–2 with a screenshot instead of a live page.
 
-**Decided 4 Nov 2026:** past builds ran about 2× their estimates (`docs/PREMORTEM.md`, Part 2), so the committed 30 Nov target is steps 1–2, shown with a screenshot and a short write-up. Steps 3–4 (the live /lab and the 2-minute video) are a stretch.
+**Decided Nov 4, 2026:** past builds ran about 2× their estimates (`docs/PREMORTEM.md`, Part 2), so the committed Nov 30 target is steps 1–2, shown with a screenshot and a short write-up. Steps 3–4 (the live /lab and the 2-minute video) are a stretch.
 
 You have about 2 weeks off, so the plan runs day by day. Stage A is the must-finish. Stage B is a stretch goal. Stage C mostly waits on real data (4+ weeks of decisions, 30 days of activity), so it runs after you're back at work, at about 3 hours a week.
 
@@ -447,7 +447,7 @@ If day 7 arrives without the first launch, week 2 goes to finishing Stage A. A f
 
 **Stage 0: prove the risky parts (day 0)**
 
-Before Phase 1, run the six throwaway spikes in `docs/SPIKES.md`: Gemini tool calling on the free tier, PageSpeed score variance, GitHub schedule reliability, Neon compute use, tokens per Lead Scout run, and alert delivery. Then build the walking skeleton: one Site Doctor run writes one row, and /lab shows it. Each spike has a pass or fail threshold and says what changes if it fails. Start hand-labelling the eval golden set (`docs/EVALS.md`) this day too, because Lead Scout can't go live until it passes. Sprint durations are provisional until they're recalibrated from your past builds.
+Before Phase 1, run the six throwaway spikes in `docs/SPIKES.md`: Gemini tool calling on the free tier, PageSpeed score variance, GitHub schedule reliability, Neon compute use, tokens per Lead Scout run, and alert delivery. Then build the walking skeleton: one Site Doctor run writes one row, and /lab shows it. Each spike has a pass or fail threshold and says what changes if it fails. Start hand-labeling the eval golden set (`docs/EVALS.md`) this day too, because Lead Scout can't go live until it passes. Sprint durations are provisional until they're recalibrated from your past builds.
 
 **Stage A: launch the lab**
 
@@ -459,7 +459,7 @@ Before Phase 1, run the six throwaway spikes in `docs/SPIKES.md`: Gemini tool ca
    - **Check:** the Vitest leak test passes (no private column name appears in any response), and the response headers show the cache.
 4. **/lab page v1 (F6, F7, F12).** First, set up the React + Vite app in `lab/` and the Vercel build that serves it at `/lab`, and check on a preview deploy that the rest of the site and `/api` still work (ADR-0013). Then: stats strip, floor, site board, ticker, detail panels, all four states, the explainer panel and the Hire me button. Use a placeholder in the replay slot.
    - **Check:** works on a 360px phone, works with the keyboard only, Lighthouse accessibility scores 95 or higher, and a non-technical friend passes the 60-second test.
-   - **First launch:** homepage card, nav link, a CV line, and a 2-minute demo video with a short write-up. The video moves up from phase 10, so recruiters see it sooner.
+   - **First launch:** homepage card, nav link, a résumé line, and a 2-minute demo video with a short write-up. The video moves up from phase 10, so recruiters see it sooner.
 
 **Stage B: add the agent**
 
@@ -477,7 +477,7 @@ Before Phase 1, run the six throwaway spikes in `docs/SPIKES.md`: Gemini tool ca
 9. **Client health reports (F11).** The monthly draft, approval and sending.
    - **Check:** Memory Matters receives one report you approved.
 10. **Full launch.** A security pass against your protocol, a README with the architecture and the agent-versus-script reasoning, the 60-second video, and a written case study.
-    - **Check:** 30 days of daily activity, then the quality numbers and client result go on your CV.
+    - **Check:** 30 days of daily activity, then the quality numbers and client result go on your résumé.
 
 ### Pre-flight checklist
 
@@ -490,7 +490,7 @@ Before Phase 1, run the six throwaway spikes in `docs/SPIKES.md`: Gemini tool ca
 - [ ] Check the three limits only you can see: AI Studio rate limits, PageSpeed quota in Cloud Console, and Healthchecks email on free
 - [ ] Create a feature branch in the site repo. No commits straight to main.
 
-* [ ] Read through Archify's files, then install it per project in the agent-lab repo (`./.claude/skills/`) and note the version in the README. **On hold (4 Nov 2026):** its SkillSpector scan couldn't complete, so phase diagrams use Mermaid until Henry decides, before /lab/how-it-works
+* [ ] Read through Archify's files, then install it per project in the agent-lab repo (`./.claude/skills/`) and note the version in the README. **On hold (Nov 4, 2026):** its SkillSpector scan couldn't complete, so phase diagrams use Mermaid until Henry decides, before /lab/how-it-works
 * [ ] Copy the starter `BUILD_JOURNAL.md` into `docs/` in the agent-lab repo
 * [ ] Set up a GA4 property or data stream for /lab
 
@@ -499,7 +499,7 @@ Before Phase 1, run the six throwaway spikes in `docs/SPIKES.md`: Gemini tool ca
 ### Build journal and diagrams
 
 - **Build journal:** `docs/BUILD_JOURNAL.md` in the agent-lab repo, written for you as a beginner. A starter file comes with this plan, with the glossary, a 24-item safeguards register and an entry template. At the end of every phase, Claude Code adds an entry: what was built, file by file with the key lines and why they're written that way, the alternatives rejected, what broke and how it was fixed, the safeguards added and a 3-question quiz. You write the "In my own words" part and Claude Code checks it.
-- **Phase diagrams:** each phase, Claude Code draws what was built as a Mermaid diagram in `docs/diagrams/phase-N.md`, which GitHub renders. (Changed 4 Nov 2026 from Archify, whose SkillSpector scan couldn't complete. Archify can still be used for the /lab diagrams if Henry approves it before then.)
+- **Phase diagrams:** each phase, Claude Code draws what was built as a Mermaid diagram in `docs/diagrams/phase-N.md`, which GitHub renders. (Changed Nov 4, 2026 from Archify, whose SkillSpector scan couldn't complete. Archify can still be used for the /lab diagrams if Henry approves it before then.)
 - **Diagrams on /lab:** three of them (architecture, the agent loop and the approval flow) go public on a /lab/how-it-works page and are regenerated at each gate. They're snapshots of how the system is built, not live views. The floor and the replay player stay the live part.
 - **Style check:** before relying on Archify publicly, check whether its output can match your dark theme and green accent. If it can't, show the diagrams in a frame styled to match.
 
@@ -549,12 +549,12 @@ You're the sixth member, with three gates: **approve the brief, pick the directi
 
 **Motion sources.** As part of the same skill check, the Designer names where each direction's motion should come from and prompts you to browse for it. It asks for links, rather than browsing these sites by itself, because you choose what fits:
 
-| Source | What it is (checked 18 Oct 2026) | The Designer suggests it when | Rules |
+| Source | What it is (checked Oct 18, 2026) | The Designer suggests it when | Rules |
 | --- | --- | --- | --- |
 | [transitions.dev](https://transitions.dev/) | A library of 43+ UI transitions for web apps in HTML/CSS and React, copy-and-paste, plus a Motion Skill for coding agents. Some transitions are free, some "Pro only" (paid) | A direction needs page, menu, modal or list transitions. It names the moment ("the services list could stagger in") and asks you to pick a transition and paste its link or code | Free transitions only ($0 budget). Check its Terms page for client use before the first client build. Its Motion Skill gets a SkillSpector scan like any skill. Every transition must respect `prefers-reduced-motion` |
 | [animos](https://animos.app/) | Browser-based motion templates (25 listed) that turn your screenshots or videos into MP4 or WebM showcase videos. Not code for websites | Presenting a finished demo: a short showcase video for the pitch, a portfolio post or LinkedIn. It fits the screenshots-and-recording default while preview hosting is undecided (ADR-0009) | Pricing and commercial terms aren't on its homepage; check before using exports in a pitch. Never put a client's unreleased work in a public post |
 
-Two more sources (added 1 Nov 2026). **SiteReel.ai** is a library of website designs with copyable AI prompts; the Designer may suggest you browse it for layout ideas, the same way as Awesome Design.md: borrow structure, never copy a design, and check its terms first (pricing and terms weren't visible). **Anime.js** (MIT, v4) is a lightweight animation library with timelines, scroll-linked animation and SVG effects; the Builder may use it instead of GSAP when a direction's motion is simple, but only one animation library per demo. **React Bits** (reactbits.dev) is a library of animated React components (text effects, backgrounds, cards, micro-interactions) installed as source you own, through the shadcn CLI or by copying; the Designer may suggest one for a direction's signature moment, and the Builder installs it into Next.js demos. Pick the TypeScript + Tailwind variant, check what each component pulls in (some use WebGL), and keep it within the mobile performance and reduced-motion rules. Its license is MIT + Commons Clause: free for commercial use, but read its LICENSE.md before the first client build. It also fits /lab, which is built in React (ADR-0013). If none of these has what a direction needs, the Designer says so and builds the motion itself within the signature-moment rule.
+Two more sources (added Nov 1, 2026). **SiteReel.ai** is a library of website designs with copyable AI prompts; the Designer may suggest you browse it for layout ideas, the same way as Awesome Design.md: borrow structure, never copy a design, and check its terms first (pricing and terms weren't visible). **Anime.js** (MIT, v4) is a lightweight animation library with timelines, scroll-linked animation and SVG effects; the Builder may use it instead of GSAP when a direction's motion is simple, but only one animation library per demo. **React Bits** (reactbits.dev) is a library of animated React components (text effects, backgrounds, cards, micro-interactions) installed as source you own, through the shadcn CLI or by copying; the Designer may suggest one for a direction's signature moment, and the Builder installs it into Next.js demos. Pick the TypeScript + Tailwind variant, check what each component pulls in (some use WebGL), and keep it within the mobile performance and reduced-motion rules. Its license is MIT + Commons Clause: free for commercial use, but read its LICENSE.md before the first client build. It also fits /lab, which is built in React (ADR-0013). If none of these has what a direction needs, the Designer says so and builds the motion itself within the signature-moment rule.
 
 **Neon rule for client builds.** Demos are static and have no database. Any client build that uses Neon follows `docs/playbooks/neon-free-tier.md`. It was written after a client site on the free plan ran out of compute in the middle of the month and stopped taking orders. The Builder follows it while writing code:
 - Public pages rebuild on demand when content changes, with a 1-day safety-net timer, never every few minutes.
@@ -577,7 +577,7 @@ Every demo starts from a page blueprint, so the Designer and Builder never start
 - **Service site** (local or professional service, nonprofit): hero with one promise and one call to action, services, proof (testimonials, numbers, logos), how it works in 3 steps, about, FAQ, contact or booking, location and hours.
 - **Product site** (a product or app): hero with the product shown, 3 key benefits, feature detail, social proof, pricing or "how to buy", FAQ, final call to action.
 
-### Hero layouts (added 1 Nov 2026)
+### Hero layouts (added Nov 1, 2026)
 
 The Designer picks each direction's hero from this menu, chosen for the client's industry and what a visitor needs to see first, not because a layout is popular. Across a demo's 2–3 directions, try at least two different layouts. Each `DESIGN.md` names the layout and gives one line on why it fits.
 
@@ -593,11 +593,11 @@ Ten concrete wireframes for these styles, plus two more styles (Bento and Center
 
 These industry fits are a starting point from design advice Henry collected, not tested rules. The Blueprints still apply: one promise and one call to action in every hero. Any of these can be the demo's signature moment, but it then counts as the one moment and has to keep Lighthouse mobile performance at 90 or above. The Auditor checks the hero at 375, 768 and 1280 px, plus its contrast, and its speed using the page's largest element.
 
-### UX laws (added 1 Nov 2026)
+### UX laws (added Nov 1, 2026)
 
 Every build follows `docs/playbooks/ux-laws.md`: twenty laws such as Hick's, Fitts's, Jakob's and the Doherty Threshold, each turned into a rule and a check. Each DESIGN.md names the 3–5 laws that shaped it most, and the Auditor runs every check before gate 3.
 
-### Color (added 1 Nov 2026)
+### Color (added Nov 1, 2026)
 
 Every direction uses two base colors and one surprise accent, from `docs/playbooks/accent-palettes.md`. It holds Henry's nine approved palettes, why they work (an accent on the other side of the color wheel, opposite in temperature, the brightest color on the page, used sparingly), the contrast results, and the rules the Designer, Builder and Auditor follow.
 
@@ -619,7 +619,7 @@ Showpieces are a third track alongside demos and client builds. These are ambiti
 - **Original concepts, not copies.** Use a fictional brand or one of your own products, never a recreation of the reference sites. That avoids copyright problems and keeps every idea yours. Starting ideas: a 3D landing page for Raeng (your own app), an interactive Ayutthaya heritage map, and a fictional Thai tea or coffee brand with a playful product world.
 - **No Lead Scout, no client gates.** You're the client. The brief is yours, and the only gate is the final review before it goes public.
 - **Its own quality bar.** Showpieces can be heavy, but they still need a loading screen, a simple fallback for phones and for `prefers-reduced-motion`, keyboard access to the main content, and a page that works if WebGL fails. Your UI/UX and performance audits run with a relaxed performance target.
-- **The stack:** Three.js with React Three Fiber (and its helper library drei) for 3D, GSAP for animation, and Blender for 3D models. GSAP is free for commercial use, including all plugins (checked 17 Oct 2026). Three.js, React Three Fiber and drei are open source and Blender is free; confirm each license in its repo before a client build. Bruno Simon teaches his methods in a paid course, Three.js Journey. The free Three.js and React Three Fiber docs are enough to start.
+- **The stack:** Three.js with React Three Fiber (and its helper library drei) for 3D, GSAP for animation, and Blender for 3D models. GSAP is free for commercial use, including all plugins (checked Oct 17, 2026). Three.js, React Three Fiber and drei are open source and Blender is free; confirm each license in its repo before a client build. Bruno Simon teaches his methods in a paid course, Three.js Journey. The free Three.js and React Three Fiber docs are enough to start.
 - **Expect AI to help less here.** Claude Code is weaker at 3D scenes than at standard pages, so showpieces mean more hands-on learning. That makes them a stronger interview story.
 - **Each showpiece ships with a write-up:** the idea, how it's built, one problem you solved and a short screen recording. These become portfolio entries, LinkedIn posts and devlog entries.
 - **Where they live:** a Showpieces section on hju.dev, linked from the homepage. The /lab orientation can be your first small showpiece.
@@ -711,14 +711,14 @@ The likeliest way this project fails isn't technical. It's running out of time, 
 | A client's site looks bad on your portfolio | Visibility per metric, plus trends and a platform note instead of bare red numbers | A client asks about a score |
 | The approval queue piles up during a busy teaching week | A 20-item cap, agents pause when it's full, items expire after 14 days, and the admin summary | The admin page shows 10 or more pending |
 | Testing corrupts live data | A Neon development branch, which preview deploys also use | A test row appears on /lab |
-| The project never reaches recruiters | A post at each gate, and /lab on your CV at first launch | A gate passes without a post |
+| The project never reaches recruiters | A post at each gate, and /lab on your résumé at first launch | A gate passes without a post |
 
 **Pre-mortem additions.** Imagine it's the end of the break and Agent Lab failed. These are the stories that explain it, added to the risks above. The full table, with likelihood, impact and owner, is in `docs/PREMORTEM.md`.
 
 | Risk | Prevention built into the plan | Early warning |
 | --- | --- | --- |
 | Gemini's free tier can't run the tool loop, or its limits are too low | Spikes SP1 and SP5 on Day 0, before any agent code. Fallback: structured JSON output with the code picking the tool, and 5 leads a day | SP1 fails, or AI Studio shows fewer daily requests than a run needs |
-| "Quality" stays anecdotal because the golden set never gets labelled | Labelling starts on Day 0, and the eval gate blocks Lead Scout from going live | Fewer than 20 sites labelled by day 8 |
+| "Quality" stays anecdotal because the golden set never gets labeled | Labeling starts on Day 0, and the eval gate blocks Lead Scout from going live | Fewer than 20 sites labeled by day 8 |
 | The sprint estimate was optimistic | The estimate is recalibrated from your past builds, and the plan uses the pessimistic (P80) figure | Two or more days behind by day 3 |
 | Recruiters don't value what you built | Three recruiter conversations in the first two weeks (`docs/VALIDATION_PLAN.md`), and features ranked by real job postings (`docs/ROLES_MATRIX.md`) | Recruiters ask about years and degrees, never about projects |
 | Your work status is never settled, so the freelance half stalls | Book the lawyer in week 1. The job-hunting half works either way | No lawyer appointment by day 5 |
@@ -727,7 +727,7 @@ The likeliest way this project fails isn't technical. It's running out of time, 
 
 ### Working rules
 
-- **Day plan:** until 30 Nov, about 3 hours a week toward the 30 Nov target (see the revised plan under the sprint). At the end of each day, ship what works and move the rest to a "later" list in the README.
+- **Day plan:** until Nov 30, about 3 hours a week toward the Nov 30 target (see the revised plan under the sprint). At the end of each day, ship what works and move the rest to a "later" list in the README.
 - **Explain it back:** no phase is done until its build journal entry exists and you've written "In my own words". Those entries become your devlog posts and your interview answers.
 - **Picture it:** every phase gets a phase diagram. If you can't explain the diagram out loud, don't move on.
 - **Scope freeze:** no third agent, no new framework, and no paid tool until the full-launch gate.
@@ -736,24 +736,24 @@ The likeliest way this project fails isn't technical. It's running out of time, 
 
 **Keeping yourself employed comes first.** Once freelancing is cleared, your first job isn't client work, it's keeping work coming in. That's measured by the pipeline, not by hours: every working day moves each of the three customer-journey stages forward, and each Friday you check which stage is the constraint (see "How the freelance business is organized" above). Hours are still logged for the build sprint, because that's how the estimate gets corrected, but not for the business.
 
-**Scope until 30 November.** Agent Lab is a portfolio piece for the job search first, so it must not crowd out applications. Studio (Stage D) and Showpieces (Stage E) don't start before the 30 Nov review. Ideas for job-search agents (a weekly posting refresh, a tracker summary, a recruiter-email digest) go on the README's "later" list and need your OK first.
+**Scope until November 30.** Agent Lab is a portfolio piece for the job search first, so it must not crowd out applications. Studio (Stage D) and Showpieces (Stage E) don't start before the Nov 30 review. Ideas for job-search agents (a weekly posting refresh, a tracker summary, a recruiter-email digest) go on the README's "later" list and need your OK first.
 
 ## Open questions
 
-None of these block the plan, but each can change a phase. The limits below were checked against the providers' own pages on 17 October 2026. Anything a provider doesn't publish is marked and has a spike to measure it.
+None of these block the plan, but each can change a phase. The limits below were checked against the providers' own pages on October 17, 2026. Anything a provider doesn't publish is marked and has a spike to measure it.
 
 ### Decisions for you
 
 - **Site repo layout.** This plan assumes hju-dev.vercel.app is your static HTML/CSS/JS site with the chatbot's functions under `/api` in the same repo. If the chatbot backend is a separate Vercel project, the /lab API goes there instead.
 - **Sending domain.** Decided: no custom domain for now, only hju-dev.vercel.app. Reports come to you and you forward them. Buying a domain later would turn on Resend for the digest and reports, and give your portfolio a more professional address. Check registrar prices when you get there; this plan doesn't assume a cost.
 - **Grass Roots Sports.** Its site hasn't launched. Should Site Doctor watch the staging URL, or wait for launch?
-- **Lead Scout markets.** This plan tests 2 or 3 segments at a time across any industry, with nonprofits via Memory Matters referrals as one of them. It holds all pitches until a lawyer confirms your work status. Decided 29 Oct: no cold email for now. Leads come from freelance platforms such as Fiverr, and replies go through the platform (ADR-0012). If cold email is ever turned on, US law (CAN-SPAM) needs your real postal address and an opt-out line, and Canada and much of the EU require consent first.
+- **Lead Scout markets.** This plan tests 2 or 3 segments at a time across any industry, with nonprofits via Memory Matters referrals as one of them. It holds all pitches until a lawyer confirms your work status. Decided Oct 29: no cold email for now. Leads come from freelance platforms such as Fiverr, and replies go through the platform (ADR-0012). If cold email is ever turned on, US law (CAN-SPAM) needs your real postal address and an opt-out line, and Canada and much of the EU require consent first.
 - **Raeng and hju-dev itself.** Should they be on the site board too? They're yours, so no permission is needed, and they guarantee the board is never empty.
 - **The video.** A YouTube unlisted upload or Loom (check Loom's current free limits when you record). Record it at phase 10, once replays exist to show.
 
 ### Limits to check before building
 
-- **GitHub Actions (verified 17 Oct 2026):** free for public repos on standard runners. Schedules can start late under load, especially at the top of the hour, and queued runs can be dropped. Scheduled workflows in a public repo switch off after 60 days with no repo activity, so a commit or manual run each month keeps them alive.
+- **GitHub Actions (verified Oct 17, 2026):** free for public repos on standard runners. Schedules can start late under load, especially at the top of the hour, and queued runs can be dropped. Scheduled workflows in a public repo switch off after 60 days with no repo activity, so a commit or manual run each month keeps them alive.
 - **Vercel Hobby (verified):** cron runs at most once a day, which is why this plan uses GitHub Actions. Hobby is for non-commercial personal use only.
 - **Neon free (verified):** 100 compute-hours and 1 GB per project, scale to zero after 5 minutes. Actual use is measured in Spike SP4.
 - **Gemini free tier (partly unpublished):** Google doesn't publish the free-tier request limits in its docs; they're shown per project in AI Studio. Whether function calling works on the free models is tested in Spike SP1, and tokens per run in SP5. Free-tier inputs may be used to improve Google's products and read by human reviewers, so personal details are stripped before any call.

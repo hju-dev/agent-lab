@@ -4,22 +4,22 @@ Every claim the plan rests on, what the evidence is, and how sure we are. Update
 
 **Verified** = primary source read, or test passed. **Testing** = a spike, test or conversation will settle it, and it's scheduled. **Assumption** = believed but not yet tested; it says what would test it. **Failed → changed** = tested, didn't hold, and the plan changed.
 
-Last updated: 4 November 2026.
+Last updated: November 4, 2026.
 
 | # | Claim | Evidence | Status |
 | --- | --- | --- | --- |
 | 1 | GitHub Actions is free for this repo | GitHub billing docs: free on standard runners for public repos | Verified |
 | 2 | Schedules run roughly on time | GitHub docs say delays and drops happen; size unknown | Testing (SP3) |
 | 3 | Schedules stop after 60 days without activity | GitHub docs | Verified |
-| 4 | Gemini free tier supports function calling for our tools | SP1, 4 Nov 2026: on `gemini-3.5-flash-lite`, 20 of 20 runs made only valid tool calls, none off the list | Verified |
-| 5 | Gemini free limits cover 10 leads a day | AI Studio, 2 Nov 2026: 3.5 Flash Lite allows 500 requests a day against the 90 a day needs (SOURCES) | Verified for limits; tokens per run still Testing (SP5) |
+| 4 | Gemini free tier supports function calling for our tools | SP1, Nov 4, 2026: on `gemini-3.5-flash-lite`, 20 of 20 runs made only valid tool calls, none off the list | Verified |
+| 5 | Gemini free limits cover 10 leads a day | AI Studio, Nov 2, 2026: 3.5 Flash Lite allows 500 requests a day against the 90 a day needs (SOURCES) | Verified for limits; tokens per run still Testing (SP5) |
 | 6 | Free-tier inputs may be used and human-reviewed | Gemini API terms | Verified → S25 added |
 | 7 | Chatbot on free tier may conflict with EEA/UK/Swiss terms | Gemini API terms | Verified (outside scope; flagged) |
-| 8 | PageSpeed quota is 25,000/day | Cloud Console, 2 Nov 2026: 25,000 a day and 30 a minute | Verified |
-| 9 | PageSpeed scores are stable enough to flag drops | SP2, 4 Nov 2026: 4 of 5 sites varied by 10 points or less; one client site varied by 14 | Verified (use each site's own range for S7) |
+| 8 | PageSpeed quota is 25,000/day | Cloud Console, Nov 2, 2026: 25,000 a day and 30 a minute | Verified |
+| 9 | PageSpeed scores are stable enough to flag drops | SP2, Nov 4, 2026: 4 of 5 sites varied by 10 points or less; one client site varied by 14 | Verified (use each site's own range for S7) |
 | 10 | Neon free compute is enough | 100 CU-h per project (verified); our use unknown | Testing (SP4) |
 | 11 | Resend can send without a domain | Resend docs: a verified domain is required | Failed → changed (ADR-0007) |
-| 12 | Healthchecks free sends email alerts | SP6 part 2, 4 Nov 2026: a free-account check went Down and its email arrived | Verified |
+| 12 | Healthchecks free sends email alerts | SP6 part 2, Nov 4, 2026: a free-account check went Down and its email arrived | Verified |
 | 13 | GitHub emails on scheduled-run failure | GitHub notification docs | Verified; delivery Testing (SP6) |
 | 14 | Vercel Hobby is fine for /lab | Fair-use: non-commercial personal use only. /lab is a portfolio page framed as a project | Assumption → keep wording non-commercial; ask Vercel if unsure |
 | 15 | Vercel Hobby is fine for demo previews | Fair-use lists advertising services and paid sites as commercial | Failed → changed (ADR-0009, proposed) |
@@ -35,14 +35,14 @@ Last updated: 4 November 2026.
 | 25 | Lead Scout's drafts are accurate enough to approve | No data yet | Testing (eval gate, EVALS.md) |
 | 26 | The AI grader agrees with Henry | No data yet | Testing (calibration, κ ≥ 0.6) |
 | 27 | Stage A fits in the first week | Judgment estimate only | Assumption → recalibrate from past builds (PREMORTEM Part 2) |
-| 28 | The public role can't read private data | Phase 1 check on the Neon dev branch, 4 Nov 2026: `lab_public` refused on every table, both public views answer (`tests/db/roles.test.ts`) | Verified for the database; API half Testing (Phase 3 leak test) |
+| 28 | The public role can't read private data | Phase 1 check on the Neon dev branch, Nov 4, 2026: `lab_public` refused on every table, both public views answer (`tests/db/roles.test.ts`) | Verified for the database; API half Testing (Phase 3 leak test) |
 | 29 | Hidden page text can't steer the agent | Design (S4, allowlist, S5) | Testing (injection site in eval gate) |
 | 30 | A hand-written loop is a plus in interviews | Udacity posting asks for these skills directly; no hiring manager asked | Assumption → senior dev review |
 
 | 31 | Problem-first pitches get more replies than intro-first pitches | Freelancing advice Henry adopted; no data yet | Assumption → reply rate once pitches are cleared |
 | 32 | Follow-ups that add something new get more replies than "just following up" | Same | Assumption → reply rate per touch |
-| 33 | Spending as much time finding work as delivering keeps work coming | Superseded 18 Oct by Move 3 (track the constraint, not hours) | Replaced → see rows 35–37 |
-| 34 | img2threejs and Awesome Design.md are what they claim | Read both GitHub READMEs on 18 Oct 2026 (licenses: Apache 2.0, MIT) | Verified (behaviour still to test in Phase 11) |
+| 33 | Spending as much time finding work as delivering keeps work coming | Superseded Oct 18 by Move 3 (track the constraint, not hours) | Replaced → see rows 35–37 |
+| 34 | img2threejs and Awesome Design.md are what they claim | Read both GitHub READMEs on Oct 18, 2026 (licenses: Apache 2.0, MIT) | Verified (behavior still to test in Phase 11) |
 
 | 35 | Offers shaped around how a segment decides (who approves, what feels safe) close faster | Jamie Bridle's advice as Henry summarized it; no data yet | Assumption → offer sheets from interviews, then lead → client conversion |
 | 36 | The slowest journey stage is the right place to focus | Same; a working rule | Assumption → does fixing the flagged constraint raise that stage's conversion? |
@@ -56,12 +56,12 @@ Last updated: 4 November 2026.
 
 | 42 | Freelance platforms (e.g. Fiverr) bring enough leads at $0 upfront | Henry's decision; platform fees and rules not yet read | Assumption → read the platform's terms and fees; track the pipeline's stranger → lead stage |
 
-| 43 | Node 20 is still a safe runtime | Node 20 reached end of life 30 Apr 2026 | Failed → changed to Node 24 LTS |
+| 43 | Node 20 is still a safe runtime | Node 20 reached end of life Apr 30, 2026 | Failed → changed to Node 24 LTS |
 | 44 | `.claudeignore` keeps files out of Claude Code | Claude Code docs: it has no effect | Failed → changed to `Read` deny rules |
 | 45 | Supabase free would avoid Neon's compute-hour trap | Pausing rule verified; compute limits only from secondary sources | Assumption → check Supabase's pricing page if SP4 fails |
 
-| 46 | Remote roles are likelier than Bangkok roles for Henry's level | Job-search snapshot 17 Oct: all 89 shortlisted postings remote; 9 Bangkok junior roles with stated pay all below the 60k THB permit floor (the floor itself unverified) | Assumption backed by one snapshot; review 30 Nov |
-| 47 | About 3 hours a week is enough for a first launch by 30 Nov | No data | Assumption → recalibrate from past build dates |
+| 46 | Remote roles are likelier than Bangkok roles for Henry's level | Job-search snapshot Oct 17: all 89 shortlisted postings remote; 9 Bangkok junior roles with stated pay all below the 60k THB permit floor (the floor itself unverified) | Assumption backed by one snapshot; review Nov 30 |
+| 47 | About 3 hours a week is enough for a first launch by Nov 30 | No data | Assumption → recalibrate from past build dates |
 
 | 48 | The Vite build for /lab can be added to the static site's Vercel deploy without breaking the existing pages or `/api` | Not tested | Testing (Phase 4 build check on a preview deploy) |
 
