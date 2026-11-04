@@ -4,7 +4,7 @@ Date: 2026-10-17
 
 ## Status
 
-Accepted, partly superseded. ADR-0011 changed the API (it reads a snapshot from Upstash, with a 60-second cache). ADR-0013 (1 Nov 2026) replaced the frontend choice: /lab is now built in React. The hosting and `/api/lab` function choices here still stand.
+Accepted, partly superseded. ADR-0011 changed the API (it reads a snapshot from Upstash, with a 60-second cache). ADR-0013 (Nov 1, 2026) replaced the frontend choice: /lab is now built in React. The hosting and `/api/lab` function choices here still stand.
 
 ## Context
 

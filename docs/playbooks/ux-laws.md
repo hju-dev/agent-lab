@@ -1,6 +1,6 @@
 # UX laws: the design rules every build follows
 
-**Used by:** Studio's Designer (directions), Builder (code) and Auditor (checks), and /lab. Added 1 November 2026 from Henry's list. Most of these are collected in Jon Yablonski's *Laws of UX* (lawsofux.com). They're well-established rules of thumb from psychology and HCI research, not exact formulas. Where a number is given, it's a starting point to test.
+**Used by:** Studio's Designer (directions), Builder (code) and Auditor (checks), and /lab. Added November 1, 2026 from Henry's list. Most of these are collected in Jon Yablonski's *Laws of UX* (lawsofux.com). They're well-established rules of thumb from psychology and HCI research, not exact formulas. Where a number is given, it's a starting point to test.
 
 Each law has: **what it means** · **the rule for our builds** · **how the Auditor checks it**.
 

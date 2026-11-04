@@ -1,6 +1,6 @@
 # Legal checks: common legal mistakes in quickly built ("vibe-coded") apps
 
-**Used by:** Studio's Strategist (records the facts), Builder (safe defaults) and Auditor (checks, alongside `docs/audits/05-compliance-legal.md`). Also applies to hju-dev and /lab. Added 1 November 2026 from Henry's list, expanded and checked against sources.
+**Used by:** Studio's Strategist (records the facts), Builder (safe defaults) and Auditor (checks, alongside `docs/audits/05-compliance-legal.md`). Also applies to hju-dev and /lab. Added November 1, 2026 from Henry's list, expanded and checked against sources.
 
 **This is not legal advice.** It flags risk so Henry can fix the obvious problems and know what to ask a lawyer. Privacy and consumer law changes fast; every law named here was checked on the date above, and anything marked *verify* needs checking against the official source before relying on it. Which laws apply depends on **where visitors and customers are**, not where Henry is.
 
@@ -30,7 +30,7 @@ Unknown answers are marked `[CONFIRM]` and asked of the client before gate 1.
 - **Builder:**
   - If the brief says children could use it, don't collect any personal data from them without a design approved by Henry and the client.
   - Age-restricted products get an age gate before the content, and an age check at checkout.
-  - Never collect a full date of birth when "Are you 18 or over?" is enough (data minimisation).
+  - Never collect a full date of birth when "Are you 18 or over?" is enough (data minimization).
 - **Auditor:** checks that the age gate shows before restricted content and can't be skipped by going straight to a URL.
 
 ### 2. Google Fonts loaded from Google's servers
@@ -54,7 +54,7 @@ Unknown answers are marked `[CONFIRM]` and asked of the client before gate 1.
 
 ### 4. Waitlist and marketing email with no unsubscribe
 - **Why it matters:**
-  - **US CAN-SPAM:** commercial email needs a working unsubscribe, honoured within 10 business days, plus a valid postal address.
+  - **US CAN-SPAM:** commercial email needs a working unsubscribe, honored within 10 business days, plus a valid postal address.
   - **EU/UK:** marketing email generally needs opt-in consent first.
   - **Gmail and Yahoo (since 2024):** bulk senders must offer one-click unsubscribe and authenticate their domain (SPF, DKIM, DMARC).
   - A waitlist that later sends marketing is marketing email.
@@ -78,7 +78,7 @@ Unknown answers are marked `[CONFIRM]` and asked of the client before gate 1.
   - If there's a free trial, say what it converts to and when.
   - Add a consent checkbox for recurring billing.
   - Send a receipt email that repeats the terms.
-  - Cancelling online must be as easy as signing up.
+  - Canceling online must be as easy as signing up.
   - Use the provider's hosted checkout, so card data never touches the client's server (keeps PCI scope small).
   - Link the refund policy from checkout.
 - **Auditor:** checks each item on the checkout page and in the test receipt.
@@ -118,7 +118,7 @@ Unknown answers are marked `[CONFIRM]` and asked of the client before gate 1.
   - Better still for small sites: skip non-essential cookies altogether, and then no banner is needed.
 - **Auditor:**
   - Loads the page in a fresh browser and fails it if any analytics or pixel request fires before consent.
-  - Clicks Reject and checks nothing fires afterwards.
+  - Clicks Reject and checks nothing fires afterward.
   - Checks the footer link reopens the choice.
 - **hju-dev and /lab:** if GA4 is loaded on them, the same rule applies, because recruiters may visit from the EU. Either add a consent banner with Consent Mode set to denied by default, or switch to a cookieless setup. Decide before /lab launches (on the Later list until then).
 
@@ -128,10 +128,10 @@ Unknown answers are marked `[CONFIRM]` and asked of the client before gate 1.
 | --- | --- | --- | --- |
 | 8 | No privacy policy, or one copied from a template that doesn't match | GDPR, CCPA, Thai PDPA and app stores require an accurate one | Generate it from the brief's data list: what's collected, why, which third parties, how long it's kept, how to request deletion, a contact. The client confirms it; Henry doesn't invent the legal wording |
 | 9 | No terms of service on sites that sell, take accounts or host user content | Sets refunds, liability, acceptable use | A client-approved terms page linked from the footer and checkout |
-| 10 | An AI chatbot that doesn't say it's AI | **EU AI Act Article 50:** people must be told they're talking to an AI system. It applies from 2 August 2026 (*verify which parts are in force*). Also a trust issue everywhere | The chat window says it's an AI, what happens to messages, and offers a human contact. Don't send personal data to an AI provider without saying so in the privacy policy |
+| 10 | An AI chatbot that doesn't say it's AI | **EU AI Act Article 50:** people must be told they're talking to an AI system. It applies from August 2, 2026 (*verify which parts are in force*). Also a trust issue everywhere | The chat window says it's an AI, what happens to messages, and offers a human contact. Don't send personal data to an AI provider without saying so in the privacy policy |
 | 11 | Fake or invented reviews and testimonials | The FTC's 2024 rule bans fake reviews and testimonials, with penalties per violation | The Copywriter never invents them (existing `[CONFIRM]` rule). Real ones only, with permission |
-| 12 | Inaccessible site | US ADA web lawsuits are common. The **European Accessibility Act** has applied to many e-commerce sites since 28 June 2025 (small businesses partly exempt; *verify*) | Already covered: axe-core, keyboard and contrast checks, and an accessibility statement |
-| 13 | Images, fonts or code without a licence | Copyright claims and takedowns | Every asset's licence is noted in the build folder. Stock from licensed sources only. No copying real brands (existing rule) |
+| 12 | Inaccessible site | US ADA web lawsuits are common. The **European Accessibility Act** has applied to many e-commerce sites since June 28, 2025 (small businesses partly exempt; *verify*) | Already covered: axe-core, keyboard and contrast checks, and an accessibility statement |
+| 13 | Images, fonts or code without a license | Copyright claims and takedowns | Every asset's license is noted in the build folder. Stock from licensed sources only. No copying real brands (existing rule) |
 | 14 | Secrets or customer data exposed | Breach notification duties under GDPR (72 hours) and Thai PDPA; liability | Already covered: secrets in environment variables, row-level security, `/security-review` |
 | 15 | No way to delete an account or data | GDPR and PDPA rights to deletion and access | An account deletion option, or a documented email process answered within the legal timeframe |
 | 16 | Contact form sends data with no notice | It's still personal data | A one-line notice under the form linking to the privacy policy; a honeypot or rate limit against spam |

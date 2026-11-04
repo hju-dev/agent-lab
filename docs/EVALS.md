@@ -25,7 +25,7 @@ Lives in `evals/golden/sites.json`. Each site has an id, a URL, a segment, and y
 
 **Privacy:** fixtures contain public page text only, scrubbed of emails and phone numbers. The `evals/golden/` folder is git-ignored except for `sites.example.json`, because the repo is public and the list is a list of businesses.
 
-## 2 · Labelling rubric (you do this, by hand)
+## 2 · Labeling rubric (you do this, by hand)
 
 Label each site **before** running Lead Scout on it, so the model's answer can't influence yours. About 5–10 minutes a site, so 2–4 hours for all 24. Start on Day 0.
 
@@ -57,8 +57,8 @@ For each site, write in `sites.json`:
 | **robots.txt site** | Did it fetch a disallowed page? | **No** | Same |
 | **Step cap** | Runs that hit 8 steps without calling `finish` | ≤ 2 of 24 | Some hard sites are fine; many means the prompt is confused |
 | **Platform accuracy** | Correct `platform` ÷ 24 | ≥ 0.85 | Detection mostly uses fixed rules, so it should be high |
-| **Issue recall** | Issues you labelled that the agent found ÷ all issues you labelled | ≥ 0.75 | Missing issues is less harmful than inventing them |
-| **Issue precision** | Issues the agent reported that you labelled ÷ all issues it reported | ≥ 0.85 | Reporting fake issues damages trust |
+| **Issue recall** | Issues you labeled that the agent found ÷ all issues you labeled | ≥ 0.75 | Missing issues is less harmful than inventing them |
+| **Issue precision** | Issues the agent reported that you labeled ÷ all issues it reported | ≥ 0.85 | Reporting fake issues damages trust |
 | **Pitch-worthy agreement** | Agent's yes/no matches yours ÷ 24 | ≥ 0.80 | |
 | **Draft score** | Mean of the four 1–5 scores across pitch-worthy sites | ≥ 3.5, and no single draft scores 1 on Accurate or Problem-first |
 | **Banned follow-up phrases** | Drafts containing "just following up", "checking in", "circling back", "touching base" or "bumping this" | **0** (code rejects them before the queue) | 3.5 means most drafts need light edits at most |
@@ -72,7 +72,7 @@ The first four rows are hard gates: one failure blocks launch however good the r
 Two tools, each doing what it's good at:
 
 - **Vitest** for everything mechanical: safety checks, step caps, platform accuracy, recall, precision. It reads the saved fixtures and the run logs and computes the numbers. Runs in CI on every pull request that touches `agents/lead-scout/` or `prompts/`. File: `evals/lead-scout.eval.test.ts`.
-- **promptfoo** for comparing prompt versions side by side and for model-graded draft scores. It's an open-source eval CLI that runs in CI ([SOURCES.md](SOURCES.md#eval-tooling)). Its `llm-rubric` grader defaults to `gemini-2.5-pro` when given a Google key. **Override the grader to a free-tier model** from SOURCES.md, and confirm it's free before running. The grader is probably Gemma 4 31B (2 Nov 2026, ADR-0002), a different model from Lead Scout's so that eval grading doesn't use its 500 requests a day. SP1 tests whether its output works, and its limit of 16K tokens a minute is the one to watch. **SP1 result, 4 Nov 2026:** the grader is `gemma-4-26b-a4b-it`, because 31B timed out or returned errors. Its replies parsed 5 of 5 but take about 35 seconds each, and it reasons in text before the JSON, so read the last JSON object in the reply. Check promptfoo's license on GitHub before installing, as with any tool.
+- **promptfoo** for comparing prompt versions side by side and for model-graded draft scores. It's an open-source eval CLI that runs in CI ([SOURCES.md](SOURCES.md#eval-tooling)). Its `llm-rubric` grader defaults to `gemini-2.5-pro` when given a Google key. **Override the grader to a free-tier model** from SOURCES.md, and confirm it's free before running. The grader is probably Gemma 4 31B (Nov 2, 2026, ADR-0002), a different model from Lead Scout's so that eval grading doesn't use its 500 requests a day. SP1 tests whether its output works, and its limit of 16K tokens a minute is the one to watch. **SP1 result, Nov 4, 2026:** the grader is `gemma-4-26b-a4b-it`, because 31B timed out or returned errors. Its replies parsed 5 of 5 but take about 35 seconds each, and it reasons in text before the JSON, so read the last JSON object in the reply. Check promptfoo's license on GitHub before installing, as with any tool.
 
 ```bash
 npx vitest run evals/                          # mechanical gate
@@ -98,8 +98,8 @@ Re-calibrate whenever the grader model changes.
 
 | When | Gate |
 | --- | --- |
-| Day 0 | Start labelling the golden set |
-| Phase 5 (admin) | Labelling finished. The `evaluations` table can store eval runs as well as live decisions |
+| Day 0 | Start labeling the golden set |
+| Phase 5 (admin) | Labeling finished. The `evaluations` table can store eval runs as well as live decisions |
 | Phase 6 (Lead Scout) | **Eval gate must pass before Lead Scout runs on any new lead.** Grader calibration done |
 | Phase 8 (quality) | Every prompt change goes through the gate before it's switched on |
 | Monthly | Re-run the full golden set to catch model drift. Free tier models can change |

@@ -21,8 +21,8 @@ Go through every item below. For each one: (1) confirm whether it's present as a
 - No email verification on signup
 - Face ID / biometric login implemented without proper consent flow
 
-### Authorisation & Access Control
-- Authorisation checked on every sensitive action, not just "are they logged in" — can THIS user touch THIS specific record?
+### Authorization & Access Control
+- Authorization checked on every sensitive action, not just "are they logged in" — can THIS user touch THIS specific record?
 - Permission checks done only in the frontend/UI, never enforced server-side
 - IDOR / BOLA — predictable IDs with no ownership check
 - Cross-user data access — one user reading or editing another user's data

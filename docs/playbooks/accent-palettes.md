@@ -1,6 +1,6 @@
 # Accent palettes: two base colors and one surprise accent
 
-**Used by:** Studio's Designer (proposing directions) and Builder (writing the color tokens). Added 1 November 2026 from design advice Henry collected: "One accent color that catches you off guard."
+**Used by:** Studio's Designer (proposing directions) and Builder (writing the color tokens). Added November 1, 2026 from design advice Henry collected: "One accent color that catches you off guard."
 
 ## 1. The approved combinations
 

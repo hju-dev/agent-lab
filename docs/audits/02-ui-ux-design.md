@@ -40,7 +40,7 @@ Check for presence and quality of each, with placement/design recommendations:
 - Custom 404 page
 - Clear calls-to-action above the fold
 - Internal linking between related content
-- Thank-you page after form submission/enquiry
+- Thank-you page after form submission/inquiry
 - Breadcrumbs
 - Case study section (template/structure)
 - At least 5 FAQs

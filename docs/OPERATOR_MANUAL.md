@@ -24,7 +24,7 @@ This is the document to keep open: it takes you from an empty folder to a runnin
 
 ## Part 1 · Setup, before day 1 (about half a day, plus Day 0)
 
-Do these in order and tick each one off. If a step goes wrong, stop and ask in a Claude chat, pasting the exact error message.
+Do these in order and check each one off. If a step goes wrong, stop and ask in a Claude chat, pasting the exact error message.
 
 ### 1. Accounts and keys
 
@@ -32,7 +32,7 @@ Keep every key in a password manager, never in a note or a chat.
 
 - [ ] **Gemini API key:** make a new key in Google AI Studio, in its own Google Cloud project (`agent-lab`), not the chatbot's. Restrict it to the Gemini API only. While you're there, open aistudio.google.com/rate-limit and write down the free-tier limits for the Flash models (Spike SP1 needs them).
 - [ ] **PageSpeed Insights API key:** in Google Cloud Console, in the same project, enable the PageSpeed Insights API under APIs & Services, then create a second, separate API key under Credentials, restricted to the PageSpeed Insights API only. That makes two keys, each restricted to one API. Check its quota on the Quotas page and write it in `docs/SOURCES.md`.
-- [ ] **Resend:** skip for now. Resend only sends from a domain you own (checked 17 Oct 2026). Your alerts come from GitHub and Healthchecks instead (ADR-0007).
+- [ ] **Resend:** skip for now. Resend only sends from a domain you own (checked Oct 17, 2026). Your alerts come from GitHub and Healthchecks instead (ADR-0007).
 - [ ] **Healthchecks.io:** create a free account and one check called "agent-lab heartbeat". Copy its ping URL. Spike SP6 tests whether its alert emails reach you.
 - [ ] **GA4:** add a data stream for hju-dev.vercel.app, or reuse your existing property.
 - [ ] **Google Search Console:** add hju-dev.vercel.app as a URL-prefix property and verify it with the HTML tag or file method (you can't use DNS on a vercel.app address). Submit the sitemap once the site has one. Free, about 15 minutes.
@@ -64,7 +64,7 @@ Keep every key in a password manager, never in a note or a chat.
 
 ### 5. Skills
 
-Follow `docs/SKILLS_GUIDE.md`. For day 1, you only need **SkillSpector**. Install the rest before Stage D. Archify is on hold (4 Nov 2026): its scan couldn't complete, so phase diagrams use Mermaid until you decide, before /lab/how-it-works.
+Follow `docs/SKILLS_GUIDE.md`. For day 1, you only need **SkillSpector**. Install the rest before Stage D. Archify is on hold (Nov 4, 2026): its scan couldn't complete, so phase diagrams use Mermaid until you decide, before /lab/how-it-works.
 
 - [ ] Install SkillSpector (Python needed) and scan each skill before installing it: `skillspector scan <skill folder or repo> --no-llm`
 - [ ] Install a skill only if its scan has no critical or high findings.
@@ -76,7 +76,7 @@ Follow `docs/SKILLS_GUIDE.md`. For day 1, you only need **SkillSpector**. Instal
 
 - [ ] Run `/status` in Claude Code to see how much plan usage you have.
 - [ ] Make sure no `ANTHROPIC_API_KEY` is set on your computer. On Windows PowerShell, run `echo $env:ANTHROPIC_API_KEY` (on a Mac or Linux, `echo $ANTHROPIC_API_KEY`). It should print nothing.
-- [ ] Run the Day 0 spikes and the walking skeleton (`docs/SPIKES.md`), and start labelling the eval golden set (`docs/EVALS.md`). Start SP3 and SP4 first, since they need 48 hours.
+- [ ] Run the Day 0 spikes and the walking skeleton (`docs/SPIKES.md`), and start labeling the eval golden set (`docs/EVALS.md`). Start SP3 and SP4 first, since they need 48 hours.
 - [ ] Send me the dates of your past builds (`docs/PREMORTEM.md` Part 2) so the sprint estimate can be redone.
 
 ## Part 2 · Every build day
@@ -98,7 +98,7 @@ The same routine every day of the sprint. The sprint table in the PRD says which
    Prompts for specific phases (adapted from generic "act as a senior engineer" prompts, tied to this repo's rules):
    - **Phase 4, each /lab component:** "Follow CLAUDE.md, docs/STACK.md and ADR-0013. Build [component] for /lab in React + TypeScript using the tokens in style.css. Handle the four states (loading, live, stale, error), visible keyboard focus and reduced motion. Render model and database text as text; never use dangerouslySetInnerHTML. No new dependency without asking me. It's done when the Phase 4 checks in docs/DONE_CHECKS.md that cover this component pass."
    - **Phase 10, security pass:** "Follow CLAUDE.md. Run /security-review, then work through docs/audits/01-security.md, my security_protocol.md and every row of docs/THREAT_MODEL.md. Check for secrets in code, logs and the public snapshot; what lab_public can read; admin auth; fetch_page's SSRF rules; prompt injection; GitHub Actions permissions. List each finding with severity, file and line, evidence and fix. Don't fix anything until I've read the list. Finish with every UNMITIGATED threat-model row marked resolved or accepted by me."
-   - **Client code you didn't write** (Big T's, Grass Roots, or a new client's existing site, before touching it): "Follow CLAUDE.md and docs/STACK.md. This is existing client code. Don't change anything yet. First map how it's built: framework, data flow, where secrets and the database are used. Then list problems by severity: security, broken behaviour, performance (use docs/playbooks/neon-free-tier.md if it has a database and docs/playbooks/fast-app-startup.md if it has a login), and maintainability. Give file and line, evidence and the smallest fix for each. End with the three fixes you'd do first and how we'd check each one."
+   - **Client code you didn't write** (Big T's, Grass Roots, or a new client's existing site, before touching it): "Follow CLAUDE.md and docs/STACK.md. This is existing client code. Don't change anything yet. First map how it's built: framework, data flow, where secrets and the database are used. Then list problems by severity: security, broken behavior, performance (use docs/playbooks/neon-free-tier.md if it has a database and docs/playbooks/fast-app-startup.md if it has a login), and maintainability. Give file and line, evidence and the smallest fix for each. End with the three fixes you'd do first and how we'd check each one."
 
    Skipped on purpose: prompts asking Claude to design the whole architecture again (the ADRs already decide it), to "scale to millions" (pushes toward paid infrastructure), to play four agents in one chat (Studio uses real subagents), or to add Docker and Kubernetes (not in the stack).
 3. **Check its plan.** Claude restates the goal and the check. If it's wrong, correct it before any code is written.

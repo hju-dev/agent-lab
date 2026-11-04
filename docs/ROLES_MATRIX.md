@@ -2,19 +2,19 @@
 
 **Question this answers:** does each feature earn its place by proving something a real employer asks for? If no posting asks for it, it's justified by the freelance goal or it's cut or moved down.
 
-**Method:** 10 live postings that a self-taught developer in Thailand could realistically apply to (remote APAC, worldwide, or Bangkok-based), collected 17 October 2026. Requirements are quoted exactly as written on the posting page. Postings expire, so the links may die; the quotes are the record.
+**Method:** 10 live postings that a self-taught developer in Thailand could realistically apply to (remote APAC, worldwide, or Bangkok-based), collected October 17, 2026. Requirements are quoted exactly as written on the posting page. Postings expire, so the links may die; the quotes are the record.
 
-**Limits of this sample:** 10 postings is enough to see patterns, not to measure them. They lean towards support engineering, solutions engineering and AI roles, because that's where junior-friendly remote roles in APAC showed up. Re-run this with 10 new postings at the full-launch gate.
+**Limits of this sample:** 10 postings is enough to see patterns, not to measure them. They lean toward support engineering, solutions engineering and AI roles, because that's where junior-friendly remote roles in APAC showed up. Re-run this with 10 new postings at the full-launch gate.
 
 ## The postings
 
 | # | Role, company | Location (as posted) | Posted / deadline | Link |
 | --- | --- | --- | --- | --- |
 | J1 | Support Engineer (APAC), Supabase | "Any country in APAC timezones" | No date shown | [wfh.team](https://wfh.team/job/12932-support-engineer-apac-supabase) |
-| J2 | Database Support Engineer (APAC), Supabase | "Remote from APAC" | 25 Sep 2026 / 25 Oct 2026 | [jobicy](https://jobicy.com/jobs/154081-database-support-engineer-apac) |
-| J3 | Junior Support Engineer, HeadSpin | "Open to candidates from all countries." | 16 Oct 2026 / 15 Dec 2026 | [himalayas](https://himalayas.app/companies/headspin/jobs/junior-support-engineer) |
-| J4 | Full-stack Engineer (React + Django, AI systems), Spotter Labs | "Open to candidates from all countries." | 16 Oct 2026 / 15 Nov 2026 | [himalayas](https://himalayas.app/companies/spotter-labs/jobs/remote-fullstack-engineer-react-django-ai-systems-2947975802) |
-| J5 | Agentic AI Technical Mentor (contractor), Udacity | Remote, APAC among listed regions | 16 Oct 2026 / 16 Nov 2026 | [jobicy](https://jobicy.com/jobs/150763-agentic-ai-technical-mentor-independent-contractor-us-canada-europe-mena-india-apac-timezones) |
+| J2 | Database Support Engineer (APAC), Supabase | "Remote from APAC" | Sep 25, 2026 / Oct 25, 2026 | [jobicy](https://jobicy.com/jobs/154081-database-support-engineer-apac) |
+| J3 | Junior Support Engineer, HeadSpin | "Open to candidates from all countries." | Oct 16, 2026 / Dec 15, 2026 | [himalayas](https://himalayas.app/companies/headspin/jobs/junior-support-engineer) |
+| J4 | Full-stack Engineer (React + Django, AI systems), Spotter Labs | "Open to candidates from all countries." | Oct 16, 2026 / Nov 15, 2026 | [himalayas](https://himalayas.app/companies/spotter-labs/jobs/remote-fullstack-engineer-react-django-ai-systems-2947975802) |
+| J5 | Agentic AI Technical Mentor (contractor), Udacity | Remote, APAC among listed regions | Oct 16, 2026 / Nov 16, 2026 | [jobicy](https://jobicy.com/jobs/150763-agentic-ai-technical-mentor-independent-contractor-us-canada-europe-mena-india-apac-timezones) |
 | J6 | Technical Support Engineer (APAC), Cenosco | "Thailand" | "Posted 16 days ago" | [dailyremote](https://dailyremote.com/remote-job/technical-support-engineer-apac-5684423) |
 | J7 | Customer Success Engineer, SerpApi | "Remote-first"; contractors outside Austin | No date shown | [serpapi.com](https://serpapi.com/careers/customer-success-engineer) |
 | J8 | AI Solutions Engineer (via Adecco) | "Bangkok" | No date shown | [adecco.com](https://www.adecco.com/en-th/jobs/ai-solutions-engineer-bangkok/jn-102026-212302) |
@@ -29,7 +29,7 @@ Each row is one requirement, quoted exactly. **Proven by** names the feature or 
 | --- | --- | --- | --- |
 | "Proficient in SQL (ideally PostgreSQL). You feel comfortable with complex SQL queries." | J1 | Schema, three roles, RLS, public views, quality aggregates (F8) | None for the junior bar |
 | "You know PostgreSQL deeply—including autovacuum behavior, WAL growth, long-running transactions, table bloat, and other internals." | J2 | Not proven | Deep Postgres internals. Out of scope |
-| "You've handled data migration issues (pg_dump/restore, schema drift, failed migrations) and know how to recover safely." | J2 | Numbered migrations (S21), rebuilding the dev branch from migrations | Recovery from a failed migration isn't practised. Write one up if it happens |
+| "You've handled data migration issues (pg_dump/restore, schema drift, failed migrations) and know how to recover safely." | J2 | Numbered migrations (S21), rebuilding the dev branch from migrations | Recovery from a failed migration isn't practiced. Write one up if it happens |
 | "You have 7+ years in technical support, databases, backend engineering, SRE, or similar roles." | J2 | — | Years. Can't be built |
 | "Skilled in using Linux/Unix operating systems and the command line." | J1 | GitHub Actions runners, scripts run with `tsx`, `psql` | Light |
 | "Experienced working with GitHub Issues and Discussions." | J1 | Public repo, phase issues, PR per phase | None if issues are actually used. **Use them** |
@@ -40,7 +40,7 @@ Each row is one requirement, quoted exactly. **Proven by** names the feature or 
 | "Comfortable designing and building RESTful APIs" | J4 | `/api/lab/state`, `/api/lab/events`, caching, rate limits | None |
 | "Experience working on non-trivial business logic or algorithms (e.g., decision flows, scoring rules, optimization logic)." | J4 | 3-day median and sustained-drop rule (S7), evidence check (S8), eval metrics | None |
 | "Good instincts around performance: understanding query behavior, avoiding obvious pitfalls, and using caching when it counts." | J4 | 30s CDN cache, Neon compute spike SP4, Lighthouse CI | None |
-| "Strong proficiency in React and Material UI." | J4 | /lab is built in React + TypeScript (ADR-0013, decided 1 Nov) | Material UI |
+| "Strong proficiency in React and Material UI." | J4 | /lab is built in React + TypeScript (ADR-0013, decided Nov 1) | Material UI |
 | "Ability to design and implement AI agents with tool use, API integrations, structured outputs, memory, state management, and database interaction" | J5 | Lead Scout (F2): hand-written loop, tool allowlist, zod-validated arguments, `run_steps` | Long-term memory. Out of scope |
 | "Knowledge of AI agent evaluation, including testing, debugging, and improving agent performance" | J5 | Golden set and eval gate (EVALS.md), prompt versions, quality tracking (F8), replay (F9) | None, once the eval gate runs |
 | "Experience designing and implementing prompt chains, role-based prompts, feedback loops, and iterative prompt refinement" | J5 | Prompt versions with before/after numbers (phase 8); Studio's five roles | None |
@@ -95,13 +95,13 @@ Order of build priority when time runs short. The sprint order stays the same wh
 
 **Plan change from this:** F5 (orientation) moves from "must-do in phase 7" to "do only if phase 7 has time left after replay". Replay stays. This is a re-rank, not a cut.
 
-## Re-weighted for Henry's targets (29 Oct 2026)
+## Re-weighted for Henry's targets (Oct 29, 2026)
 
 The job-search session settled Henry's targets: **(1) SDR at a software or AI company, (2) associate solutions or integration engineer, (3) junior front-end developer.** He does not want help-desk work, and product support engineer is optional. Six of the ten postings above are support roles, so the matrix leans the wrong way. Read it like this:
 
 | Target role | What Agent Lab proves | Gap Agent Lab won't close |
 | --- | --- | --- |
-| SDR (software/AI) | Lead Scout's research before outreach, problem-first messages, follow-ups that add something new, and the pipeline/constraint view | Sales basics: an outreach sequence and a discovery call. Practise those outside the Lab |
+| SDR (software/AI) | Lead Scout's research before outreach, problem-first messages, follow-ups that add something new, and the pipeline/constraint view | Sales basics: an outreach sequence and a discovery call. Practice those outside the Lab |
 | Solutions / integration engineer | APIs, integrations, function calling, evals, architecture docs and ADRs, explaining to non-technical people (J5, J8, J9) | Years of experience; Thai for Bangkok-local roles (J8) |
 | Junior front-end | Accessible, tested UI (Playwright, axe, Lighthouse CI), and Studio's Next.js demos later | None for React any more: /lab is built in React (ADR-0013), alongside Raeng and the client Next.js sites |
 

@@ -70,7 +70,7 @@ Status: **Planned** (in the plan, not built yet), **Built** (code and test exist
 | T-L5 | E | Model output is treated as code or HTML somewhere (for example rendered with `innerHTML` in admin) | LLM05 Improper Output Handling; ASVS: output encoding | S34 output only goes to the queue, never executed. **Rendering:** admin and /lab must use `textContent` or escape all model text | **UNMITIGATED** (rendering rule not written yet) → proposed P3 |
 | T-L6 | D | A loop or a huge page burns the free-tier quota or runs for hours | LLM10 Unbounded Consumption | S6 caps, S11 timeouts, S12 bounded retries | Planned |
 | T-L7 | I | System prompt reveals something secret | LLM07 System Prompt Leakage | By design the prompts are public in the repo and contain no secrets or private data. Rule in CLAUDE.md | Accepted (prompts are public on purpose) |
-| T-L8 | T | A compromised npm package or skill changes agent behaviour | LLM03 Supply Chain | S33 lockfile + `npm ci` + Dependabot; SkillSpector scan before any skill | Planned. See T-G2 for Actions |
+| T-L8 | T | A compromised npm package or skill changes agent behavior | LLM03 Supply Chain | S33 lockfile + `npm ci` + Dependabot; SkillSpector scan before any skill | Planned. See T-G2 for Actions |
 | T-L10 | I | A Studio skill plugin sends client images to a third-party service (img2threejs' optional img2glb plugin uses a hosted service) | LLM02, LLM03 | Install img2threejs core only, with `--dry-run` first; never the img2glb plugin with client material | Planned (Studio) |
 | T-L9 | T | Golden-set labels or fixtures are wrong or tampered with, so evals pass bad prompts | LLM04 Data and Model Poisoning (closest fit) | Labels made before runs, fixtures git-ignored but hashed in the eval report | Planned |
 | — | — | Vector store attacks | LLM08 Vector and Embedding Weaknesses | Not applicable: Agent Lab has no vector store | N/A |
@@ -90,7 +90,7 @@ Status: **Planned** (in the plan, not built yet), **Built** (code and test exist
 | ID | STRIDE | Threat | OWASP / ASVS | Safeguard | Status |
 | --- | --- | --- | --- | --- | --- |
 | T-A1 | S, E | Someone with any Clerk account reaches admin routes | ASVS: authentication, authorization | **S29** server-side check of Clerk session **and** `ADMIN_USER_ID` on every admin route; phase 5 check (second account gets 403) | Planned |
-| T-A2 | T | A forged request from another site approves a draft while Henry is signed in (CSRF) | ASVS: session management | Clerk's session handling; state-changing routes accept only POST with a JSON body and check the session token. **Confirm Clerk's CSRF behaviour in its docs during Phase 5** | Planned (needs check) |
+| T-A2 | T | A forged request from another site approves a draft while Henry is signed in (CSRF) | ASVS: session management | Clerk's session handling; state-changing routes accept only POST with a JSON body and check the session token. **Confirm Clerk's CSRF behavior in its docs during Phase 5** | Planned (needs check) |
 | T-A3 | D | Alerts silently stop, so a broken system goes unnoticed | — | S16 heartbeat, GitHub failure emails; Spike SP6 tests delivery | Planned |
 | T-A4 | R | Henry can't tell later who approved or changed a draft, or when | ASVS: logging | Decisions table stores the action, edit size and timestamp. Single admin, so "who" is always Henry | Accepted (one user) |
 | T-A5 | E | Pitches marked "ready to send" before legal sign-off | — | **S30** `pitches_enabled` flag, off by default, enforced in the database and API | Planned |
@@ -113,7 +113,7 @@ Status: **Planned** (in the plan, not built yet), **Built** (code and test exist
 | --- | --- | --- | --- | --- | --- |
 | T-D1 | T | Testing writes junk into live data | — | S18 development branch | Planned |
 | T-D2 | D | Agent Lab and the chatbot share compute hours and starve each other | — | **S28** separate Neon project | Planned (new) |
-| T-D4 | D | Something keeps Neon awake (frequent cache refills, polling, monitors, open connections), the month's compute runs out mid-month and every query fails until the 1st. This happened to a client site in Oct 2026 | ASVS: availability / configuration | **S41** snapshot, **S42** weekly usage check, **S43** static monitor URLs, **S44** 402 handling; playbook audit on client builds | Planned (28 Oct) |
+| T-D4 | D | Something keeps Neon awake (frequent cache refills, polling, monitors, open connections), the month's compute runs out mid-month and every query fails until the 1st. This happened to a client site in Oct 2026 | ASVS: availability / configuration | **S41** snapshot, **S42** weekly usage check, **S43** static monitor URLs, **S44** 402 handling; playbook audit on client builds | Planned (Oct 28) |
 | T-D3 | T | A bad migration damages data and there's no recovery beyond the free plan's 6-hour restore window | ASVS: data protection | S21 migrations only; take a `pg_dump` before each migration on production | Accepted with that habit |
 
 ## Unmitigated threats, with proposed fixes

@@ -11,7 +11,7 @@ Accepted.
 Calling tools one at a time is slow and expensive: the model calls a tool, the full result comes back into the context, then it calls the next one. A long list of MCP tools also fills the context before any work starts.
 
 The fix that's spreading is to let the model write a small program that calls the tools and returns only the result:
-- **Cloudflare's Code Mode** (blog post, 20 Feb 2026) serves its API of over 2,500 endpoints through two tools, `search()` and `execute()`, in about 1,000 tokens instead of an estimated 1.17 million. The code runs in a V8 sandbox with no file system, no environment variables and outside network access off by default.
+- **Cloudflare's Code Mode** (blog post, Feb 20, 2026) serves its API of over 2,500 endpoints through two tools, `search()` and `execute()`, in about 1,000 tokens instead of an estimated 1.17 million. The code runs in a V8 sandbox with no file system, no environment variables and outside network access off by default.
 - **Anthropic's programmatic tool calling** lets code running inside the Claude API's code execution tool call tools that are marked as callable from code (`allowed_callers`).
 - **Claude Code** already loads MCP tool details only when needed (tool search), and it can write and run scripts in the terminal, which gives the same effect.
 
@@ -28,7 +28,7 @@ MCP is still the protocol underneath. This is a change in how tools are used, no
   - read-only by default
   - leave tool search on
   - untrusted content never reaches a step that runs code
-- **Later (after 30 Nov):** move Lead Scout's fixed audit steps into one deterministic `audit_site` step written in code (fetch, PageSpeed, links, SSL, platform), so Gemini only decides what matters and writes the draft. It's on the README's Later list, and it would change the tool allowlist, so it needs its own ADR and the eval gate.
+- **Later (after Nov 30):** move Lead Scout's fixed audit steps into one deterministic `audit_site` step written in code (fetch, PageSpeed, links, SSL, platform), so Gemini only decides what matters and writes the draft. It's on the README's Later list, and it would change the tool allowlist, so it needs its own ADR and the eval gate.
 
 ## Consequences
 
