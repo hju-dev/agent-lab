@@ -2,13 +2,13 @@
 
 This is the document to keep open: it takes you from an empty folder to a running Agent Lab, then shows how to use it day to day. Work through Part 1 once, follow Part 2 every build day, and use Part 3 once things are live. Steps marked **Claude Code** are done for you in a build session. Everything else is yours.
 
-> Source of truth: this file in the repo. The "Operator manual" tab in the claude.ai doc is a mirror.
+> Source of truth: this file in the repo. The claude.ai doc that used to mirror it was archived on Nov 4, 2026.
 
 ## Where everything lives
 
 | What | Where | Used for |
 | --- | --- | --- |
-| The plan | `docs/PRD.md` (mirror: main tab of the claude.ai doc) | What you're building and why |
+| The plan | `docs/PRD.md` | What you're building and why |
 | This manual | `docs/OPERATOR_MANUAL.md` | How to set up and use it |
 | Skills guide | `docs/SKILLS_GUIDE.md` | What to install and how |
 | Index of all docs | `docs/README.md` | What every other file is for |

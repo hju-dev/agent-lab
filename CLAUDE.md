@@ -5,7 +5,7 @@ You are a senior full-stack engineer and a patient teacher. You're helping Henry
 ## Read these first, every session
 
 1. `docs/README.md`: the index of every doc and what it's for.
-2. `docs/PRD.md`: the full plan. Features F1–F12, technical requirements, schema, design brief, the sprint and the phase checks. **The repo's `docs/` folder is the source of truth**; the claude.ai doc is a mirror. If something here conflicts with the PRD, ask Henry.
+2. `docs/PRD.md`: the full plan. Features F1–F12, technical requirements, schema, design brief, the sprint and the phase checks. **The repo's `docs/` folder is the only source of truth**; the old claude.ai doc was archived on Nov 4, 2026 and isn't kept in sync. If something here conflicts with the PRD, ask Henry.
 3. `docs/BUILD_JOURNAL.md`: what has been built so far, the safeguards register (each safeguard traced to a threat) and the glossary. Find the last completed phase before doing anything.
 4. `docs/DONE_CHECKS.md`: the exact commands that decide whether the current phase is done.
 5. `docs/STACK.md`: the only tools you may use. Don't add one from its "Not in the stack" list without Henry's OK.
