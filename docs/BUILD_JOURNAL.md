@@ -271,4 +271,4 @@ Planned: 1 day in the original sprint table. Actual: about 1 hour of Henry's tim
 </details>
 
 **In my own words** (Henry writes this)
-…
+Written during the interview-prep sessions before the 30 Nov review (Henry, 4 Nov 2026).
