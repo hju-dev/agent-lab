@@ -3,6 +3,7 @@
 // Actions logs are public, so this prints the run id and counts only.
 import { neon } from '@neondatabase/serverless'
 import { z } from 'zod'
+import { QUOTA_MESSAGE, isQuotaError } from '../../lib/reliability.ts'
 import { buildSnapshot } from '../../lib/snapshot.ts'
 
 const CHECK_URL = 'https://hju-dev.vercel.app'
@@ -69,8 +70,8 @@ async function main() {
 
 main().catch((err: Error) => {
   // Neon refuses every query once the month's compute runs out. Say so once, plainly, and don't retry.
-  if (/exceeded the quota/i.test(err.message)) {
-    console.error(`Run ${runId}: Neon's free compute for this month has run out. Nothing was written. It resets on the 1st.`)
+  if (isQuotaError(err)) {
+    console.error(`Run ${runId}: ${QUOTA_MESSAGE}`)
   } else {
     console.error(`Run ${runId} failed: ${err.message}`)
   }

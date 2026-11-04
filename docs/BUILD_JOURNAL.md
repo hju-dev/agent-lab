@@ -87,12 +87,12 @@ Every protection against a known problem, the threat it answers (IDs from `docs/
 | S4 | T-L1 | Web pages giving the AI instructions | Strip HTML, cap at 4,000 characters, wrap as data, tool allowlist | | Injection site in the eval gate | Planned |
 | S5 | T-L2 | Agent fetching internal or unrelated addresses | http/https only, private IPs blocked after DNS lookup, max 3 redirects each re-checked, lead's own domain only | | One test per rule | Planned |
 | S6 | T-L6 | Runaway costs or quota | Max 8 steps per lead, 10 leads a day, 40 Gemini calls per run, stop after 5 errors | | Unit test | Planned |
-| S7 | — (reliability) | False alarms from noisy scores | 3-day median, sustained-drop rule; threshold set from Spike SP2 | | Unit test with sample data | Planned |
+| S7 | — (reliability) | False alarms from noisy scores | 3-day median, sustained-drop rule; threshold set from Spike SP2 | `lib/score-drop.ts` | `tests/score-drop.test.ts` | Built and tested (4 Nov); not yet used by Site Doctor |
 | S8 | T-L4 | Pitches with made-up facts | Evidence check: every number and platform name must appear in the tool results | | Unit test; eval gate (0 fabricated) | Planned |
 | S9 | — (reliability) | Two runs overlapping | GitHub Actions `concurrency` group per workflow | | Manual double trigger | Planned |
 | S10 | — (reliability) | Duplicate rows after a retry | Unique keys, insert-or-ignore | | Run twice and compare counts | Planned |
-| S11 | T-L6 | A hung request freezing a run | 10-second timeout per request, 10-minute cap per run | | Test against a slow URL | Planned |
-| S12 | T-L6 | Flaky APIs failing a whole run | Up to 3 retries with increasing waits | | Unit test | Planned |
+| S11 | T-L6 | A hung request freezing a run | 10-second timeout per request, 10-minute cap per run | `lib/reliability.ts` (`fetchWithTimeout`); cap: `timeout-minutes: 10` in each workflow | `tests/reliability.test.ts` (server that never answers) | Built and tested (4 Nov); Site Doctor still sets its timeouts inline |
+| S12 | T-L6 | Flaky APIs failing a whole run | Up to 3 retries with increasing waits | `lib/reliability.ts` (`withRetry`) | `tests/reliability.test.ts` | Built and tested (4 Nov); not yet used by Site Doctor |
 | S13 | T-G1 | Missing or wrong environment variables | zod check at startup with a clear error message | | Run with a key removed | Planned |
 | S14 | — (reliability) | Gemini changing its output format | Pinned model version, zod validation of tool arguments, alert on parse failures | | Malformed-response test | Planned |
 | S15 | T-L6 | Free tier changes | One LLM wrapper file, usage counted per run, alert at 80% of the limits recorded in SP1 | | Monthly check | Planned |
@@ -119,7 +119,7 @@ Every protection against a known problem, the threat it answers (IDs from `docs/
 | S41 | T-D4 | Visitors waking Neon until the month's compute runs out | /lab and the public API read a snapshot in Upstash, published at the end of each run; no public route imports the database client | | Import test; 30-minute no-wake check | Planned (28 Oct) |
 | S42 | T-D4 | Running out of Neon compute without warning | Weekly Neon usage check fails above a 70% projection | | Manual run with a fake allowance | Planned (28 Oct) |
 | S43 | T-D4 | Uptime checks keeping a client's database awake | Database-backed sites are checked on a static URL | | Unit test | Planned (28 Oct) |
-| S44 | T-D4, T-A3 | A quota lockout flooding errors or alerts | 402 "exceeded the quota" caught, shown plainly, reported once, not retried | | Unit test | Planned (28 Oct) |
+| S44 | T-D4, T-A3 | A quota lockout flooding errors or alerts | 402 "exceeded the quota" caught, shown plainly, reported once, not retried | `lib/reliability.ts` (`isQuotaError`, `withRetry`); `agents/site-doctor/index.ts` | `tests/reliability.test.ts` | Built and tested (4 Nov) |
 | S36 | — (quality) | Lazy follow-ups that add nothing ("just following up") | Phrase filter rejects banned phrases before a follow-up reaches the queue; every follow-up must carry a new finding, tip or example | | Unit test per phrase | Planned (18 Oct) |
 | S37 | T-A6 | Pestering businesses, or emailing after an opt-out | At most 2 follow-ups, none after a reply or opt-out; follow-ups held behind `pitches_enabled` | | Unit test | Planned (18 Oct) |
 
