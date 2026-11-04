@@ -425,6 +425,8 @@ The build runs in ten phases across three stages, and each phase ends with a che
 
 Every phase goes through a pull request with a written description (`.github/pull_request_template.md`) and passing CI, because tests, PRs and CI are the top skill gap in the job search. Lead Scout, replay, quality tracking and Studio wait until after the review. About 13 hours may not fit all four steps; that's a guess until your past build dates are in. If it doesn't fit, ship steps 1–2 with a screenshot instead of a live page.
 
+**Decided 4 Nov 2026:** past builds ran about 2× their estimates (`docs/PREMORTEM.md`, Part 2), so the committed 30 Nov target is steps 1–2, shown with a screenshot and a short write-up. Steps 3–4 (the live /lab and the 2-minute video) are a stretch.
+
 You have about 2 weeks off, so the plan runs day by day. Stage A is the must-finish. Stage B is a stretch goal. Stage C mostly waits on real data (4+ weeks of decisions, 30 days of activity), so it runs after you're back at work, at about 3 hours a week.
 
 | Days | Phase | Done when |

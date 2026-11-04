@@ -103,7 +103,7 @@ Studio is the site-building team in the PRD's "Studio" section. It runs locally 
 
 ## Priorities until 30 November 2026
 
-Agent Lab is a portfolio piece for Henry's job search first. About 3 hours a week. The target is the revised plan under the PRD's sprint: Day 0, Phase 1, Site Doctor and a minimal /lab with a 2-minute demo video. Every change goes through a PR with the template filled in and CI passing, because tests, PRs and CI are his top job-search skill gap. Don't start Lead Scout, Studio or Showpieces before the 30 Nov review. Never set up anything aimed at Thai clients.
+Agent Lab is a portfolio piece for Henry's job search first. About 3 hours a week. The committed target (decided 4 Nov 2026, PRD sprint) is Day 0, Phase 1 and Site Doctor, shown with a screenshot; a minimal live /lab and a 2-minute demo video are a stretch. Every change goes through a PR with the template filled in and CI passing, because tests, PRs and CI are his top job-search skill gap. Don't start Lead Scout, Studio or Showpieces before the 30 Nov review. Never set up anything aimed at Thai clients.
 
 ## Before you write code
 
