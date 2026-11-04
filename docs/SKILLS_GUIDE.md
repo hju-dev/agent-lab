@@ -1,6 +1,6 @@
 # Skills and tools guide
 
-> Source of truth: this file in the agent-lab repo. The "Skills and tools guide" tab in the claude.ai doc is a mirror.
+> Source of truth: this file in the agent-lab repo. The claude.ai doc that used to mirror it was archived on Nov 4, 2026.
 
 Of the roughly 45 items on your list, 13 are worth installing or using now, 6 are worth adding later and the rest should be skipped. Several of the "skills" are commands already built into Claude Code. Screen everything with SkillSpector before installing, because a skill is code and instructions that run with your permissions. Research checked on October 16, 2026. The install commands come from each project's docs or from reviews, so confirm them against the official README.
 

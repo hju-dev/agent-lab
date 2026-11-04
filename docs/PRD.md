@@ -2,9 +2,9 @@
 
 Oct 15, 2026 · @Henry
 
-**Source of truth:** the agent-lab repo's `docs/` folder. This doc is a mirror for reading and commenting. If the two ever differ, the repo wins. Every external fact is cited in `docs/SOURCES.md`, and every claim's evidence status is in `docs/EVIDENCE_LEDGER.md`.
+**Source of truth:** the agent-lab repo's `docs/` folder. The claude.ai copy of this plan was archived on Nov 4, 2026 and is no longer updated. Every external fact is cited in `docs/SOURCES.md`, and every claim's evidence status is in `docs/EVIDENCE_LEDGER.md`.
 
-Setting up and using it, step by step: `docs/OPERATOR_MANUAL.md` (mirrored in the Operator manual tab of the planning doc).
+Setting up and using it, step by step: `docs/OPERATOR_MANUAL.md`.
 
 ## Overview
 

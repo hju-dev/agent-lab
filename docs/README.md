@@ -1,6 +1,6 @@
 # Agent Lab docs
 
-**This folder is the source of truth.** The "Agent Lab — PRD & Build Plan" doc on claude.ai is a mirror for reading and commenting. If they differ, this folder wins; re-sync the mirror after changing anything here.
+**This folder is the only source of truth.** The "Agent Lab — PRD & Build Plan" doc on claude.ai was archived on Nov 4, 2026: it stopped being updated on Oct 15, 2026 and is kept for reference only.
 
 Every doc here follows one rule: **replace judgment with evidence, and assumptions with tests.** An outside fact has a source and a date. A claim we can't source yet has a spike, a test or a conversation that will settle it, and it's tracked in the evidence ledger.
 
