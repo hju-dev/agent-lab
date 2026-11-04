@@ -62,7 +62,7 @@ Three builds is a small sample. Treat the result as a better guess, not a measur
 - **Worst: 14× (hju.dev).** It mostly measures scope growth, not speed, so read it as a warning about adding features mid-build rather than as a multiplier.
 - **Pattern:** UI and UX took longest in four of five builds, plus backend and database problems in two. Expect /lab (all UI) and the Phase 1 roles to overrun first.
 - **The 30 Nov target at 2×:** the four steps of the revised plan don't fit in about 13 hours, and Day 0 alone has taken 4 hours so far. Plan to the PRD's fallback, Day 0, Phase 1 and the Site Doctor half of Phase 2 with a screenshot instead of a live /lab, and treat the live page as a stretch.
-- After Phase 1, Agent Lab's own phase times replace this estimate (Part 2, step 6 above).
+- After Stage A, Agent Lab's own phase times replace this estimate, as Part 2 says above.
 
 | Phase | Planned days | × P50 | × P80 | Fits in 14 days at P80? |
 | --- | --- | --- | --- | --- |
