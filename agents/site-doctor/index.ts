@@ -1,14 +1,13 @@
-// Site Doctor, walking-skeleton version: check one URL, record the run, publish the public snapshot, ping the heartbeat.
+// Site Doctor's entry point: check the settings, connect the real database and Upstash, run once, ping the heartbeat.
 // Run locally: node --env-file=.env agents/site-doctor/index.ts
-// Actions logs are public, so this prints the run id and counts only.
+// Actions logs are public, so this prints the run id and counts only (S3).
 import { neon } from '@neondatabase/serverless'
 import { z } from 'zod'
-import { QUOTA_MESSAGE, isQuotaError } from '../../lib/reliability.ts'
-import { buildSnapshot } from '../../lib/snapshot.ts'
+import { QUOTA_MESSAGE, fetchWithTimeout, isQuotaError } from '../../lib/reliability.ts'
+import { runSiteDoctor } from './run.ts'
+import type { Site } from './uptime.ts'
 
-const CHECK_URL = 'https://hju-dev.vercel.app'
-const TIMEOUT_MS = 10_000
-
+// S13: every setting is checked before anything runs, with a plain-English message.
 const env = z
   .object({
     DATABASE_URL_AGENT: z.url({ message: 'DATABASE_URL_AGENT must be the lab_agent connection string' }),
@@ -26,54 +25,57 @@ if (!env.success) {
 }
 const config = env.data
 
-// GitHub's run id plus attempt, so a retried run is recognised as the same run (S10).
+// GitHub's run id plus attempt, so each attempt is its own run row and a repeated save adds nothing (S10).
 const runId = config.GITHUB_RUN_ID ? `gh-${config.GITHUB_RUN_ID}-${config.GITHUB_RUN_ATTEMPT ?? '1'}` : `local-${Date.now()}`
 
-async function main() {
-  const startedAt = new Date()
-  let up = false
-  try {
-    const res = await fetch(CHECK_URL, { method: 'GET', redirect: 'follow', signal: AbortSignal.timeout(TIMEOUT_MS) })
-    up = res.ok
-  } catch {
-    up = false
-  }
-  const finishedAt = new Date()
+const agentDb = neon(config.DATABASE_URL_AGENT)
+const publicDb = neon(config.DATABASE_URL_PUBLIC)
 
-  const agentDb = neon(config.DATABASE_URL_AGENT)
-  await agentDb`
-    insert into lab.runs (id, agent_id, status, started_at, finished_at, public_summary, metrics)
-    values (${runId}, 'site-doctor', 'succeeded', ${startedAt}, ${finishedAt},
-            ${up ? 'Checked 1 site: up' : 'Checked 1 site: down'}, ${JSON.stringify({ sites_checked: 1, sites_up: up ? 1 : 0 })})
-    on conflict (id) do nothing`
-
-  // Built as lab_public from the public view, so only public columns can leave the database.
-  const publicDb = neon(config.DATABASE_URL_PUBLIC)
-  const rows = await publicDb`select * from lab.public_state order by agent_id`
-  const snapshot = buildSnapshot(rows, new Date())
-  const publish = await fetch(config.UPSTASH_REDIS_REST_URL, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${config.UPSTASH_REDIS_REST_TOKEN}` },
-    body: JSON.stringify(['SET', 'lab:snapshot', JSON.stringify(snapshot)]),
-    signal: AbortSignal.timeout(TIMEOUT_MS),
-  })
-  if (!publish.ok) throw new Error(`Upstash returned ${publish.status}`)
-
-  if (config.HEALTHCHECK_URL) {
-    await fetch(config.HEALTHCHECK_URL, { signal: AbortSignal.timeout(TIMEOUT_MS) }).catch(() => console.log('Heartbeat ping failed'))
-  } else {
-    console.log('HEALTHCHECK_URL not set, so no heartbeat (fine for a local run)')
-  }
-
-  console.log(`Run ${runId}: 1 site checked, ${up ? 1 : 0} up, snapshot published with ${snapshot.agents.length} agents`)
-}
-
-main().catch((err: Error) => {
-  // Neon refuses every query once the month's compute runs out. Say so once, plainly, and don't retry.
-  if (isQuotaError(err)) {
-    console.error(`Run ${runId}: ${QUOTA_MESSAGE}`)
-  } else {
-    console.error(`Run ${runId} failed: ${err.message}`)
-  }
-  process.exitCode = 1
+runSiteDoctor({
+  runId,
+  now: () => new Date(),
+  loadSites: async () =>
+    (await agentDb`select id, url, has_database, check_url from lab.sites where active order by id`) as Site[],
+  save: async (run, checks) => {
+    await agentDb.transaction([
+      agentDb`
+        insert into lab.runs (id, agent_id, status, started_at, finished_at, public_summary, metrics)
+        values (${run.id}, 'site-doctor', 'succeeded', ${run.started_at}, ${run.finished_at}, ${run.public_summary}, ${JSON.stringify(run.metrics)})
+        on conflict do nothing`,
+      agentDb`
+        insert into lab.site_checks (site_id, checked_at, is_up, response_ms)
+        select site_id, checked_at, is_up, response_ms
+        from jsonb_to_recordset(${JSON.stringify(checks)}::jsonb)
+          as c(site_id text, checked_at timestamptz, is_up boolean, response_ms integer)
+        on conflict do nothing`,
+      agentDb`
+        insert into lab.events (id, agent_id, run_id, kind, public_text)
+        values (${`${run.id}:1`}, 'site-doctor', ${run.id}, 'uptime', ${run.public_summary})
+        on conflict do nothing`,
+    ])
+  },
+  loadPublicState: async () => (await publicDb`select * from lab.public_state order by agent_id`) as Record<string, unknown>[],
+  publishSnapshot: async (json) => {
+    const res = await fetchWithTimeout(config.UPSTASH_REDIS_REST_URL, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${config.UPSTASH_REDIS_REST_TOKEN}` },
+      body: JSON.stringify(['SET', 'lab:snapshot', json]),
+    })
+    if (!res.ok) throw new Error(`Upstash returned ${res.status}`)
+  },
+  log: console.log,
 })
+  .then(async () => {
+    // S16: the heartbeat tells Healthchecks the run happened. If pings stop, it emails Henry.
+    if (!config.HEALTHCHECK_URL) return console.log('HEALTHCHECK_URL not set, so no heartbeat (fine for a local run)')
+    await fetchWithTimeout(config.HEALTHCHECK_URL).catch(() => console.log('Heartbeat ping failed'))
+  })
+  .catch((err: Error) => {
+    // S44: Neon refuses every query once the month's compute runs out. Say so once, plainly; never retried.
+    // Other errors print their type and Postgres code only: a database message can quote row values,
+    // such as a site id, and Actions logs are public (S3). Run locally to see the full message.
+    const code = (err as { code?: string }).code
+    console.error(isQuotaError(err) ? `Run ${runId}: ${QUOTA_MESSAGE}` : `Run ${runId} failed: ${err.name}${code ? ` (code ${code})` : ''}`)
+    if (!process.env.CI) console.error(err.message)
+    process.exitCode = 1
+  })

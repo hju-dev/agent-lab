@@ -1,8 +1,12 @@
-# Site Doctor, walking-skeleton version. Manual runs only until the SP3 decision sets the schedule.
-# Logs are public: the script prints the run id and counts only.
+# Site Doctor's hourly uptime check (PRD F1, Phase 2). Logs are public: the script prints the run id and counts only.
+# Scheduled runs are skipped until Henry sets the repository variable SITE_DOCTOR_ENABLED to true
+# (Settings → Secrets and variables → Actions → Variables), after production is migrated and seeded.
+# GitHub may start scheduled runs late or skip them (SP3), so this is "about hourly, best effort".
 name: site-doctor
 
 on:
+  schedule:
+    - cron: '37 * * * *' # odd minute (S27), clear of the spike workflows at :17, :23 and :47
   workflow_dispatch:
 
 permissions:
@@ -14,6 +18,7 @@ concurrency:
 
 jobs:
   run:
+    if: github.event_name == 'workflow_dispatch' || vars.SITE_DOCTOR_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

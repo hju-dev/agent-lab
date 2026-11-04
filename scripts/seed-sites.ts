@@ -15,6 +15,8 @@ const Site = z.object({
   active: z.boolean().default(true),
   report_email: z.email().optional(),
   notes: z.string().optional(),
+  has_database: z.boolean().default(true), // S43: checked on a static URL, not the home page
+  check_url: z.url({ protocol: /^https?$/, message: 'check_url must start with http:// or https://' }).optional(),
 })
 const Sites = z.array(Site).min(1)
 
@@ -43,10 +45,11 @@ if (!parsed.success) {
 const sql = `
 with incoming as (
   select * from jsonb_to_recordset(:'sites'::jsonb) as s(
-    id text, name text, url text, is_public boolean, show_live_status boolean, active boolean, report_email text, notes text)
+    id text, name text, url text, is_public boolean, show_live_status boolean, active boolean, report_email text, notes text,
+    has_database boolean, check_url text)
 ), added as (
-  insert into lab.sites (id, name, url, is_public, show_live_status, active, report_email, notes)
-  select id, name, url, is_public, show_live_status, active, report_email, notes from incoming
+  insert into lab.sites (id, name, url, is_public, show_live_status, active, report_email, notes, has_database, check_url)
+  select id, name, url, is_public, show_live_status, active, report_email, notes, has_database, check_url from incoming
   on conflict (id) do nothing
   returning 1
 )
