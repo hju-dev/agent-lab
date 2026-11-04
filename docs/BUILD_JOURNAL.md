@@ -72,6 +72,11 @@ Claude Code adds new terms as they come up. Each definition is one or two plain 
 | CU-hour | Neon's unit of compute time: one compute unit running for one hour. The free plan gives a fixed number per month. |
 | Snapshot | A saved copy of the public data, written once per agent run, so visitors can read it without touching the database. |
 | Mom Test | A way of interviewing people about their past behaviour rather than asking if they like your idea, so they can't just be polite. |
+| Grant | Permission for a role to use a table or view at all (read, insert, update). No grant means "permission denied" before RLS is even checked. |
+| Policy | An RLS rule saying which rows a role may see or change. With RLS on, a role needs a grant *and* a matching policy. |
+| Seed | Putting starting data into a database, such as Henry's list of sites. |
+| Service container | A throwaway program, such as a Postgres database, that GitHub Actions starts next to a CI job and deletes when the job ends. |
+| Line endings (`\n` vs `\r\n`) | Linux and macOS end each line of text with one hidden character; Windows uses two. Code that splits text into lines has to handle both. |
 
 ---
 
@@ -189,6 +194,81 @@ Agent Lab is two AI workers plus a public page that shows them working. Site Doc
 **Evidence, not guesses (17 Oct 2026):** every outside fact the plan depends on was checked against the provider's own page (`docs/SOURCES.md`). Two assumptions failed and changed the plan: Resend needs a domain I own, and Vercel's free plan can't host commercial demo previews. Anything still unproven is a spike (`docs/SPIKES.md`), an eval (`docs/EVALS.md`) or a conversation (`docs/VALIDATION_PLAN.md`), and its status is in `docs/EVIDENCE_LEDGER.md`.
 
 **Full plan:** `docs/PRD.md`, with decisions in `docs/adr/` and the index in `docs/README.md`.
+
+**In my own words** (Henry writes this)
+…
+
+---
+
+### Phase 1: Database core (4 November 2026)
+
+**What we built**
+The database now has its core tables: `agents` and `runs` from migration 001, plus `sites`, `site_checks` and `events` from migration 002. Every table has row-level security (RLS) switched on, and the visitor role, `lab_public`, can't read any of them. It can only read two views, `public_state` and `public_events`, which show safe columns only. A test proves this on every pull request, using a throwaway Postgres inside GitHub Actions, and Henry ran the same test once on the Neon dev branch. Henry's sites are on the dev branch, added from a private file so client names never enter the public repo.
+
+**The picture**
+docs/diagrams/phase-1.md (Mermaid)
+
+**File by file**
+- `migrations/002_core_tables.sql`: creates `sites`, `site_checks` and `events`, their permissions, and the `public_events` view.
+  - Key part: `alter table lab.events enable row level security;` then `grant insert on lab.events to lab_agent;` and a matching `create policy ... for insert to lab_agent`. Nothing is granted to `lab_public`.
+  - Why it's written this way: in Postgres a role needs two things to touch a table: a **grant** (may it use this table at all?) and, with RLS on, a **policy** (which rows?). Leaving `lab_public` out of both means it's refused twice over. The view `public_events` runs with its owner's rights, so visitors can read the safe columns without any access to the table underneath.
+  - Keys that stop duplicates (S10): `site_checks` uses `(site_id, checked_at)` as its key, and `events.id` is set by the agent (run id plus a counter), so a retried run can't add the same row twice.
+  - What we didn't do instead, and why: we didn't give agents the PRD's "update own rows" yet. There's no owner column, and nothing needs it until Site Doctor writes in Phase 2. Adding it then comes with its own test. The site board isn't in `public_state` yet either, because it changes the shape of the public snapshot, which belongs to Phase 3.
+- `tests/db/roles.test.ts`: the Phase 1 done check as a test.
+  - Key part: it asks `pg_class` (Postgres's list of tables, readable by every role) for every table in `lab`, then checks each one has `relrowsecurity` on and that `select 1 from lab.<table>` is refused with "permission denied".
+  - Why it's written this way: looping over whatever tables exist means a table added later is checked automatically. Nobody has to remember to add it to the test. It only reads, so it's safe to point at the Neon dev branch.
+  - It runs `psql` itself rather than using a Postgres library for Node. The done check already uses psql, so no new dependency was needed.
+  - Locally it's skipped when `LAB_PUBLIC_URL` isn't set; in CI, a missing URL is an error, so it can never be skipped silently.
+- `scripts/seed-sites.ts` and `scripts/sites.example.json`: add sites to `lab.sites` from `private/sites.json`, which git ignores.
+  - Key part: the whole file goes to Postgres as one psql variable, `:'sites'`, which psql quotes itself, and `on conflict (id) do nothing` skips sites already there.
+  - Why it's written this way: no value from the file is ever pasted into SQL, so a stray quote mark can't change the command. Insert-or-ignore makes it safe to run twice. It prints counts only, never names.
+  - What we didn't do instead, and why: putting the sites in a migration would have put client names and addresses in a public repo.
+- `.github/workflows/ci.yml`: every pull request now starts a throwaway Postgres 18.6 (the same version as Neon), applies the migrations, then runs all the tests against it.
+  - Why it's written this way: CI needs no database secrets and never wakes Neon.
+  - What we didn't do instead, and why: CI connecting to the Neon dev branch would need secrets in CI and would use free compute hours on every PR.
+- `scripts/migrate.ts`: one fix so it works on Windows (see "What broke").
+
+**Decisions**
+| Decision | Alternatives rejected | Why |
+| --- | --- | --- |
+| Test against a throwaway Postgres in CI (Henry's OK, 4 Nov) | The Neon dev branch from CI | No secrets in CI, no Neon compute used |
+| CI on Postgres 18.6 | 16.15 (what this container had) | Neon reports `show server_version` = 18.6 |
+| Seed sites from `private/sites.json` | A seed migration | The repo is public |
+| Public sites: Memory Matters (with live status), Big T's Bakery, Grass Roots Sports (Henry, 4 Nov) | All public, or none | Henry's call; the rest stay private |
+
+**What broke and how we fixed it**
+- The RLS test said no table had RLS on, in this container → a boolean joined onto text reads `true`, not `t` → compare with `'true'`.
+- On Henry's Windows machine, the RLS test listed every table except `sites` → psql on Windows ends lines with `\r\n`, and splitting on `\n` left a hidden `\r`, so the value read `true\r` → split on `/\r?\n/`. `migrate.ts` had the same bug, which would have re-applied 001 on a second run. CI runs on Linux, so only the manual check on Windows could catch this.
+- Health-check noise in CI (`role "root" does not exist`) → `pg_isready` connected without a user name → `pg_isready -U postgres`.
+
+**Safeguards added this phase**
+S1 (database half), S10 (keys and the seed script), S21 (CI rebuilds the database from the migrations on every PR). The register above is updated.
+
+**The check**
+On the Neon dev branch, 4 Nov 2026, from Henry's machine → **PASSED**:
+- `psql "$LAB_PUBLIC_URL" -c 'select 1 from lab.runs limit 1'` → `ERROR: permission denied for table runs`
+- `psql "$LAB_PUBLIC_URL" -c 'select count(*) from lab.public_state'` → `2`
+- `npx vitest run tests/db/roles.test.ts` → 6 passed
+- A second `migrate.ts` run → `No migrations to apply.`
+
+Two deliberate breakages in the throwaway database (RLS off on `sites`; a read grant for `lab_public` on `site_checks`) each made the test fail, so it catches real mistakes.
+
+**Evidence ledger**
+Row 28 ("The public role can't read private data"): Verified for the database (this check). The API half stays Testing until Phase 3's leak test.
+
+**Time**
+Planned: 1 day in the original sprint table. Actual: _Henry to fill in_.
+
+**Quiz**
+1. `lab_public` can read `public_events` but not `events`, even though the view reads from that table. Why does that work?
+2. Why does the role test loop over every table in `pg_class` instead of listing the five table names?
+3. Why do CI's database tests use a throwaway Postgres instead of the Neon dev branch?
+<details><summary>Answers</summary>
+
+1. A view runs with its owner's rights by default. The owner can read `events`, so the view can, but it returns only the columns it selects. `lab_public` is granted the view, not the table.
+2. So any table added later is checked automatically. A hand-written list would silently miss a new table that someone forgot to protect.
+3. CI then needs no database secrets and never wakes Neon, so it costs no compute hours. The Neon dev branch is checked by hand once per phase instead.
+</details>
 
 **In my own words** (Henry writes this)
 …
