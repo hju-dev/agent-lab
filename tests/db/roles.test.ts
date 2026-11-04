@@ -17,7 +17,10 @@ function psql(sql: string) {
   return { ok: r.status === 0, out: r.stdout.trim(), err: r.stderr }
 }
 
-describe.skipIf(!url)('lab_public role (Phase 1, S1)', () => {
+// 30 seconds per test, not Vitest's default 5: against Neon each psql call opens a new connection over
+// the internet, and the first may wait for the database to wake. Only the time limit changes; every
+// assertion is the same (db-check on 4 Nov timed out at 5 s while checking 6 tables).
+describe.skipIf(!url)('lab_public role (Phase 1, S1)', { timeout: 30_000 }, () => {
   // pg_class is readable by every role, so lab_public can list the tables it can't read.
   const tables = () => {
     const r = psql("select c.relname || ':' || c.relrowsecurity from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'lab' and c.relkind in ('r', 'p') order by 1")
