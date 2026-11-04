@@ -4,13 +4,15 @@
     "name": "Example Shop",
     "url": "https://example.com",
     "is_public": true,
-    "show_live_status": true
+    "show_live_status": true,
+    "has_database": false
   },
   {
     "id": "example-private",
     "name": "Example Private Client",
     "url": "https://example.org",
     "report_email": "owner@example.org",
-    "notes": "Not shown on /lab"
+    "notes": "Not shown on /lab",
+    "check_url": "https://example.org/health.txt"
   }
 ]
