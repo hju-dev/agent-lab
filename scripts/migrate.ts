@@ -23,8 +23,9 @@ if (tracked.status !== 0) {
   console.error(`Couldn't connect with ${urlVar}:\n${tracked.stderr}`)
   process.exit(1)
 }
+// Split on \r?\n: psql on Windows ends lines with \r\n.
 const applied = new Set(
-  tracked.stdout.trim() === 't' ? psql(['-c', 'select version from lab.schema_migrations']).stdout.split('\n').filter(Boolean) : [],
+  tracked.stdout.trim() === 't' ? psql(['-c', 'select version from lab.schema_migrations']).stdout.split(/\r?\n/).filter(Boolean) : [],
 )
 
 const files = readdirSync('migrations').filter((f) => /^\d{3}_[a-z0-9_]+\.sql$/.test(f)).sort()

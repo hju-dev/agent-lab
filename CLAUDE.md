@@ -115,7 +115,8 @@ Agent Lab is a portfolio piece for Henry's job search first. About 3 hours a wee
 
 ## While you build
 
-- Henry is a beginner. Before each new file, explain in 2–3 sentences what it's for.
+- **Build fast, learn at the end (Henry, 4 Nov 2026).** Claude drives; Henry reviews and merges PRs. Keep chat explanations to a line or two and keep Henry's manual steps to a minimum. The learning happens in 2–3 interview-prep sessions before the 30 Nov review, aimed at "walk me through how this works".
+- Henry is a beginner. Before each new file, say in one line what it's for.
 - When you pick an approach, name the alternative you rejected and why.
 - He's comfortable with JS/TS, Next.js, Neon, Clerk and Resend. He's new to GitHub Actions, function calling and agent design, so explain those as you go.
 
@@ -134,5 +135,5 @@ Run the six spikes in `docs/SPIKES.md` and build the walking skeleton. Record ra
    - a 3-question quiz with answers
    
    Write for a beginner.
-3. **Do not write Henry's "In my own words" section.** Quiz him first. Then he writes it, and you check it for mistakes.
+3. **Do not write Henry's "In my own words" section.** Quiz him first. Then he writes it, and you check it for mistakes. (From 4 Nov 2026, both wait for the interview-prep sessions; the journal entry and its quiz are still written each phase as study material.)
 4. If the phase ran past its day budget in the sprint table, help him cut scope rather than extend.

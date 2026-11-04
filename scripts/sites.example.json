@@ -1,0 +1,16 @@
+[
+  {
+    "id": "example-shop",
+    "name": "Example Shop",
+    "url": "https://example.com",
+    "is_public": true,
+    "show_live_status": true
+  },
+  {
+    "id": "example-private",
+    "name": "Example Private Client",
+    "url": "https://example.org",
+    "report_email": "owner@example.org",
+    "notes": "Not shown on /lab"
+  }
+]

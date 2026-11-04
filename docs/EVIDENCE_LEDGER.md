@@ -35,7 +35,7 @@ Last updated: 4 November 2026.
 | 25 | Lead Scout's drafts are accurate enough to approve | No data yet | Testing (eval gate, EVALS.md) |
 | 26 | The AI grader agrees with Henry | No data yet | Testing (calibration, κ ≥ 0.6) |
 | 27 | Stage A fits in the first week | Judgment estimate only | Assumption → recalibrate from past builds (PREMORTEM Part 2) |
-| 28 | The public role can't read private data | Design (roles, views) | Testing (Phase 1 and 3 checks) |
+| 28 | The public role can't read private data | Phase 1 check on the Neon dev branch, 4 Nov 2026: `lab_public` refused on every table, both public views answer (`tests/db/roles.test.ts`) | Verified for the database; API half Testing (Phase 3 leak test) |
 | 29 | Hidden page text can't steer the agent | Design (S4, allowlist, S5) | Testing (injection site in eval gate) |
 | 30 | A hand-written loop is a plus in interviews | Udacity posting asks for these skills directly; no hiring manager asked | Assumption → senior dev review |
 
@@ -70,4 +70,4 @@ Last updated: 4 November 2026.
 
 | 51 | A shared Upstash database is enough for Agent Lab and the chatbot | The free plan allowed one database, so they share its monthly commands; combined use unknown | Assumption → check monthly usage |
 
-**Counts today:** Verified 16 · Testing 12 · Assumption 18 · Failed → changed 5. (Rows with two parts are counted by the first status.)
+**Counts today:** Verified 17 · Testing 11 · Assumption 18 · Failed → changed 5. (Rows with two parts are counted by the first status.)
