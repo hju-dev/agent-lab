@@ -37,8 +37,14 @@ insert into lab.events (id, agent_id, run_id, kind) values ('gh-1-1:1', 'site-do
     expect(r.ok, r.err).toBe(true)
   })
 
-  test('cannot read check results or change sites', () => {
-    expect(asAgent('select 1 from lab.site_checks limit 1;').err).toMatch(/permission denied/)
+  // Migration 004: the agent reads its past checks to spot "down twice" and score drops.
+  test('can read past checks', () => {
+    const r = asAgent('select count(*) from lab.site_checks;')
+    expect(r.ok, r.err).toBe(true)
+  })
+
+  test('cannot read events or change sites', () => {
+    expect(asAgent('select 1 from lab.events limit 1;').err).toMatch(/permission denied/)
     expect(asAgent("update lab.sites set name = 'x';").err).toMatch(/permission denied/)
   })
 })

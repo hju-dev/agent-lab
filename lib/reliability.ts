@@ -29,18 +29,19 @@ type RetryOptions = {
   retries?: number // retries after the first try, so 3 means up to 4 tries
   baseDelayMs?: number // waits are base, 2 × base, 4 × base
   sleep?: (ms: number) => Promise<void> // tests pass a fake so they don't really wait
+  shouldRetry?: (err: unknown) => boolean // say no for errors a retry can't fix, such as a bad API key
 }
 
 const realSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms))
 
 // S12: a flaky API gets up to 3 more tries, waiting longer each time, before the run gives up.
 export async function withRetry<T>(fn: () => Promise<T>, options: RetryOptions = {}): Promise<T> {
-  const { retries = 3, baseDelayMs = 1_000, sleep = realSleep } = options
+  const { retries = 3, baseDelayMs = 1_000, sleep = realSleep, shouldRetry = () => true } = options
   for (let attempt = 0; ; attempt++) {
     try {
       return await fn()
     } catch (err) {
-      if (isQuotaError(err) || attempt >= retries) throw err
+      if (isQuotaError(err) || attempt >= retries || !shouldRetry(err)) throw err
       await sleep(baseDelayMs * 2 ** attempt)
     }
   }
