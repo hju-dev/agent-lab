@@ -84,6 +84,8 @@ Several spikes need time to collect data (SP3, SP4). Start those first on Day 0 
 1. A workflow that always fails (`exit 1`), triggered by a schedule you created. Check your inbox.
 2. A Healthchecks check with a 10-minute period and 5-minute grace that's never pinged. Check your inbox.
 
+**Note, 4 Nov 2026, before the re-run:** a check that has never been pinged stays "New" and never goes down, so step 2 as written can't send an alert ([Healthchecks docs](https://healthchecks.io/docs/) define the New state; the down timer counts from the last ping). The first attempt got no email for that reason. The method is now: ping the check once, then never again. It goes down 15 minutes after that ping. The pass rule is unchanged.
+
 **Pass:** both emails arrive within 20 minutes, and neither lands in spam (if one does, add a filter and re-test).
 
 **If it fails:** GitHub's mobile app push notifications for failed runs become the backup. Turn them on in the GitHub app settings and repeat test 1. If Healthchecks email isn't free, use its other free channels if any; otherwise record the gap in the threat model (T-A3) and check /lab/admin daily.
