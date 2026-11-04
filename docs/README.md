@@ -48,7 +48,7 @@ Every doc here follows one rule: **replace judgement with evidence, and assumpti
 | [playbooks/ux-laws.md](playbooks/ux-laws.md) | Twenty UX laws (Hick, Fitts, Jakob, Doherty, Gestalt and more) as rules for our builds, each with a check. Used by Studio's Designer, Builder and Auditor, and by /lab |
 | [playbooks/hero-wireframes.md](playbooks/hero-wireframes.md) | Ten hero wireframes (W1–W10) as text sketches, with what each fits, its phone order and the rules. Used by Studio's Designer and Builder |
 | [playbooks/accent-palettes.md](playbooks/accent-palettes.md) | Henry's nine approved palettes (two base colors + one surprise accent), why they work, contrast results, and the three-color rules. Used by Studio's Designer, Builder and Auditor |
-| `diagrams/` | Archify diagrams, one per phase (created during the build) |
+| `diagrams/` | Mermaid diagrams, one per phase (created during the build) |
 
 ## Later list (ideas parked until after the 30 Nov review)
 

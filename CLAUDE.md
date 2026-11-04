@@ -125,7 +125,7 @@ Run the six spikes in `docs/SPIKES.md` and build the walking skeleton. Record ra
 
 ## After every phase
 
-1. Use the **Archify** skill to draw what this phase built, and save it to `docs/diagrams/phase-N.html`. At a stage gate (after phases 4, 7 and 10), also regenerate the architecture, agent-loop and approval-flow diagrams for /lab/how-it-works.
+1. Draw what this phase built as a Mermaid diagram in `docs/diagrams/phase-N.md` (changed 4 Nov 2026: Archify is on hold because its SkillSpector scan couldn't complete; Henry decides on it before /lab/how-it-works). At a stage gate (after phases 4, 7 and 10), also regenerate the architecture, agent-loop and approval-flow diagrams for /lab/how-it-works.
 2. Add a phase entry to `docs/BUILD_JOURNAL.md` using its template:
    - file by file: what it does, the key lines, why it's written that way, and the alternatives rejected
    - what broke and the fix

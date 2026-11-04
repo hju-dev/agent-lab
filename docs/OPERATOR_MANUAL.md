@@ -64,10 +64,10 @@ Keep every key in a password manager, never in a note or a chat.
 
 ### 5. Skills
 
-Follow `docs/SKILLS_GUIDE.md`. For day 1, you only need **SkillSpector** and **Archify**. Install the rest before Stage D.
+Follow `docs/SKILLS_GUIDE.md`. For day 1, you only need **SkillSpector**. Install the rest before Stage D. Archify is on hold (4 Nov 2026): its scan couldn't complete, so phase diagrams use Mermaid until you decide, before /lab/how-it-works.
 
-- [ ] Install SkillSpector (Python needed) and scan Archify: `skillspector scan https://github.com/tt-a1i/archify --no-llm`
-- [ ] If there are no critical or high findings, install Archify in agent-lab's `.claude/skills/`.
+- [ ] Install SkillSpector (Python needed) and scan each skill before installing it: `skillspector scan <skill folder or repo> --no-llm`
+- [ ] Install a skill only if its scan has no critical or high findings.
 - [ ] Open Claude Code in the repo and run `/doctor`. Fix anything it flags.
 
 ### 6. Final checks, then Day 0
@@ -104,7 +104,7 @@ The same routine every day of the sprint. The sprint table in the PRD says which
 3. **Check its plan.** Claude restates the goal and the check. If it's wrong, correct it before any code is written.
 4. **Build together.** Claude explains each file before writing it. Ask "why?" whenever you don't follow. That's the whole point of the build journal.
 5. **Run the check.** Each phase has commands in `docs/DONE_CHECKS.md`. It isn't done until they pass.
-6. **Close the phase.** Claude draws the Archify diagram, updates the journal and quizzes you. **You** write "In my own words". Update `docs/EVIDENCE_LEDGER.md` if a test settled a claim.
+6. **Close the phase.** Claude draws the phase diagram, updates the journal and quizzes you. **You** write "In my own words". Update `docs/EVIDENCE_LEDGER.md` if a test settled a claim.
 7. **Save your work:**
 
    ```

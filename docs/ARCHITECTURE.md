@@ -1,6 +1,6 @@
 # Architecture (C4 model)
 
-The C4 model draws a system at different zoom levels. **Level 1, context:** the system as one box, and the people and outside systems it talks to. **Level 2, containers:** the separately running pieces inside it (apps, scripts, databases). Levels 3 and 4 (components and code) are left to the Archify phase diagrams in `docs/diagrams/`.
+The C4 model draws a system at different zoom levels. **Level 1, context:** the system as one box, and the people and outside systems it talks to. **Level 2, containers:** the separately running pieces inside it (apps, scripts, databases). Levels 3 and 4 (components and code) are left to the phase diagrams in `docs/diagrams/`.
 
 These use Mermaid's C4 syntax, which GitHub renders. Mermaid marks C4 support as experimental, so if a diagram doesn't render, the tables below each one say the same thing.
 

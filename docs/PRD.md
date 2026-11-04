@@ -488,7 +488,7 @@ Before Phase 1, run the six throwaway spikes in `docs/SPIKES.md`: Gemini tool ca
 - [ ] Check the three limits only you can see: AI Studio rate limits, PageSpeed quota in Cloud Console, and Healthchecks email on free
 - [ ] Create a feature branch in the site repo. No commits straight to main.
 
-* [ ] Read through Archify's files, then install it per project in the agent-lab repo (`./.claude/skills/`) and note the version in the README
+* [ ] Read through Archify's files, then install it per project in the agent-lab repo (`./.claude/skills/`) and note the version in the README. **On hold (4 Nov 2026):** its SkillSpector scan couldn't complete, so phase diagrams use Mermaid until Henry decides, before /lab/how-it-works
 * [ ] Copy the starter `BUILD_JOURNAL.md` into `docs/` in the agent-lab repo
 * [ ] Set up a GA4 property or data stream for /lab
 
@@ -497,7 +497,7 @@ Before Phase 1, run the six throwaway spikes in `docs/SPIKES.md`: Gemini tool ca
 ### Build journal and diagrams
 
 - **Build journal:** `docs/BUILD_JOURNAL.md` in the agent-lab repo, written for you as a beginner. A starter file comes with this plan, with the glossary, a 24-item safeguards register and an entry template. At the end of every phase, Claude Code adds an entry: what was built, file by file with the key lines and why they're written that way, the alternatives rejected, what broke and how it was fixed, the safeguards added and a 3-question quiz. You write the "In my own words" part and Claude Code checks it.
-- **Archify diagrams:** each phase, Claude Code uses the Archify skill to draw what was built and saves it to `docs/diagrams/phase-N.html`. Archify makes self-contained HTML files with the diagram built in.
+- **Phase diagrams:** each phase, Claude Code draws what was built as a Mermaid diagram in `docs/diagrams/phase-N.md`, which GitHub renders. (Changed 4 Nov 2026 from Archify, whose SkillSpector scan couldn't complete. Archify can still be used for the /lab diagrams if Henry approves it before then.)
 - **Diagrams on /lab:** three of them (architecture, the agent loop and the approval flow) go public on a /lab/how-it-works page and are regenerated at each gate. They're snapshots of how the system is built, not live views. The floor and the replay player stay the live part.
 - **Style check:** before relying on Archify publicly, check whether its output can match your dark theme and green accent. If it can't, show the diagrams in a frame styled to match.
 
@@ -699,7 +699,7 @@ The likeliest way this project fails isn't technical. It's running out of time, 
 | Risk | Prevention built into the plan | Early warning |
 | --- | --- | --- |
 | The 2-week break ends before the build does | A day-by-day sprint: Stage A by day 6 is the must-finish, Stage B by day 12 is the stretch goal. An overrun means cutting scope, never extending. No new agents before full launch | Day 7 arrives without the first launch |
-| You can't explain what Claude Code built | Every phase ends with "explain it back": a build journal entry, an Archify diagram and your own summary. You rebuild the agent loop once by hand, without help | You can't answer "why this way?" about a file |
+| You can't explain what Claude Code built | Every phase ends with "explain it back": a build journal entry, a phase diagram and your own summary. You rebuild the agent loop once by hand, without help | You can't answer "why this way?" about a file |
 | /lab looks dead or breaks during an interview | Replay with a static demo-run fallback, a heartbeat monitor and a stale-data badge | Heartbeat email, or a last run more than 2 hours old |
 | False alarms from noisy PageSpeed scores | Flags use a 3-day median and a sustained-drop rule | You reject fixes as "not a real issue" |
 | A pitch states something false about a business | An evidence check before queuing, plus your review of every draft | Rejections tagged "wrong facts" |
@@ -727,7 +727,7 @@ The likeliest way this project fails isn't technical. It's running out of time, 
 
 - **Day plan:** until 30 Nov, about 3 hours a week toward the 30 Nov target (see the revised plan under the sprint). At the end of each day, ship what works and move the rest to a "later" list in the README.
 - **Explain it back:** no phase is done until its build journal entry exists and you've written "In my own words". Those entries become your devlog posts and your interview answers.
-- **Picture it:** every phase gets an Archify diagram. If you can't explain the diagram out loud, don't move on.
+- **Picture it:** every phase gets a phase diagram. If you can't explain the diagram out loud, don't move on.
 - **Scope freeze:** no third agent, no new framework, and no paid tool until the full-launch gate.
 - **Build in public:** post at each gate on LinkedIn (linkedin.com/in/hju-dev) with a replay or diagram link, and mirror it on your site's devlog. Until the lawyer confirms your work status, frame posts as a project you're building and learning from, not as an offer of freelance services.
 - **After the break:** about 3 hours a week. On the first Sunday of each month, spend 30 minutes on free-tier usage, quality numbers, queue size and Dependabot updates.
