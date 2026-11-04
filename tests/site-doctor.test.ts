@@ -19,6 +19,7 @@ function fakeDeps(overrides: Partial<Deps> = {}) {
     runId: 'gh-1-1',
     now,
     loadSites: async () => [privateSite, plainSite],
+    loadLastStatus: async () => ({}),
     save: async (...args) => void saved.push(args),
     loadPublicState: async () => [{ agent_id: 'site-doctor', name: 'Site Doctor', public_summary: 'Checked 2 sites: all up' }],
     publishSnapshot: async (json) => void published.push(json),
@@ -71,6 +72,17 @@ describe('uptime', () => {
 })
 
 describe('a run', () => {
+  test('a site down now and at the previous check is a private finding', async () => {
+    const { deps, saved } = fakeDeps({
+      loadLastStatus: async () => ({ 'seeded-private-bakery': false, 'plain-site': true }),
+      fetch: async () => ({ ok: false }),
+    })
+    await runSiteDoctor(deps)
+    const [run, , findings] = saved[0]!
+    expect(findings).toEqual([{ site_id: 'seeded-private-bakery', rule: 'down_twice', detail: {} }])
+    expect(run.metrics.findings).toBe(1)
+  })
+
   test('saves the run and every check together, once (S10, SP4)', async () => {
     const { deps, saved } = fakeDeps({ fetch: async (url) => ({ ok: !url.includes('plain') }) })
     await runSiteDoctor(deps)
@@ -88,7 +100,7 @@ describe('a run', () => {
     spies.forEach((s) => s.mockRestore())
     const everything = [...lines, ...consoleLines, ...published].join('\n')
     expect(everything).not.toMatch(/seeded-private-bakery|private-lead\.example|plain-site|plain\.example/)
-    expect(lines).toEqual(['Run gh-1-1: 2 sites checked, 2 up, 0 down, snapshot published'])
+    expect(lines).toEqual(['Run gh-1-1: 2 sites checked, 2 up, 0 down, 0 findings, snapshot published'])
   })
 
   test('a quota error from the database fails the run once and is not retried (S44)', async () => {

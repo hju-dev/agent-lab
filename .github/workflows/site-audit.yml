@@ -1,0 +1,38 @@
+# Site Doctor's daily audit (PRD F1, Phase 2): SSL days left, PageSpeed scores and broken homepage links.
+# Logs are public: the script prints the run id and counts only (S3).
+# Skipped until the repository variable SITE_DOCTOR_ENABLED is true, like the hourly check.
+name: site-audit
+
+on:
+  schedule:
+    - cron: '41 22 * * *' # 05:41 ICT, an odd minute (S27)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-audit
+  cancel-in-progress: false
+
+jobs:
+  run:
+    if: github.event_name == 'workflow_dispatch' || vars.SITE_DOCTOR_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Run the daily audit
+        run: node agents/site-doctor/audit.ts
+        env:
+          DATABASE_URL_AGENT: ${{ secrets.DATABASE_URL_AGENT }}
+          DATABASE_URL_PUBLIC: ${{ secrets.DATABASE_URL_PUBLIC }}
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          PAGESPEED_API_KEY: ${{ secrets.PAGESPEED_API_KEY }}
+          HEALTHCHECK_URL: ${{ secrets.HEALTHCHECK_URL }}
