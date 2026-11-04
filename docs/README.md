@@ -8,6 +8,7 @@ Every doc here follows one rule: **replace judgment with evidence, and assumptio
 
 | File | What it's for | Who reads it |
 | --- | --- | --- |
+| [HANDOFF.md](HANDOFF.md) | Where the last session stopped, what's next, and the gotchas. Read first; rewritten at the end of every session | Claude Code, Henry |
 | [OPERATOR_MANUAL.md](OPERATOR_MANUAL.md) | Setup, daily build routine, running it once live | Henry |
 | [PRD.md](PRD.md) | The plan: features, tech, schema, design, sprint, risks | Henry, Claude Code |
 | [BUILD_JOURNAL.md](BUILD_JOURNAL.md) | Glossary, safeguards register, a learning entry per phase | Henry, Claude Code |
