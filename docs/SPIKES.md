@@ -115,8 +115,8 @@ From here, each phase thickens one part of the skeleton instead of building part
 
 | Spike | Date run | Raw result | Pass / Fail | Plan change made |
 | --- | --- | --- | --- | --- |
-| SP1 Tool calling | | | | |
-| SP2 PageSpeed noise | | | | |
+| SP1 Tool calling | 2026-11-04 | `gemini-3.5-flash-lite`: 20 of 20 runs had only valid tool calls, 0 calls off the list, all 6 tools called, 0 runs hit the 8-step cap, 0 text replies; 97 requests, peak 10,131 tokens a minute; daily limit 500 (≥ 180). Grader `gemma-4-26b-a4b-it`: 5 of 5 replies parsed, peak 3,766 tokens a minute. `gemma-4-31b-it` was tried first and timed out or returned 500s; Gemma replies take about 35 seconds | Pass | The grader is Gemma 4 26B, the listed fallback. Its replies take longer than CLAUDE.md's 10-second timeout, so the spike used 60 seconds (open question for Henry) |
+| SP2 PageSpeed noise | 2026-11-04 | Mobile performance, 5 runs each. Client A: 49, 50, 47, 57, 43 (median 49, range 14). Client B: 93, 87, 87, 87, 87 (87, 6). Client C: 95, 99, 99, 99, 99 (99, 4). hju-dev.vercel.app: 100, 100, 99, 100, 100 (100, 1). wikipedia.org: 100 × 5 (100, 0). Client names are in `private/sp2-results.json` | Pass (4 of 5 within 10 points) | None. Note for S7: Client A's own range is 14, so a 10-point drop there is noise. PageSpeed calls take longer than 10 seconds, so the spike used 60 (open question for Henry) |
 | SP3 Schedule delay | | | | |
 | SP4 Neon compute | | | | |
 | SP5 Tokens per run | | | | |

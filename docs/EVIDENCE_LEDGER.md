@@ -4,19 +4,19 @@ Every claim the plan rests on, what the evidence is, and how sure we are. Update
 
 **Verified** = primary source read, or test passed. **Testing** = a spike, test or conversation will settle it, and it's scheduled. **Assumption** = believed but not yet tested; it says what would test it. **Failed → changed** = tested, didn't hold, and the plan changed.
 
-Last updated: 2 November 2026.
+Last updated: 4 November 2026.
 
 | # | Claim | Evidence | Status |
 | --- | --- | --- | --- |
 | 1 | GitHub Actions is free for this repo | GitHub billing docs: free on standard runners for public repos | Verified |
 | 2 | Schedules run roughly on time | GitHub docs say delays and drops happen; size unknown | Testing (SP3) |
 | 3 | Schedules stop after 60 days without activity | GitHub docs | Verified |
-| 4 | Gemini free tier supports function calling for our tools | Docs describe function calling; free-tier support not stated. SP1 tests it on 3.5 Flash Lite | Testing (SP1) |
+| 4 | Gemini free tier supports function calling for our tools | SP1, 4 Nov 2026: on `gemini-3.5-flash-lite`, 20 of 20 runs made only valid tool calls, none off the list | Verified |
 | 5 | Gemini free limits cover 10 leads a day | AI Studio, 2 Nov 2026: 3.5 Flash Lite allows 500 requests a day against the 90 a day needs (SOURCES) | Verified for limits; tokens per run still Testing (SP5) |
 | 6 | Free-tier inputs may be used and human-reviewed | Gemini API terms | Verified → S25 added |
 | 7 | Chatbot on free tier may conflict with EEA/UK/Swiss terms | Gemini API terms | Verified (outside scope; flagged) |
 | 8 | PageSpeed quota is 25,000/day | Cloud Console, 2 Nov 2026: 25,000 a day and 30 a minute | Verified |
-| 9 | PageSpeed scores are stable enough to flag drops | Google says treat as a distribution | Testing (SP2) |
+| 9 | PageSpeed scores are stable enough to flag drops | SP2, 4 Nov 2026: 4 of 5 sites varied by 10 points or less; one client site varied by 14 | Verified (use each site's own range for S7) |
 | 10 | Neon free compute is enough | 100 CU-h per project (verified); our use unknown | Testing (SP4) |
 | 11 | Resend can send without a domain | Resend docs: a verified domain is required | Failed → changed (ADR-0007) |
 | 12 | Healthchecks free sends email alerts | Pricing page silent | Testing (SP6) |
@@ -70,4 +70,4 @@ Last updated: 2 November 2026.
 
 | 51 | A shared Upstash database is enough for Agent Lab and the chatbot | The free plan allowed one database, so they share its monthly commands; combined use unknown | Assumption → check monthly usage |
 
-**Counts today:** Verified 13 · Testing 15 · Assumption 18 · Failed → changed 5. (Rows with two parts are counted by the first status.)
+**Counts today:** Verified 15 · Testing 13 · Assumption 18 · Failed → changed 5. (Rows with two parts are counted by the first status.)

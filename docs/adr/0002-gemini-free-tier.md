@@ -23,6 +23,8 @@ Use a free-tier Gemini Flash model, pinned to an exact version in the wrapper fi
 - **The eval grader runs on a different model,** probably Gemma 4 31B, so eval runs don't use Lead Scout's daily requests. SP1 tests whether its output works for grading. Its limit of 16K tokens a minute is the one to watch.
 - **Agent Lab has its own key in its own Google Cloud project,** not the chatbot's, restricted to the Gemini API only.
 
+**Added 4 Nov 2026: SP1 results.** `gemini-3.5-flash-lite` passed function calling (20 of 20 runs). The grader is `gemma-4-26b-a4b-it`, because `gemma-4-31b-it` timed out or returned errors during SP1.
+
 ## Consequences
 
 - $0, but limits can change without notice. The monthly check and the one-file wrapper make switching cheap.
