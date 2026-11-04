@@ -22,7 +22,7 @@ describe.skipIf(!url)('lab_public role (Phase 1, S1)', () => {
   const tables = () => {
     const r = psql("select c.relname || ':' || c.relrowsecurity from pg_class c join pg_namespace n on n.oid = c.relnamespace where n.nspname = 'lab' and c.relkind in ('r', 'p') order by 1")
     expect(r.ok, r.err).toBe(true)
-    return r.out.split('\n').map((line) => {
+    return r.out.split(/\r?\n/).map((line) => { // psql on Windows ends lines with \r\n
       const [name, rls] = line.split(':')
       return { name: name!, rls: rls === 'true' } // a boolean joined onto text reads 'true', not 't'
     })
