@@ -122,7 +122,7 @@ From here, each phase thickens one part of the skeleton instead of building part
 | SP3 Schedule delay | | | | |
 | SP4 Neon compute | | | | |
 | SP5 Tokens per run | | | | |
-| SP6 Alert delivery | | | | |
+| SP6 Alert delivery | 2026-11-04 (part 2) | Part 2, Healthchecks: the first try got no email because the check was never pinged (see the note above). Re-run with one ping: the check went Down and the email arrived (Henry). Delay and inbox-or-spam to be added. Part 1, GitHub failure email: not run yet | Part 2 arrived; spike open until part 1 | None |
 | Walking skeleton | | | | |
 
 When a spike is done, update its row in [EVIDENCE_LEDGER.md](EVIDENCE_LEDGER.md) from "Testing" to "Verified" or "Failed → changed".

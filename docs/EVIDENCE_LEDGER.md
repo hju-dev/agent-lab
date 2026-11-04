@@ -19,7 +19,7 @@ Last updated: 4 November 2026.
 | 9 | PageSpeed scores are stable enough to flag drops | SP2, 4 Nov 2026: 4 of 5 sites varied by 10 points or less; one client site varied by 14 | Verified (use each site's own range for S7) |
 | 10 | Neon free compute is enough | 100 CU-h per project (verified); our use unknown | Testing (SP4) |
 | 11 | Resend can send without a domain | Resend docs: a verified domain is required | Failed → changed (ADR-0007) |
-| 12 | Healthchecks free sends email alerts | Pricing page silent | Testing (SP6) |
+| 12 | Healthchecks free sends email alerts | SP6 part 2, 4 Nov 2026: a free-account check went Down and its email arrived | Verified |
 | 13 | GitHub emails on scheduled-run failure | GitHub notification docs | Verified; delivery Testing (SP6) |
 | 14 | Vercel Hobby is fine for /lab | Fair-use: non-commercial personal use only. /lab is a portfolio page framed as a project | Assumption → keep wording non-commercial; ask Vercel if unsure |
 | 15 | Vercel Hobby is fine for demo previews | Fair-use lists advertising services and paid sites as commercial | Failed → changed (ADR-0009, proposed) |
@@ -70,4 +70,4 @@ Last updated: 4 November 2026.
 
 | 51 | A shared Upstash database is enough for Agent Lab and the chatbot | The free plan allowed one database, so they share its monthly commands; combined use unknown | Assumption → check monthly usage |
 
-**Counts today:** Verified 15 · Testing 13 · Assumption 18 · Failed → changed 5. (Rows with two parts are counted by the first status.)
+**Counts today:** Verified 16 · Testing 12 · Assumption 18 · Failed → changed 5. (Rows with two parts are counted by the first status.)
