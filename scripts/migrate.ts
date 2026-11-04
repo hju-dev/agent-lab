@@ -4,6 +4,7 @@
 // so a migration can't reach production by accident.
 import { spawnSync } from 'node:child_process'
 import { readdirSync } from 'node:fs'
+import { rolePasswordProblems } from '../lib/role-passwords.ts'
 
 const urlVar = process.argv[2]
 const url = urlVar ? process.env[urlVar] : undefined
@@ -31,6 +32,15 @@ const applied = new Set(
 const files = readdirSync('migrations').filter((f) => /^\d{3}_[a-z0-9_]+\.sql$/.test(f)).sort()
 const pending = files.filter((f) => !applied.has(f.slice(0, 3)))
 if (pending.length === 0) console.log('No migrations to apply.')
+
+// 001 creates the roles from the three password variables: check them before psql sees them.
+if (pending.some((f) => f.startsWith('001_'))) {
+  const problems = rolePasswordProblems(process.env)
+  if (problems.length) {
+    console.error(`Nothing was applied. Fix these in your env file first:\n${problems.map((p) => `- ${p}`).join('\n')}`)
+    process.exit(1)
+  }
+}
 
 for (const file of pending) {
   const version = file.slice(0, 3)
