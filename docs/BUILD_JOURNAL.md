@@ -11,7 +11,7 @@
 Each phase entry answers the same questions in the same order:
 
 1. **What we built:** plain English, no jargon.
-2. **The picture:** an Archify diagram of what changed.
+2. **The picture:** a Mermaid diagram of what changed.
 3. **File by file:** what each file does, the important lines, and *why* it's written that way.
 4. **Decisions:** what we chose, what we rejected, and why.
 5. **What broke:** errors we hit and how we fixed them. This section is the most useful one in interviews.
@@ -138,7 +138,7 @@ Copy this template for each phase.
 <3–5 plain sentences.>
 
 **The picture**
-docs/diagrams/phase-N.html (made with Archify)
+docs/diagrams/phase-N.md (Mermaid)
 
 **File by file**
 - `path/to/file.ts`: what it does in one line.

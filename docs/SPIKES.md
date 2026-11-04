@@ -12,14 +12,17 @@ Several spikes need time to collect data (SP3, SP4). Start those first on Day 0 
 
 **Why it's risky:** the whole Lead Scout design depends on it, and Google's docs don't say which free-tier models support function calling ([SOURCES.md](SOURCES.md#gemini-api-lead-scouts-model)).
 
-**Test:** `spikes/sp1-tools.ts`. Declare the real six tools (`fetch_page`, `run_pagespeed`, `check_links`, `check_ssl`, `detect_platform`, `finish`) with their real argument schemas. Send 20 prompts of the shape "Audit https://example-business.com", using a fixed fake tool result for each call. Parse every `functionCall` with the real zod schemas.
+**Test:** `spikes/sp1-tools.ts`, on **Gemini 3.5 Flash Lite**, with calls at least 4.5 seconds apart. Declare the real six tools (`fetch_page`, `run_pagespeed`, `check_links`, `check_ssl`, `detect_platform`, `finish`) with their real argument schemas. Send 20 prompts of the shape "Audit https://example-business.com", using a fixed fake tool result for each call and looping until the model calls `finish` or reaches the 8-step cap. Parse every `functionCall` with the real zod schemas.
 
-**Record:** the exact model id used, how many of the 20 returned a valid tool call, whether the model ever called a tool not on the list, and the limits shown on [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limit) for that model.
+**Grader test:** send 5 sample drafts and the rubric in [EVALS.md](EVALS.md) to **Gemma 4 31B**, asking for a 1–5 score on each of the four criteria as JSON, and parse each reply with zod. This only tests whether the output is usable. Whether the grader can be trusted is settled later by calibration (EVALS section 5).
 
-**Pass:** at least 19 of 20 return a tool call that passes zod, **and** 0 calls to tools not on the list, **and** the free-tier daily request limit is at least 2× what one day needs (10 leads × 8 steps + 10 = 90 requests, so ≥ 180).
+**Record:** the exact model id used, how many of the 20 runs had only valid tool calls, whether the model ever called a tool not on the list, which of the six tools were called, how many runs hit the 8-step cap, and the limits shown on [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limit) for that model. For the grader: its exact model id, how many of the 5 replies parsed, and the tokens per minute at peak.
+
+**Pass:** at least 19 of 20 runs have only tool calls that pass zod, **and** 0 calls to tools not on the list, **and** each of the six tools is called at least once across the 20 runs, **and** the free-tier daily request limit is at least 2× what one day needs (10 leads × 8 steps + 10 = 90 requests, so ≥ 180), **and** all 5 grader replies parse with Gemma's peak under its limit of 16K tokens a minute.
 
 **If it fails:**
-- Invalid calls but some work → try the next free model listed in SOURCES.md and re-run.
+- Invalid calls but some work → try 3.1 Flash Lite, then any other free model listed in SOURCES.md, and re-run.
+- The grader test fails → try Gemma 4 26B. If that fails too, Henry scores drafts by hand (EVALS section 5).
 - No free model works → switch to structured JSON output: the model returns `{ "next_tool": "...", "args": {...} }`, zod validates it, and the code dispatches. The loop, logs and evals stay the same. Record this as an amendment to ADR-0001.
 - Daily limit too low → cut to 5 leads a day (change the S6 cap).
 
@@ -41,7 +44,7 @@ Several spikes need time to collect data (SP3, SP4). Start those first on Day 0 
 
 **Test:** in the agent-lab repo, a workflow `spike-schedule.yml` on `cron: '17,47 * * * *'` that writes the scheduled time and the real start time (`date -u`) to a table or an artifact. Run it for 48 hours. Delete it afterwards.
 
-**Record:** number of runs expected (96) vs started, and the delay of each run.
+**Record:** number of runs expected (96) vs started, and the delay of each run. Then set the final period and grace of the Healthchecks check `agent-lab heartbeat` from these delays, and write them here. Until then it stays at period 1 hour, grace 1 hour.
 
 **Pass:** at least 92 of 96 runs start (≥ 95%), and 95% of them start within 20 minutes of the scheduled time.
 
@@ -53,7 +56,9 @@ Several spikes need time to collect data (SP3, SP4). Start those first on Day 0 
 
 **Test:** in the new Agent Lab Neon project, let SP3's workflow write a row every run for 48 hours, then publish the snapshot. Also run a script that calls the deployed `/api/lab/state` once a minute for 1 hour, to prove visitor traffic never wakes Neon. The awake ratio shouldn't move during that hour.
 
-**Record:** from the Neon API (`docs/playbooks/neon-free-tier.md` section 3.1): `compute_time_seconds` and `active_time_seconds` at the start and after 48 hours, the awake ratio (time awake ÷ time elapsed) and the projected month. Also list every branch and compute, since all of them count against the same allowance.
+**Note, 2 Nov 2026, written before the run:** SP3's workflow fires every 30 minutes and Neon stays awake about 5 minutes after each write ([SOURCES.md](SOURCES.md#neon-database)). Writing on every run would mean at least 5 ÷ 30 = 16.7% awake, failing the 15% rule by arithmetic without measuring the real hourly plan. Henry decided that only the `:17` runs write and publish, which matches production's hourly writes. The pass rule is unchanged. SP3's timing still covers all 96 runs, read from GitHub's run records, because the `:47` runs don't touch the table. Rows go in a throwaway `spike` schema, dropped when the spike ends. The one-hour `/api/lab/state` test runs once the walking skeleton has deployed that endpoint, so SP4 can't pass before then.
+
+**Record:** from the Neon API (`docs/playbooks/neon-free-tier.md` section 3.1, script `spikes/sp4-usage.ts`): `compute_time_seconds` and `active_time_seconds` at the start and after 48 hours, the awake ratio (time awake ÷ time elapsed) and the projected month. Also list every branch and compute, since all of them count against the same allowance.
 
 **Pass:** projected monthly use is ≤ 40 CU-hours **and** the awake ratio is ≤ 15%. The playbook calls under 20 CU-hours healthy and over 70 urgent. Hourly writes are expected to land around 10% awake.
 
@@ -78,6 +83,8 @@ Several spikes need time to collect data (SP3, SP4). Start those first on Day 0 
 **Test:**
 1. A workflow that always fails (`exit 1`), triggered by a schedule you created. Check your inbox.
 2. A Healthchecks check with a 10-minute period and 5-minute grace that's never pinged. Check your inbox.
+
+**Note, 4 Nov 2026, before the re-run:** a check that has never been pinged stays "New" and never goes down, so step 2 as written can't send an alert ([Healthchecks docs](https://healthchecks.io/docs/) define the New state; the down timer counts from the last ping). The first attempt got no email for that reason. The method is now: ping the check once, then never again. It goes down 15 minutes after that ping. The pass rule is unchanged.
 
 **Pass:** both emails arrive within 20 minutes, and neither lands in spam (if one does, add a filter and re-test).
 
@@ -110,12 +117,12 @@ From here, each phase thickens one part of the skeleton instead of building part
 
 | Spike | Date run | Raw result | Pass / Fail | Plan change made |
 | --- | --- | --- | --- | --- |
-| SP1 Tool calling | | | | |
-| SP2 PageSpeed noise | | | | |
+| SP1 Tool calling | 2026-11-04 | `gemini-3.5-flash-lite`: 20 of 20 runs had only valid tool calls, 0 calls off the list, all 6 tools called, 0 runs hit the 8-step cap, 0 text replies; 97 requests, peak 10,131 tokens a minute; daily limit 500 (≥ 180). Grader `gemma-4-26b-a4b-it`: 5 of 5 replies parsed, peak 3,766 tokens a minute. `gemma-4-31b-it` was tried first and timed out or returned 500s; Gemma replies take about 35 seconds | Pass | The grader is Gemma 4 26B, the listed fallback. Its replies take longer than CLAUDE.md's 10-second timeout, so the spike used 60 seconds (open question for Henry) |
+| SP2 PageSpeed noise | 2026-11-04 | Mobile performance, 5 runs each. Client A: 49, 50, 47, 57, 43 (median 49, range 14). Client B: 93, 87, 87, 87, 87 (87, 6). Client C: 95, 99, 99, 99, 99 (99, 4). hju-dev.vercel.app: 100, 100, 99, 100, 100 (100, 1). wikipedia.org: 100 × 5 (100, 0). Client names are in `private/sp2-results.json` | Pass (4 of 5 within 10 points) | None. Note for S7: Client A's own range is 14, so a 10-point drop there is noise. PageSpeed calls take longer than 10 seconds, so the spike used 60 (open question for Henry) |
 | SP3 Schedule delay | | | | |
 | SP4 Neon compute | | | | |
 | SP5 Tokens per run | | | | |
-| SP6 Alert delivery | | | | |
+| SP6 Alert delivery | 2026-11-04 (part 2) | Part 2, Healthchecks: the first try got no email because the check was never pinged (see the note above). Re-run with one ping: the check went Down at 16:09:18 ICT and the email arrived at 16:09 ICT, under a minute later, in the inbox (not spam). Part 1, GitHub failure email: not run yet | Part 2 Pass; spike open until part 1 | None |
 | Walking skeleton | | | | |
 
 When a spike is done, update its row in [EVIDENCE_LEDGER.md](EVIDENCE_LEDGER.md) from "Testing" to "Verified" or "Failed → changed".

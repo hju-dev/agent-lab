@@ -18,12 +18,26 @@ Checked: 17 October 2026.
 | Paid Services are required when making API clients available to users in the EEA, Switzerland or the UK. | Verified | [Gemini API terms](https://ai.google.dev/gemini-api/terms) |
 | Function calling supports parallel and sequential (compositional) calls. Whether every free-tier model supports it is not stated. | Verified / Unpublished | [Function calling](https://ai.google.dev/gemini-api/docs/function-calling) → Spike SP1 |
 
+### Limits shown in AI Studio for Agent Lab's project
+
+Read from [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limit) by Henry on 2 November 2026. These apply to this project and are "not guaranteed", so re-check them monthly. RPM = requests a minute, TPM = tokens a minute, RPD = requests a day.
+
+| Model | RPM | TPM | RPD | Use |
+| --- | --- | --- | --- | --- |
+| Gemini 3.5 Flash Lite | 15 | 250K | 500 | Lead Scout |
+| Gemini 3.1 Flash Lite | 15 | 250K | 500 | Lead Scout's fallback |
+| Gemini 3 Flash, 3.6 Flash, 3.8 Flash, 2.5 Flash | 5 | 250K | 20 | Too low: about 2 leads a day |
+| Gemini 2.5 Flash Lite | 10 | 250K | 20 | Too low |
+| Gemma 4 26B and 31B | 30 | 16K | 14.4K | Probable eval grader (31B), tested in SP1 |
+| Pro models, Gemini 2 Flash, image and video models | 0 | 0 | 0 | Not on the free tier |
+| Search grounding for Gemini 3 and newer | | | 0 | Not used |
+
 ## PageSpeed Insights API (Site Doctor and Lead Scout audits)
 
 | Fact | Status | Source |
 | --- | --- | --- |
 | An API key is recommended for automated queries but not required. | Verified | [Get started](https://developers.google.com/speed/docs/insights/v5/get-started) |
-| Default quota of 25,000 queries a day and 400 per 100 seconds. | Secondary | [Unlighthouse](https://unlighthouse.dev/learn-lighthouse/pagespeed-insights-api/rate-limits), citing Google Cloud Console. Henry confirms in Cloud Console → APIs → Quotas |
+| Quota for Agent Lab's project: 25,000 queries a day and 30 queries a minute. Agent Lab needs about 50 a day, with calls at least 2 seconds apart and a 429 treated as wait and retry. | Verified | Read by Henry in Google Cloud Console → APIs → Quotas, 2 Nov 2026 |
 | Lighthouse performance scores vary between runs; Google recommends treating them as a distribution, not a single number. | Verified | [Performance scoring](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring) → Spike SP2 |
 
 ## GitHub Actions (schedules)
@@ -42,6 +56,7 @@ Checked: 17 October 2026.
 | --- | --- | --- |
 | Free plan: 100 compute-unit hours per project per month and 1 GB of storage per project. | Verified | [Neon pricing](https://neon.com/pricing) |
 | 10 branches per project; scale to zero after 5 minutes idle, which can't be turned off on Free; 6-hour restore window. | Verified | [Neon pricing](https://neon.com/pricing) |
+| Project-scoped API keys have Editor access to one project and can't delete it. Only organization admins can create them, and they belong to the organization that owns the project (checked 2 Nov 2026). | Verified | [Manage API keys](https://neon.com/docs/manage/api-keys) |
 
 ### From Henry's own incident (October 2026)
 
@@ -67,6 +82,8 @@ Checked: 17 October 2026.
 | Resend: "You must add and verify at least one domain" to send; `onboarding@resend.dev` is for testing only. | Verified | [Resend domains](https://resend.com/docs/dashboard/domains/introduction) → ADR-0007 |
 | Healthchecks.io free (Hobbyist): 20 checks, 100 log entries per check. Whether email alerts are included on free isn't stated on the pricing page. | Verified / Unpublished | [Healthchecks pricing](https://healthchecks.io/pricing/) → Spike SP6 |
 | Upstash Redis free: 500K commands a month, 250 MB data, 10 GB bandwidth. The page gives conflicting database counts. | Verified (count unclear) | [Upstash pricing](https://upstash.com/pricing/redis) |
+| Upstash's free plan allowed Henry only one database, so Agent Lab shares the chatbot's (2 Nov 2026). | Observed by Henry | Upstash console |
+| Upstash supports Redis ACL users limited to a key pattern (`ACL SETUSER`, e.g. `~cache:*`). `ACL SETUSER` rejects made-up passwords: the value must come from `ACL GENTOKEN`, and that token also works as the REST token. The Read-only access page's `>somesecurepassword` example was rejected on this database. The docs don't mention plan limits or show a key pattern used over REST (checked 2 Nov 2026). Tested on the shared free database on 3 Nov 2026 with `spikes/upstash-acl-check.ts`: a `lab_agent` user limited to `~lab:*` could set a `lab:` key over REST and was refused (403) for other keys, `DBSIZE` and `ACL WHOAMI`. | Verified; tested on this database | [ACL SETUSER](https://upstash.com/docs/redis/commands/server/acl-setuser), [ACL GENTOKEN](https://upstash.com/docs/redis/commands/server/acl-gentoken), [Read-only access](https://upstash.com/docs/redis/troubleshooting/readonly_connection) |
 | Cloudflare Pages free: 500 builds a month, 100 projects, 20,000 files per site. The limits page doesn't address commercial use. | Verified / Unpublished | [Cloudflare Pages limits](https://developers.cloudflare.com/pages/platform/limits/) |
 
 ## Law and licensing
