@@ -33,7 +33,7 @@ Read these when the phase touches them:
 - **Site Doctor:** a plain scheduled script (no agent loop). Hourly uptime, a daily audit, findings sent to the approval queue, monthly client reports.
 - **Lead Scout:** a real tool-using agent. Gemini function calling inside a hand-written loop.
 - **/lab:** a public page on hju-dev.vercel.app with live status, run replays, quality stats and /lab/how-it-works.
-- **/lab/admin:** private (Clerk, Henry only). The approval queue, quality data, leads and sites.
+- **Private admin ("/lab/admin" in the PRD):** private (Clerk, Henry only). The approval queue, quality data, leads and sites. Built as pages in Henry's existing dashboard (`hju-dev.vercel.app/dashboard`), not a separate app (ADR-0016).
 
 ## Repos
 
