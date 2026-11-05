@@ -1,6 +1,6 @@
 # S42: weekly Neon compute check (docs/playbooks/neon-free-tier.md, section 6). Fails, so GitHub emails Henry,
 # when the month is projected to use over 70% of the free allowance. Calls Neon's management API only,
-# which doesn't wake the database. Logs print the used and projected CU-hours, nothing else.
+# which doesn't wake the database. Logs print the last-active time and the used and projected CU-hours, nothing else.
 name: neon-usage
 
 on:

@@ -1,8 +1,8 @@
 // S42: weekly check of Neon's compute use. Fails (and GitHub emails Henry) when the month is projected
 // to use more than 70% of the free allowance. Uses Neon's management API, which doesn't wake the database.
-// Run: node --env-file=.env scripts/neon-usage.ts. Prints only the used and projected CU-hours.
+// Run: node --env-file=.env scripts/neon-usage.ts. Prints only the last-active time and the used and projected CU-hours.
 import { z } from 'zod'
-import { projectUsage } from '../lib/neon-usage.ts'
+import { lastActive, projectUsage } from '../lib/neon-usage.ts'
 import { fetchWithTimeout } from '../lib/reliability.ts'
 
 const env = z
@@ -29,6 +29,7 @@ if (!res.ok) {
 const { project } = (await res.json()) as { project: Record<string, unknown> }
 const usage = projectUsage(project, ALLOWANCE_CU_HOURS, new Date())
 
+console.log(`Last active: ${lastActive(project, new Date()) ?? 'not reported by Neon'}`)
 console.log(`Used ${usage.usedCuHours.toFixed(1)} CU-hours so far; projected ${usage.projectedCuHours.toFixed(1)} for the month`)
 if (usage.tooHigh) {
   console.error(
