@@ -7,6 +7,7 @@ export type NeonProject = {
   compute_time_seconds?: unknown // CU-weighted seconds used this billing period
   consumption_period_start?: unknown
   consumption_period_end?: unknown
+  compute_last_active_at?: unknown // when any compute in the project was last awake
 }
 
 export function projectUsage(project: NeonProject, allowanceCuHours: number, now: Date) {
@@ -27,4 +28,22 @@ export function projectUsage(project: NeonProject, allowanceCuHours: number, now
     limitCuHours: allowanceCuHours * WARN_SHARE,
     tooHigh: projectedCuHours > allowanceCuHours * WARN_SHARE,
   }
+}
+
+// S41 check: when was the database last awake? Shown in ICT (CLAUDE.md: store UTC, show ICT).
+// Returns null if Neon didn't send the field, so the usage check still runs.
+export function lastActive(project: NeonProject, now: Date) {
+  const at = Date.parse(String(project.compute_last_active_at))
+  if (Number.isNaN(at)) return null
+  const ict = new Date(at).toLocaleString('en-US', {
+    timeZone: 'Asia/Bangkok',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  })
+  const minutesAgo = Math.max(0, Math.round((now.getTime() - at) / 60_000))
+  return `${ict} ICT (${minutesAgo} minutes ago)`
 }

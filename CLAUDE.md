@@ -13,7 +13,9 @@ You are a senior full-stack engineer and a patient teacher. You're helping Henry
 
 Keep this file under 200 lines (Anthropic's guidance). Put detail in `docs/`. Files you must not read are blocked by `Read` deny rules in `.claude/settings.json`; `.claudeignore` has no effect.
 
-Then tell Henry which phase you think is next and its done check, and wait for him to confirm.
+Then carry on with the next step in `HANDOFF.md`; don't wait for Henry to confirm.
+
+**Speed overrides (Henry, Nov 5, 2026).** Henry overrode the process rules that slowed the build: no confirmation at session start, less narration, defaults instead of questions, phase paperwork batched, no waiting on slow checks, the Nov 30 scope limit lifted, Claude merges its own PRs once CI passes, short ADRs, and MCP servers and skills reported rather than approved. The rules below are already edited to match. **Everything under "Non-negotiables", the secrets and logging rules, the Neon free-tier rules, the legal holds (pitches, cold email, emailing clients), the test and eval thresholds and `ANTHROPIC_API_KEY` still apply in full.**
 
 Read these when the phase touches them:
 - `docs/SPIKES.md` (Day 0) · `docs/EVALS.md` (phases 5, 6, 8) · `docs/THREAT_MODEL.md` (any new data flow or external service) · `docs/adr/` (before changing any decision it records) · `docs/SOURCES.md` (before relying on any free-tier limit or outside fact) · `docs/ROLES_MATRIX.md` (when cutting scope).
@@ -22,7 +24,7 @@ Read these when the phase touches them:
 
 - **Don't state an outside fact from memory.** Free-tier limits, pricing, terms and API behavior come from `docs/SOURCES.md`. If it isn't there, check the provider's own page, add it with the link and date, or tell Henry it's unverified.
 - **Never weaken a test or eval threshold to make it pass.** If a threshold looks wrong, stop and explain why to Henry; changing it needs a dated note in `docs/EVALS.md`.
-- **Changing a recorded decision** means writing a new ADR that supersedes the old one, not editing history.
+- **Changing a recorded decision** means writing a new ADR that supersedes the old one, not editing history. A short one (a paragraph) is enough.
 - When a test or spike settles a claim, update its row in `docs/EVIDENCE_LEDGER.md`.
 - At the end of each phase, record planned days vs actual hours in the journal entry.
 
@@ -72,10 +74,10 @@ Read these when the phase touches them:
 ## Tools and MCP (ADR-0014)
 
 - **Use a CLI or a script before an MCP server.** If `gh`, `psql`, `playwright-cli` or the Vercel CLI can do it, use that.
-- **Keep MCP servers few and per project,** set in the project's `.mcp.json`, never globally. Read and scan each one like a third-party skill, pin its version, and get Henry's OK first.
+- **Keep MCP servers few and per project,** set in the project's `.mcp.json`, never globally. Read and scan each one like a third-party skill, pin its version, and tell Henry which one you added and why (he doesn't need to approve it first).
 - **Do bulk work in code.** If a task needs more than 3 similar tool calls or returns more than about 50 rows, write a script that calls the API or CLI, filters the results and saves them to a file. Bring back only the summary.
 - **Scripts print summaries,** never raw data, personal details or secrets.
-- **Read-only by default.** Writing to a database, deploying or sending anything needs Henry's OK (ADR-0008).
+- **Merging and deploying:** Claude may merge its own PRs once CI passes, which deploys them. Database changes still go only through numbered migrations, and sending anything to anyone outside still needs Henry's OK (ADR-0008).
 - **Leave tool search on,** and don't load tools a task doesn't need.
 - **No API-only features.** Never set an API key to get programmatic tool calling or similar.
 - **Untrusted content never reaches a step that runs code.** That covers lead sites, client pages, and anything the model wrote from them.
@@ -99,34 +101,33 @@ Studio is the site-building team in the PRD's "Studio" section. It runs locally 
 - The Designer follows `docs/SKILLS_GUIDE.md` and the PRD's design references: Apple/Stripe restraint, plus at most one "signature moment" per demo.
 - **The Designer's skill check:** before every design task, show Henry which of Taste, Impeccable, playwright-cli, the DESIGN.md format and img2threejs you plan to use and why, which you're skipping, and anything not yet installed. Wait for his OK. If a skill would help mid-task, stop and suggest it. img2threejs only with Henry's OK for a 3D signature moment. Never copy a real brand's DESIGN.md (Apple, Stripe, etc.) into a demo; use the format only. **Motion sources:** for each direction, name the moments that need motion and prompt Henry to browse transitions.dev (UI transitions; free items only) and animos.app (showcase videos of finished demos, not site code), and SiteReel.ai for layout ideas (borrow structure, never copy), then wait for his links. Anime.js (MIT) is allowed instead of GSAP for simple motion; one animation library per demo. React Bits components (TS + Tailwind variant, via the shadcn CLI) are allowed in Next.js demos and in /lab for a signature moment, within the performance and reduced-motion rules. All motion respects `prefers-reduced-motion`. **Hero layouts:** pick each direction's hero from the PRD's "Hero layouts" menu (Split, Full-Bleed, Orbit, Gallery, Wordmark) by industry and what visitors need first. Use at least two different layouts across a demo's directions, and name the layout with a one-line reason in each DESIGN.md, and pick a wireframe (W1–W10) from `docs/playbooks/hero-wireframes.md`, writing down its phone order. **Legal checks:** the Strategist answers Step 1 of `docs/playbooks/legal-checks.md` in every brief; the Builder applies its defaults (self-hosted fonts, no trackers before consent, no session replay, double opt-in, full renewal terms, EXIF stripped, no face recognition, AI disclosed); the Auditor runs its checks before gate 3, and any fail on items 1–7 fails the audit. It isn't legal advice: flag, don't advise. **SEO toolbelt:** Search Console, Lighthouse SEO and Keyword Planner, per `docs/STACK.md` ("SEO toolbelt"). Agents work from files Henry exports, cite each keyword's source and date, and never invent search volumes. **UX laws:** every Studio build and /lab follows `docs/playbooks/ux-laws.md`; each DESIGN.md names the 3–5 laws that shaped it, and the Auditor runs its checks before gate 3. **Color:** follow `docs/playbooks/accent-palettes.md`: two base colors plus one surprise accent (start from Henry's nine approved palettes), the accent on the main call to action and at most one or two highlights, and a scripted contrast table in each DESIGN.md before gate 2.
 - Demo previews are `noindex`, unlisted and deleted after 30 days. They never appear on /lab. **Don't host them on Vercel Hobby**, which is non-commercial only; until ADR-0009 is decided, demos are shared as screenshots and recordings.
-- Install a third-party skill only after a SkillSpector scan and Henry's OK.
+- Install a third-party skill only after a SkillSpector scan; tell Henry what you installed.
 - **Never set `ANTHROPIC_API_KEY`.** If it's set, Claude Code bills the API instead of Henry's plan. Run one role at a time and `/compact` between roles.
 
 ## Priorities until November 30, 2026
 
-Agent Lab is a portfolio piece for Henry's job search first. About 3 hours a week. The committed target (decided Nov 4, 2026, PRD sprint) is Day 0, Phase 1 and Site Doctor, shown with a screenshot; a minimal live /lab and a 2-minute demo video are a stretch. Every change goes through a PR with the template filled in and CI passing, because tests, PRs and CI are his top job-search skill gap. Don't start Lead Scout, Studio or Showpieces before the Nov 30 review. Never set up anything aimed at Thai clients.
+Agent Lab is a portfolio piece for Henry's job search first. About 3 hours a week. The committed target (decided Nov 4, 2026, PRD sprint) is Day 0, Phase 1 and Site Doctor, shown with a screenshot; a minimal live /lab and a 2-minute demo video are a stretch. Every change goes through a PR with the template filled in and CI passing, because tests, PRs and CI are his top job-search skill gap. The "not before Nov 30" limit on Lead Scout, Studio and Showpieces is lifted (Henry, Nov 5, 2026); Lead Scout still can't go live before the eval gate passes. Never set up anything aimed at Thai clients.
 
 ## Before you write code
 
 1. Read the actual files in the repo first. Don't assume structure.
 2. Restate the phase goal and its check in plain English.
 3. Flag anything that could exceed a free tier or cost money.
-4. Ask Henry rather than guess.
+4. Pick a sensible default rather than asking, and list the defaults in the PR for Henry to veto.
 5. **Apply the `karpathy-guidelines` skill** whenever you write, review or refactor code: think before coding, simplicity first, surgical changes, goal-driven execution. If it doesn't load on its own, invoke `/karpathy-guidelines`. Use judgment on trivial tasks: batch clarifying questions, and don't ask about things CLAUDE.md, the PRD or an ADR already settles. If the skill and this file disagree, this file wins.
 
 ## While you build
 
 - **Build fast, learn at the end (Henry, Nov 4, 2026).** Claude drives; Henry reviews and merges PRs. Keep chat explanations to a line or two and keep Henry's manual steps to a minimum. The learning happens in 2–3 interview-prep sessions before the Nov 30 review, aimed at "walk me through how this works".
 - **Write in American English (Henry, Nov 4, 2026)** in docs, code, comments, commit messages, PRs and chat: American spelling (behavior, labeled, license), American words (résumé, not CV) and dates as "Nov 4, 2026". Leave quotes, names and API fields exactly as their source wrote them.
-- Henry is a beginner. Before each new file, say in one line what it's for.
-- When you pick an approach, name the alternative you rejected and why.
-- He's comfortable with JS/TS, Next.js, Neon, Clerk and Resend. He's new to GitHub Actions, function calling and agent design, so explain those as you go.
+- Henry is a beginner. In the PR description, say what each new file is for and which alternative you rejected and why. Keep chat short.
+- He's comfortable with JS/TS, Next.js, Neon, Clerk and Resend. He's new to GitHub Actions, function calling and agent design, so explain them in the journal, not in chat.
 
 ## Day 0, before Phase 1
 
 Run the six spikes in `docs/SPIKES.md` and build the walking skeleton. Record raw results in its table. If a spike fails, apply the plan change it lists and tell Henry; don't improvise a different fix.
 
-## After every phase
+## After every phase (batched: do these in one pass before the interview-prep sessions, not after each phase)
 
 1. Draw what this phase built as a Mermaid diagram in `docs/diagrams/phase-N.md` (changed Nov 4, 2026: Archify is on hold because its SkillSpector scan couldn't complete; Henry decides on it before /lab/how-it-works). At a stage gate (after phases 4, 7 and 10), also regenerate the architecture, agent-loop and approval-flow diagrams for /lab/how-it-works.
 2. Add a phase entry to `docs/BUILD_JOURNAL.md` using its template:
@@ -138,4 +139,4 @@ Run the six spikes in `docs/SPIKES.md` and build the walking skeleton. Record ra
    
    Write for a beginner.
 3. **Do not write Henry's "In my own words" section.** Quiz him first. Then he writes it, and you check it for mistakes. (From Nov 4, 2026, both wait for the interview-prep sessions; the journal entry and its quiz are still written each phase as study material.)
-4. If the phase ran past its day budget in the sprint table, help him cut scope rather than extend.
+4. Don't hold the next phase for checks that need time (days of runs, a 30-minute test); start it and record the check when it finishes.

@@ -1,8 +1,19 @@
 // S42 (Neon usage projection) and the role-password check in scripts/migrate.ts.
 import { spawnSync } from 'node:child_process'
 import { describe, expect, test } from 'vitest'
-import { projectUsage } from '../lib/neon-usage.ts'
+import { lastActive, projectUsage } from '../lib/neon-usage.ts'
 import { rolePasswordProblems } from '../lib/role-passwords.ts'
+
+describe('Neon last active (S41 check)', () => {
+  test('shows the time in ICT with minutes ago', () => {
+    const now = new Date('2026-11-05T04:30:00Z')
+    expect(lastActive({ compute_last_active_at: '2026-11-05T03:00:00Z' }, now)).toBe('Nov 5, 2026, 10:00 ICT (90 minutes ago)')
+  })
+
+  test('returns null when Neon leaves the field out', () => {
+    expect(lastActive({}, new Date())).toBeNull()
+  })
+})
 
 describe('Neon usage projection (S42)', () => {
   const period = { consumption_period_start: '2026-11-01T00:00:00Z', consumption_period_end: '2026-12-01T00:00:00Z' }
