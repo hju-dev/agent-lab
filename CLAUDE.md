@@ -38,7 +38,7 @@ Read these when the phase touches them:
 ## Repos
 
 - `hju-dev/agent-lab` (public): agents as Node 24 LTS + TypeScript scripts run with `tsx`, scheduled by GitHub Actions. Vitest for tests. **No Resend for now:** it needs a domain Henry owns (ADR-0007). Alerts come from GitHub failure emails and Healthchecks.io; summaries and client reports live on /lab/admin. This file and the whole `docs/` folder live here. The Agent Lab database is its **own Neon project**, separate from the chatbot's (ADR-0005).
-- Henry's existing site repo: the /lab page as a React + TypeScript app built with Vite in a `lab/` folder (ADR-0013), using the design tokens from `style.css`, plus Vercel serverless functions under `/api/lab`. The rest of the site stays plain HTML/CSS/JS. Never use `dangerouslySetInnerHTML` with model or database text. When working there, read the PRD and journal from the agent-lab repo.
+- Henry's existing site repo: the /lab page as a React + TypeScript app built with Vite, source in `lab-app/`, built into the git-ignored `lab/` and served at /lab (ADR-0013; never put source in `lab/`, Vercel serves files before rewrites), using the design tokens from `style.css`, plus Vercel serverless functions under `/api/lab`. The rest of the site stays plain HTML/CSS/JS. Never use `dangerouslySetInnerHTML` with model or database text. When working there, read the PRD and journal from the agent-lab repo.
 
 ## Agent design (Lead Scout)
 

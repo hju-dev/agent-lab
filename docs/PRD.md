@@ -114,7 +114,7 @@ The main view: one station per agent, plus your desk and the client site board. 
 
 - **Each station shows:** name, role, a status light (running, idle, waiting on Henry, error) with a text label, what it's doing now in one line, last run and next run.
 - **Clicking a station** opens a detail panel with its last 10 runs, this week's counts and one sample output with private details removed.
-- **Henry's desk** shows the counts only: waiting, approved this week, rejected this week.
+- **Approval Desk** (renamed from "Henry's desk", Nov 6, 2026) shows the counts only: waiting, approved this week, rejected this week.
 - **The client site board** shows each client by name with 30-day uptime percentage, performance score and last check time. Names are fine to show, since you've confirmed that. Live up/down status stays private unless a client agrees to it, so a two-minute outage never sits on your portfolio as "DOWN".
 - **Done when:** a visitor can answer "what is it doing right now?" in under 5 seconds.
 
@@ -248,7 +248,7 @@ Visitors get one public page with an orientation, a floor and two detail panels.
 3. **/lab, the floor.** This is where return visits land. From top to bottom:
    - **featured replay:** the latest Lead Scout run, ready to play
    - **stats strip:** runs this week, sites monitored, 30-day uptime, drafts approved without edits
-   - **station grid:** Site Doctor, Lead Scout, Henry's desk
+   - **station grid:** Site Doctor, Lead Scout, Approval Desk
    - **client site board**
    - **activity ticker**
    - **footer:** "How this is built", linking to the repo README
@@ -313,7 +313,7 @@ Each state has its own shape and a text label, so it reads in grayscale and for 
 | --- | --- | --- |
 | Running | Solid green dot, slow pulse | RUNNING |
 | Idle | Hollow blue ring | IDLE · next 14:00 |
-| Waiting | Solid amber dot | WAITING ON HENRY |
+| Waiting | Solid amber dot | WAITING FOR APPROVAL |
 | Error | Red square | ERROR · retrying |
 
 ### Components
@@ -326,7 +326,7 @@ Each state has its own shape and a text label, so it reads in grayscale and for 
 The featured replay is the first thing on the floor, so it gets the most design care.
 
 - **Layout:** a terminal-style window on the left where each step types in as a line (`> run_pagespeed → mobile score 41`). A vertical progress rail on the right lists every step as a dot, with the current one in green.
-- **The final step** shows the score in large mono type and an amber "Sent to Henry's desk" line, so every replay visibly ends with you in charge.
+- **The final step** shows the score in large mono type and an amber "Sent to the Approval Desk" line, so every replay visibly ends with you in charge.
 - **Controls** are mono text buttons, not icons alone: `pause`, `step`, `restart`.
 - **Run info** sits above the window: agent, relative date, step count and the anonymized lead label ("bakery, US").
 
@@ -378,7 +378,7 @@ Everything lives in a new `lab` schema in its own Neon project. Each table split
 
 ### Public views
 
-- **`lab.public_state`:** agents with their latest run, the stats strip (including the "approved without edits" headline), the approval counts for Henry's desk and the site board. Live up/down is included only for sites with `show_live_status = true`.
+- **`lab.public_state`:** agents with their latest run, the stats strip (including the "approved without edits" headline), the approval counts for the Approval Desk and the site board. Live up/down is included only for sites with `show_live_status = true`.
 - **`lab.public_events`:** the latest 50 events where `public_text` is not null.
 - **`lab.public_replays`:** the last 10 completed runs per agent, with each step's tool, public\_text and duration, and the lead's public\_label. Nothing else.
 - **`lab.public_quality`:** monthly approval rate, average edit size, the share of each rejection reason, and each prompt version's label and note.
