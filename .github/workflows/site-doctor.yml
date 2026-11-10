@@ -6,7 +6,7 @@ name: site-doctor
 
 on:
   schedule:
-    - cron: '37 * * * *' # odd minute (S27), clear of the spike workflows at :17, :23 and :47
+    - cron: '37 * * * *' # odd minute (S27)
   workflow_dispatch:
 
 permissions:

@@ -14,9 +14,9 @@ Last updated: Nov 5, 2026, about 23:15 ICT.
 ## Next, in order
 
 1. **Henry confirms production:** `/lab` loads, the projects card works, home and chat work, `/node_modules/react/package.json` is a **404** (if it serves the file, fix at once with a `vercel.json` redirect), and the dashboard shows "agent lab". Then Henry runs `npm run ingest` in the site repo.
-2. **Record SP3, SP4, SP6** (their 48 hours are over) in `docs/SPIKES.md` and `docs/EVIDENCE_LEDGER.md`, then delete `spike-schedule.yml` and `sp6-fail.yml`.
+2. **Record SP3, SP4, SP6** (their 48 hours are over) in `docs/SPIKES.md` and `docs/EVIDENCE_LEDGER.md`. Both spike workflows were deleted on Nov 10 (sp6-fail had kept failing on purpose and emailing Henry); their run history stays in Actions for the record.
    - **SP3 fails:** about 15 of 96 runs started, with gaps of 6+ hours. Apply its fallback: "about hourly, best effort" (already in /lab's copy and stale badge at 3 h), Healthchecks grace to match. Note the GitHub Actions outage on Nov 4.
-   - **SP6 part 1:** GitHub sent no failure email (only an in-app notification). Henry turned on email notifications for Actions on Nov 5; check whether a later sp6-fail run emailed him, else apply the fallback (GitHub mobile push).
+   - **SP6 part 1:** no email at first (only in-app). After Henry turned on email for Actions on Nov 5, failure emails did arrive (Henry, Nov 10), so it passes; confirm arrival time (within 20 minutes) and inbox, not spam, when recording.
    - **SP4:** run `neon-usage` for the 48-hour numbers; the 30-minute "Neon stays asleep" check was started by Henry on Nov 5 but its result wasn't reported.
 3. **Phase 3/4 leftovers:** the 30-minute Neon check result; Lighthouse CI on /lab; DONE_CHECKS' header check greps `s-maxage=60`, which Vercel strips from what the browser sees, so propose the `MISS`→`HIT` test instead (dated note); safeguards register (S1, S31, S41, P3).
 4. **Phase 4 v2:** new snapshot fields (sites monitored, 30-day uptime, runs this week) and the site board and ticker.
