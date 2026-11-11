@@ -16,6 +16,7 @@ describe('safePublicText (S2)', () => {
   test.each([
     ['a web address', 'Checked https://example.org'],
     ['a bare domain', 'Checked example.com'],
+    ['a domain with an unusual ending', 'private-lead.example is down'],
     ['an email address', 'Wrote to owner@example.org'],
     ["a site's name", 'Seeded Private Bakery is down'],
     ["a site's id", 'memory-matters is slow'],

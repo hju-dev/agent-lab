@@ -1,7 +1,8 @@
 // S2: public text (run summaries, ticker lines) must never hold a web address, an email address or a
 // site's or lead's name. Checked before anything is saved; /api/lab checks again on the way out.
 
-const URL_OR_EMAIL = /https?:\/\/|www\.|@|\b[a-z0-9-]+\.(?:com|net|org|io|dev|app|co|th|uk|info|biz)\b/i
+// Any word.word with a 2+ letter ending counts as a domain (strict on purpose; /api/lab uses the same rule).
+const URL_OR_EMAIL = /https?:\/\/|www\.|@|\b[a-z0-9-]+\.[a-z]{2,}\b/i
 
 export type NamedSite = { id: string; url: string; name?: string | null }
 
