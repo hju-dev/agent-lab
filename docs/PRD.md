@@ -702,7 +702,7 @@ The likeliest way this project fails isn't technical. It's running out of time, 
 | --- | --- | --- |
 | The 2-week break ends before the build does | A day-by-day sprint: Stage A by day 6 is the must-finish, Stage B by day 12 is the stretch goal. An overrun means cutting scope, never extending. No new agents before full launch | Day 7 arrives without the first launch |
 | You can't explain what Claude Code built | Every phase ends with "explain it back": a build journal entry, a phase diagram and your own summary. You rebuild the agent loop once by hand, without help | You can't answer "why this way?" about a file |
-| /lab looks dead or breaks during an interview | Replay with a static demo-run fallback, a heartbeat monitor and a stale-data badge | Heartbeat email, or a last run more than 2 hours old |
+| /lab looks dead or breaks during an interview | Replay with a static demo-run fallback, a heartbeat monitor and a stale-data badge | Heartbeat email, or a last run more than 12 hours old (ADR-0017) |
 | False alarms from noisy PageSpeed scores | Flags use a 3-day median and a sustained-drop rule | You reject fixes as "not a real issue" |
 | A pitch states something false about a business | An evidence check before queuing, plus your review of every draft | Rejections tagged "wrong facts" |
 | Private data reaches /lab or the Actions logs | Public views only, the leak test, a public\_text scanner and quiet logs | The leak test fails |

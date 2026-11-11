@@ -2,30 +2,37 @@
 
 **Read this first in every new session**, before the rest of the "Read these first" list in `CLAUDE.md`. At the end of a session, Claude rewrites this file: what's done, what's next, and what the next session must not forget. Keep it to one screen; detail belongs in the build journal and the other docs.
 
-Last updated: Nov 5, 2026, about 23:15 ICT.
+Last updated: Nov 11, 2026, about 15:30 ICT.
 
 ## State
 
-- **Phases 1–2: done and live.** Site Doctor runs on production (hourly at :37, audit 05:41 ICT, Neon usage Mondays). Scheduled runs are often skipped or late (see SP3 below).
-- **Phase 3 (public API): merged and live.** `GET /api/lab/state` in the site repo ([hju-dev/portfolio#1](https://github.com/hju-dev/portfolio/pull/1)): reads `lab:snapshot` from Upstash with the `lab_api` user (`get`/`incr`/`expire` on `lab:*` only, Vercel env `LAB_UPSTASH_REDIS_REST_TOKEN`), never Neon; 60 s CDN cache (a repeat request is a `HIT`), 30 requests/min per hashed IP. Checked on the preview: real snapshot, 100 requests → 429s.
-- **Phase 4 v1 (/lab): merged at about 23:10 ICT, Nov 5** ([hju-dev/portfolio#2](https://github.com/hju-dev/portfolio/pull/2)). Source in `lab-app/` (React + TS + Vite), built into the git-ignored `lab/` and served at `hju-dev.vercel.app/lab`. Also: an Agent Lab card on `projects.html`, an "agent lab" link in the dashboard nav, and the chat's knowledge updated. Checked on the preview with real data; **production not yet confirmed.** On Nov 6 the third station was renamed "Approval Desk" (status "WAITING FOR APPROVAL"), [hju-dev/portfolio#3](https://github.com/hju-dev/portfolio/pull/3).
-- **Agent-lab `main`:** speed overrides in `CLAUDE.md` (#14), `neon-usage` prints "Last active" (#14), ADR-0016 (#15).
+- **Phases 1–2: done and live.** Site Doctor runs on production, but GitHub starts only about 1 in 6 hourly slots (SP3 failed). Per ADR-0017 that's now described as "several times a day, best effort". Phase 2's "3 days of runs" check passes (daily successful runs since Nov 5).
+- **Phase 3 (public API): live.** `GET /api/lab/state` in the site repo ([hju-dev/portfolio#1](https://github.com/hju-dev/portfolio/pull/1)): reads `lab:snapshot` from Upstash with the `lab_api` user (`get`/`incr`/`expire` on `lab:*` only, Vercel env `LAB_UPSTASH_REDIS_REST_TOKEN`), never Neon; 60 s CDN cache, 30 requests/min per hashed IP.
+- **Phase 4 v1 (/lab): live, confirmed by Henry on Nov 11** (/lab and the projects card work). Source in `lab-app/`, built into the git-ignored `lab/`. Third station renamed "Approval Desk" ([hju-dev/portfolio#3](https://github.com/hju-dev/portfolio/pull/3)).
+- **Spikes all recorded (Nov 11):** SP3 fail (15 of 96), SP4 pass (5.8 CU-h projected), SP6 pass (emails in about a minute). Spike workflows deleted (#17).
+- **ADR-0016:** private admin = pages in Henry's dashboard. **ADR-0017:** "several times a day", stale after 12 h.
 
 ## Next, in order
 
-1. **Henry confirms production:** `/lab` loads, the projects card works, home and chat work, `/node_modules/react/package.json` is a **404** (if it serves the file, fix at once with a `vercel.json` redirect), and the dashboard shows "agent lab". Then Henry runs `npm run ingest` in the site repo.
-2. **Record SP3, SP4, SP6** (their 48 hours are over) in `docs/SPIKES.md` and `docs/EVIDENCE_LEDGER.md`. Both spike workflows were deleted on Nov 10 (sp6-fail had kept failing on purpose and emailing Henry); their run history stays in Actions for the record.
-   - **SP3 fails:** about 15 of 96 runs started, with gaps of 6+ hours. Apply its fallback: "about hourly, best effort" (already in /lab's copy and stale badge at 3 h), Healthchecks grace to match. Note the GitHub Actions outage on Nov 4.
-   - **SP6 part 1:** no email at first (only in-app). After Henry turned on email for Actions on Nov 5, failure emails did arrive (Henry, Nov 10), so it passes; confirm arrival time (within 20 minutes) and inbox, not spam, when recording.
-   - **SP4:** run `neon-usage` for the 48-hour numbers; the 30-minute "Neon stays asleep" check was started by Henry on Nov 5 but its result wasn't reported.
-3. **Phase 3/4 leftovers:** the 30-minute Neon check result; Lighthouse CI on /lab; DONE_CHECKS' header check greps `s-maxage=60`, which Vercel strips from what the browser sees, so propose the `MISS`→`HIT` test instead (dated note); safeguards register (S1, S31, S41, P3).
-4. **Phase 4 v2:** new snapshot fields (sites monitored, 30-day uptime, runs this week) and the site board and ticker.
+1. **Henry, on his machine:**
+   - Apply migration 005 to production the same way as 001–004: `node --env-file=.env.prod scripts/migrate.ts <owner-URL variable>` in `C:\Users\h\agent-lab` (take a `pg_dump` first, per S21). It changes Site Doctor's label to "Several times a day".
+   - Run `npm run ingest` in the **site** repo (`C:\Users\h\HJU.dev`, not agent-lab).
+   - Set Healthchecks `agent-lab heartbeat` to period 1 hour, grace 11 hours.
+   - Check that `https://hju-dev.vercel.app/node_modules/react/package.json` is a **404**. If it serves the file, fix it at once with a `vercel.json` redirect.
+2. **ADR-0017's site-repo half:** the stale badge at 12 h, plus the "several times a day" copy on /lab, the projects card and in `content/site-content.md`.
+3. **Phase 3/4 leftovers:**
+   - the one-hour `/api/lab/state` no-wake test
+   - Lighthouse CI on /lab
+   - DONE_CHECKS' header check greps `s-maxage=60`, which Vercel strips from what the browser sees, so propose the `MISS`→`HIT` test instead (dated note)
+   - the safeguards register (S1, S31, S41, P3)
+4. **Phase 4 v2:** new snapshot fields (sites monitored, 30-day uptime, runs this week), plus the site board and ticker.
 5. **Batched paperwork** before interview prep: journal entries and diagrams for phases 2–4.
 
 ## Decisions in force
 
 - **Speed overrides (Henry, Nov 5):** no confirmation at session start, defaults over questions, paperwork batched, Claude merges its own PRs once CI passes. Safety, privacy, cost and legal rules unchanged. See `CLAUDE.md`.
 - **ADR-0016:** Phase 5's admin screens are pages in Henry's existing dashboard, not a new /lab/admin.
+- **ADR-0017:** Site Doctor is "several times a day, best effort"; /lab's stale badge and the Healthchecks alert both fire after 12 hours.
 - **American English everywhere** (a CI test enforces it). `docs/` is the only source of truth.
 
 ## Gotchas
