@@ -1,7 +1,7 @@
 // Site Doctor's hourly uptime logic, with no database or network of its own, so it can be tested offline.
 import { fetchWithTimeout, withRetry } from '../../lib/reliability.ts'
 
-export type Site = { id: string; url: string; has_database: boolean; check_url: string | null }
+export type Site = { id: string; name?: string | null; url: string; has_database: boolean; check_url: string | null }
 
 export type CheckResult = { site_id: string; checked_at: string; is_up: boolean; response_ms: number | null }
 

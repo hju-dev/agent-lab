@@ -10,7 +10,7 @@ const { runId, agentDb, runInsert, findingInserts, loadPublicState, publishSnaps
 const run = runSiteDoctor({
   runId,
   now: () => new Date(),
-  loadSites: async () => (await agentDb`select id, url, has_database, check_url from lab.sites where active order by id`) as Site[],
+  loadSites: async () => (await agentDb`select id, name, url, has_database, check_url from lab.sites where active order by id`) as Site[],
   loadLastStatus: async () => {
     const rows = (await agentDb`
       select distinct on (site_id) site_id, is_up from lab.site_checks order by site_id, checked_at desc`) as { site_id: string; is_up: boolean }[]

@@ -1,5 +1,6 @@
 // What Site Doctor's two entry points share: the settings check, the real database and Upstash,
 // and how a run ends. Actions logs are public, so nothing here prints a site name or a URL (S3).
+import { type PublicState, TICKER_LENGTH } from '../../lib/snapshot.ts'
 import { neon } from '@neondatabase/serverless'
 import { z } from 'zod'
 import { QUOTA_MESSAGE, fetchWithTimeout, isQuotaError } from '../../lib/reliability.ts'
@@ -54,7 +55,17 @@ export function connect(config: BaseConfig) {
     agentDb,
     runInsert,
     findingInserts,
-    loadPublicState: async () => (await publicDb`select * from lab.public_state order by agent_id`) as Record<string, unknown>[],
+    // Read as lab_public, from the public views only (S1, ADR-0011). Each query wakes nothing new:
+    // the database is already awake from this run's save.
+    loadPublicState: async (): Promise<PublicState> => {
+      const [agents, sites, stats, events] = await Promise.all([
+        publicDb`select * from lab.public_state order by agent_id`,
+        publicDb`select * from lab.public_sites order by name`,
+        publicDb`select * from lab.public_stats`,
+        publicDb`select * from lab.public_events limit ${TICKER_LENGTH}`,
+      ])
+      return { agents, sites, stats: stats[0] ?? null, events } as PublicState
+    },
     publishSnapshot: async (json: string) => {
       const res = await fetchWithTimeout(config.UPSTASH_REDIS_REST_URL, {
         method: 'POST',
