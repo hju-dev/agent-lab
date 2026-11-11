@@ -9,7 +9,7 @@ Last updated: November 4, 2026.
 | # | Claim | Evidence | Status |
 | --- | --- | --- | --- |
 | 1 | GitHub Actions is free for this repo | GitHub billing docs: free on standard runners for public repos | Verified |
-| 2 | Schedules run roughly on time | GitHub docs say delays and drops happen; size unknown | Testing (SP3) |
+| 2 | Schedules run roughly on time | SP3, Nov 3 to 5, 2026: 15 of 96 runs started; Site Doctor since: about 1 in 6 hourly slots | Failed → changed (ADR-0017) |
 | 3 | Schedules stop after 60 days without activity | GitHub docs | Verified |
 | 4 | Gemini free tier supports function calling for our tools | SP1, Nov 4, 2026: on `gemini-3.5-flash-lite`, 20 of 20 runs made only valid tool calls, none off the list | Verified |
 | 5 | Gemini free limits cover 10 leads a day | AI Studio, Nov 2, 2026: 3.5 Flash Lite allows 500 requests a day against the 90 a day needs (SOURCES) | Verified for limits; tokens per run still Testing (SP5) |
@@ -17,10 +17,10 @@ Last updated: November 4, 2026.
 | 7 | Chatbot on free tier may conflict with EEA/UK/Swiss terms | Gemini API terms | Verified (outside scope; flagged) |
 | 8 | PageSpeed quota is 25,000/day | Cloud Console, Nov 2, 2026: 25,000 a day and 30 a minute | Verified |
 | 9 | PageSpeed scores are stable enough to flag drops | SP2, Nov 4, 2026: 4 of 5 sites varied by 10 points or less; one client site varied by 14 | Verified (use each site's own range for S7) |
-| 10 | Neon free compute is enough | 100 CU-h per project (verified); our use unknown | Testing (SP4) |
+| 10 | Neon free compute is enough | SP4, Nov 11, 2026: 2.0 CU-h used, 5.8 projected for the month against 100 | Verified |
 | 11 | Resend can send without a domain | Resend docs: a verified domain is required | Failed → changed (ADR-0007) |
 | 12 | Healthchecks free sends email alerts | SP6 part 2, Nov 4, 2026: a free-account check went Down and its email arrived | Verified |
-| 13 | GitHub emails on scheduled-run failure | GitHub notification docs | Verified; delivery Testing (SP6) |
+| 13 | GitHub emails on scheduled-run failure | SP6 part 1, Nov 5, 2026: emails arrived about a minute after each failed run, in the inbox, once email was on for Actions | Verified |
 | 14 | Vercel Hobby is fine for /lab | Fair-use: non-commercial personal use only. /lab is a portfolio page framed as a project | Assumption → keep wording non-commercial; ask Vercel if unsure |
 | 15 | Vercel Hobby is fine for demo previews | Fair-use lists advertising services and paid sites as commercial | Failed → changed (ADR-0009, proposed) |
 | 16 | Cold B2B email to the US is legal with an address and opt-out | FTC CAN-SPAM guide | Verified, but no longer needed: no cold email (ADR-0012) |
@@ -51,7 +51,7 @@ Last updated: November 4, 2026.
 | 38 | transitions.dev free items and animos exports may be used in client work | Neither homepage states terms | Assumption → Henry reads both sites' terms before first client use |
 
 | 39 | Visitors to /lab never wake Neon | Design (ADR-0011) | Testing (Phase 3 no-wake check, SP4) |
-| 40 | Hourly agent runs keep Neon under 40 CU-hours a month | Estimate: about 10% awake | Testing (SP4) |
+| 40 | Hourly agent runs keep Neon under 40 CU-hours a month | SP4, Nov 11, 2026: 5.8 CU-h projected. Runs were far below hourly (SP3), so recheck if they ever become truly hourly | Verified at current run rate |
 | 41 | Neon returns 402 with "exceeded the quota" when locked out | Seen on a client site in Oct 2026 | Verified by incident (not Neon docs) |
 
 | 42 | Freelance platforms (e.g. Fiverr) bring enough leads at $0 upfront | Henry's decision; platform fees and rules not yet read | Assumption → read the platform's terms and fees; track the pipeline's stranger → lead stage |

@@ -84,3 +84,4 @@ Every doc here follows one rule: **replace judgment with evidence, and assumptio
 | [0014](adr/0014-code-first-tool-use.md) | Code-first tool use; no programmatic tool calling on $0 | Accepted |
 | [0015](adr/0015-slow-api-timeouts-and-per-site-drop-threshold.md) | Longer timeouts for named slow APIs; per-site drop threshold | Accepted |
 | [0016](adr/0016-admin-lives-in-the-dashboard.md) | The private admin lives in Henry's existing dashboard, not a new /lab/admin | Accepted |
+| [0017](adr/0017-checks-several-times-a-day.md) | Site Doctor's checks are "several times a day, best effort"; stale after 12 hours | Accepted |
