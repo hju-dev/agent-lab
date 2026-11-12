@@ -21,7 +21,7 @@ function fakeDeps(overrides: Partial<Deps> = {}) {
     loadSites: async () => [privateSite, plainSite],
     loadLastStatus: async () => ({}),
     save: async (...args) => void saved.push(args),
-    loadPublicState: async () => [{ agent_id: 'site-doctor', name: 'Site Doctor', public_summary: 'Checked 2 sites: all up' }],
+    loadPublicState: async () => ({ agents: [{ agent_id: 'site-doctor', name: 'Site Doctor', public_summary: 'Checked 2 sites: all up' }] }),
     publishSnapshot: async (json) => void published.push(json),
     fetch: async () => ({ ok: true }),
     sleep: noWait,

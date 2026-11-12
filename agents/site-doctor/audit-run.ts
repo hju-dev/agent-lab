@@ -1,7 +1,8 @@
 // One daily audit run: SSL, PageSpeed and broken links for each active site, then the score-drop rule.
 // Unlike the hourly check, this loads each home page once a day (as PageSpeed does), which PRD F1 accepts.
 // Dependencies are passed in, so tests run it with fakes (tests/site-audit.test.ts). Logs print counts only (S3).
-import { buildSnapshot } from '../../lib/snapshot.ts'
+import { identifyingWords, safePublicText } from '../../lib/public-text.ts'
+import { type PublicState, buildSnapshot } from '../../lib/snapshot.ts'
 import { type Scores, brokenLinks as checkLinks, daysUntil, extractLinks } from './audit-checks.ts'
 import { type Finding, scoreDrop } from './findings.ts'
 import type { RunRecord } from './run.ts'
@@ -35,7 +36,7 @@ export type AuditDeps = {
   pageSpeed: (url: string) => Promise<Scores>
   brokenLinks?: (links: string[]) => Promise<string[]>
   save: (run: RunRecord, rows: AuditRow[], findings: Finding[]) => Promise<void>
-  loadPublicState: () => Promise<Record<string, unknown>[]>
+  loadPublicState: () => Promise<PublicState>
   publishSnapshot: (json: string) => Promise<void>
   log: (line: string) => void
 }
@@ -91,7 +92,10 @@ export async function runAudit(deps: AuditDeps) {
       id: deps.runId,
       started_at: startedAt.toISOString(),
       finished_at: deps.now().toISOString(),
-      public_summary: `Audited ${audited} site${audited === 1 ? '' : 's'}${skipped ? `, ${skipped} skipped for time` : ''}`,
+      // S2: never save public text that names a site or holds an address.
+      public_summary:
+        safePublicText(`Audited ${audited} site${audited === 1 ? '' : 's'}${skipped ? `, ${skipped} skipped for time` : ''}`, identifyingWords(sites)) ??
+        'Run finished',
       metrics: { sites_audited: audited, sites_skipped: skipped, pagespeed_failed: pageSpeedFailed, findings: findings.length },
     },
     rows,

@@ -88,7 +88,7 @@ function fakeAudit(overrides: Partial<AuditDeps> = {}) {
     pageSpeed: async () => ({ perf_score: 80, a11y_score: 90, seo_score: 85 }),
     brokenLinks: async () => [],
     save: async (...args) => void saved.push(args),
-    loadPublicState: async () => [],
+    loadPublicState: async () => ({ agents: [] }),
     publishSnapshot: async () => {},
     log: (line) => void lines.push(line),
     ...overrides,

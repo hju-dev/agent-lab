@@ -15,7 +15,7 @@ const run = runAudit({
   runId,
   now: () => new Date(),
   loadSites: async () =>
-    (await agentDb`select id, url, has_database, check_url, perf_range from lab.sites where active order by id`) as AuditSite[],
+    (await agentDb`select id, name, url, has_database, check_url, perf_range from lab.sites where active order by id`) as AuditSite[],
   loadPerfHistory: async () => {
     // Each site's last 5 daily performance scores, oldest first. Only audit rows have a score.
     const rows = (await agentDb`

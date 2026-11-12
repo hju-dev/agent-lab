@@ -9,7 +9,7 @@ const url = process.env.LAB_PUBLIC_URL
 // CI must never skip this silently; locally it's skipped when no database is set.
 if (process.env.CI && !url) throw new Error('LAB_PUBLIC_URL is not set, so the database role tests cannot run in CI')
 
-const PUBLIC_VIEWS = ['public_state', 'public_events']
+const PUBLIC_VIEWS = ['public_state', 'public_events', 'public_sites', 'public_stats']
 
 function psql(sql: string) {
   const r = spawnSync('psql', [url!, '-X', '-q', '-t', '-A', '-v', 'ON_ERROR_STOP=1', '-c', sql], { encoding: 'utf8' })
