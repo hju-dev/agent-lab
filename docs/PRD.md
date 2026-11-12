@@ -570,9 +570,13 @@ Two more sources (added Nov 1, 2026). **SiteReel.ai** is a library of website de
 
 The Auditor runs the playbook's read-only audit before gate 3 and lists every wake source in `audit.md`. At launch, the client's repo gets the weekly Neon usage check and a runbook entry.
 
+### Digital Home foundation (added Nov 12, 2026)
+
+Every site ("Digital Home") starts from one working foundation: a Next.js starter with the back end, SEO and core functionality already built and tested. Henry hands the Designer a mood board of visual references, and Studio molds the foundation's design layer into a premium look: the speed of a template with the look of a bespoke build. The foundation's own tests run on every build. Details and what stays fixed: ADR-0018. Building the foundation is Studio's first task.
+
 ### Blueprints
 
-Every demo starts from a page blueprint, so the Designer and Builder never start blank. Each blueprint is one file, so being versatile costs one file per type of site, not a rebuild. Start with these two, then add one at a time as Lead Scout finds demand: restaurant and hospitality, small online shop, personal or professional brand, and app or SaaS landing page.
+Every demo starts from a page blueprint on top of the foundation, so the Designer and Builder never start blank. Each blueprint is one file, so being versatile costs one file per type of site, not a rebuild. Start with these two, then add one at a time as Lead Scout finds demand: restaurant and hospitality, small online shop, personal or professional brand, and app or SaaS landing page.
 
 - **Service site** (local or professional service, nonprofit): hero with one promise and one call to action, services, proof (testimonials, numbers, logos), how it works in 3 steps, about, FAQ, contact or booking, location and hours.
 - **Product site** (a product or app): hero with the product shown, 3 key benefits, feature detail, social proof, pricing or "how to buy", FAQ, final call to action.
@@ -599,7 +603,7 @@ Every build follows `docs/playbooks/ux-laws.md`: twenty laws such as Hick's, Fit
 
 ### Color (added Nov 1, 2026)
 
-Every direction uses two base colors and one surprise accent, from `docs/playbooks/accent-palettes.md`. It holds Henry's nine approved palettes, why they work (an accent on the other side of the color wheel, opposite in temperature, the brightest color on the page, used sparingly), the contrast results, and the rules the Designer, Builder and Auditor follow.
+Every direction uses two base colors and one surprise accent, from `docs/playbooks/accent-palettes.md`. It holds Henry's thirteen approved palettes (an interactive library shows each on a sample page), why they work (an accent on the other side of the color wheel, opposite in temperature, the brightest color on the page, used sparingly), the contrast results, and the rules the Designer, Builder and Auditor follow.
 
 ### Design references
 
@@ -635,7 +639,7 @@ You asked for an industry-standard process. This is the usual agency sequence, c
 | 3. Sitemap | Which pages, and what each must achieve | 1 page, or up to 3 | Full sitemap |
 | 4. Content | Copy before design, so design fits real words | AI draft with `[CONFIRM]` marks | Client-supplied, edited |
 | 5. Design system | Colors, type, spacing as tokens | 2–3 directions → **gate 2** | Same, plus client review |
-| 6. Build | Components, responsive, real content | Static Next.js, no database | Your full stack as needed |
+| 6. Build | Components, responsive, real content | The foundation, restyled (ADR-0018), static, no database | The foundation plus the back end the client needs |
 | 7. QA | Cross-browser, mobile, accessibility (WCAG 2.2 AA), performance (Core Web Vitals), SEO basics, broken links | Automated Auditor pass | Automated plus manual |
 | 8. Legal and compliance | Privacy policy, cookie consent, accessibility statement, contact details | Placeholder notice only | Your audit prompts, all must pass |
 | 9. Review | A staging link the client checks | Preview → **gate 3** | Staging, then client sign-off |

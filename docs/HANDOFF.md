@@ -11,6 +11,8 @@ Last updated: Nov 11, 2026, about 15:30 ICT.
 - **Phase 4 v1 (/lab): live, confirmed by Henry on Nov 11** (/lab and the projects card work). Source in `lab-app/`, built into the git-ignored `lab/`. Third station renamed "Approval Desk" ([hju-dev/portfolio#3](https://github.com/hju-dev/portfolio/pull/3)).
 - **Spikes all recorded (Nov 11):** SP3 fail (15 of 96), SP4 pass (5.8 CU-h projected), SP6 pass (emails in about a minute). Spike workflows deleted (#17).
 - **ADR-0016:** private admin = pages in Henry's dashboard. **ADR-0017:** "several times a day", stale after 12 h.
+- **Phase 4 v2: live (Nov 12).** Migration 006 on production; /lab shows the stats strip, the client site board and the activity ticker ([hju-dev/agent-lab#19](https://github.com/hju-dev/agent-lab/pull/19), [hju-dev/portfolio#6](https://github.com/hju-dev/portfolio/pull/6)).
+- **Studio, Nov 12:** ADR-0018 ("Digital Home": every site starts from one tested foundation, styled from Henry's mood board). The palette playbook now has 13 palettes (hex confirmed by Henry), with an interactive library: https://claude.ai/artifact/FhbF2EMWpgFqU8XgJWhymm
 
 ## Next, in order
 

@@ -48,7 +48,7 @@ Every doc here follows one rule: **replace judgment with evidence, and assumptio
 | [playbooks/legal-checks.md](playbooks/legal-checks.md) | Seventeen common legal mistakes in quickly built apps (age checks, Google Fonts, session replay, unsubscribe, renewal terms, biometrics, cookie consent and more), with the Builder's defaults and the Auditor's checks. Not legal advice |
 | [playbooks/ux-laws.md](playbooks/ux-laws.md) | Twenty UX laws (Hick, Fitts, Jakob, Doherty, Gestalt and more) as rules for our builds, each with a check. Used by Studio's Designer, Builder and Auditor, and by /lab |
 | [playbooks/hero-wireframes.md](playbooks/hero-wireframes.md) | Ten hero wireframes (W1–W10) as text sketches, with what each fits, its phone order and the rules. Used by Studio's Designer and Builder |
-| [playbooks/accent-palettes.md](playbooks/accent-palettes.md) | Henry's nine approved palettes (two base colors + one surprise accent), why they work, contrast results, and the three-color rules. Used by Studio's Designer, Builder and Auditor |
+| [playbooks/accent-palettes.md](playbooks/accent-palettes.md) | Henry's thirteen approved palettes (two base colors + one surprise accent), why they work, contrast results, the three-color rules and the link to the interactive library. Used by Studio's Designer, Builder and Auditor |
 | `diagrams/` | Mermaid diagrams, one per phase (created during the build) |
 
 ## Later list (ideas parked until after the Nov 30 review)
@@ -85,3 +85,4 @@ Every doc here follows one rule: **replace judgment with evidence, and assumptio
 | [0015](adr/0015-slow-api-timeouts-and-per-site-drop-threshold.md) | Longer timeouts for named slow APIs; per-site drop threshold | Accepted |
 | [0016](adr/0016-admin-lives-in-the-dashboard.md) | The private admin lives in Henry's existing dashboard, not a new /lab/admin | Accepted |
 | [0017](adr/0017-checks-several-times-a-day.md) | Site Doctor's checks are "several times a day, best effort"; stale after 12 hours | Accepted |
+| [0018](adr/0018-digital-home-foundation.md) | Studio builds every Digital Home on a working foundation, shaped by a mood board | Accepted |

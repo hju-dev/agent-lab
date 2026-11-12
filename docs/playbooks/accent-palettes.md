@@ -4,7 +4,7 @@
 
 ## 1. The approved combinations
 
-Henry keeps these as good starting points. **The names are his; the hex values are Claude's best guesses** at what each name means, apart from the ones marked CSS, which are standard CSS named colors. Henry adjusts any hex before a client sees it.
+Henry keeps these as good starting points. **The names and hex values are Henry's** (he confirmed all thirteen on Nov 12, 2026; the first nine were Claude's guesses until then, and the ones marked CSS are standard CSS named colors). The interactive library in section 5 shows each one on a sample page.
 
 | # | Base 1 | Base 2 | Accent | Suits (starting guess) |
 | --- | --- | --- | --- | --- |
@@ -17,6 +17,10 @@ Henry keeps these as good starting points. **The names are his; the hex values a
 | 7 | Mandarin orange `#F37A1F` | Forest green `#228B22` (CSS forestgreen) | Crest yellow `#F9D648` | Food, cafés, outdoor, farms and markets |
 | 8 | Onyx black `#353839` | Electric indigo `#6F00FF` | Tropical mint `#6FE3B0` | AI tools, gaming, nightlife |
 | 9 | Seal blue `#1E3A5F` | Navy blue `#000080` (CSS navy) | Crimson pink `#E0245E` | Law, finance, consulting with some personality |
+| 10 | Forest green `#012B1D` | Jungle green `#01B36C` | Blush peach `#FEB192` | Sustainability, gardening and landscaping, outdoor, wellness |
+| 11 | Royal purple `#723CD6` | White `#FCFFFF` | Sunglow gold `#EDB158` | Education, coaching, premium services, events |
+| 12 | Tangerine orange `#EE5001` | White `#FCFFFF` | Acid lime `#C8FD03` | Fitness, youth sport, bold consumer launches |
+| 13 | Lagoon blue `#7BDFF2` | Cloud white `#FCFFFF` | Bubblegum pink `#F2B5D4` | Kids' activities, swim schools, desserts and cafés, playful brands |
 
 The "Suits" column is Claude's suggestion, not part of the original advice. Test it with the client's audience.
 
@@ -25,23 +29,24 @@ The "Suits" column is Claude's suggestion, not part of the original advice. Test
 Measured with a script on the hex values above (hue angle on the color wheel, WCAG contrast ratio):
 
 1. **The base is calm and does most of the work.** Each pair is either a neutral plus one strong hue (white and sky blue; charcoal and royal blue), or two colors from the same family (seal blue and navy). Calm bases make the page feel unified, so there's nothing for the accent to compete with.
-2. **The accent sits on the other side of the color wheel.** In 7 of the 9, the accent is 100–180° away from the base's main hue: blue against orange (about 170°), jade against pink (about 170°), blue against pink (110–135°). Opposite hues make each other look more intense. That's what "catches you off guard" means.
-3. **The accent flips the temperature.** In 8 of the 9, the base is cool (blue, violet, jade, indigo) and the accent is warm (pink, orange, yellow). Warm colors seem to come forward and cool ones to sit back, so the eye goes to the accent first.
+2. **The accent sits on the other side of the color wheel.** In 10 of the 13, the accent is 100–180° away from the base's main hue: blue against orange (about 170°), jade against pink (about 170°), blue against pink (110–140°), green against peach and purple against gold (about 135–140°). Opposite hues make each other look more intense. That's what "catches you off guard" means.
+3. **The accent flips the temperature.** In 10 of the 13, the base is cool (blue, violet, purple, jade, green, indigo) and the accent is warm (pink, orange, peach, gold, yellow). Warm colors seem to come forward and cool ones to sit back, so the eye goes to the accent first.
 4. **The accent is the brightest, most saturated thing on the page.** Every accent is fully or highly saturated (67–100%) and in the mid-to-light range. Bright on top of deep or muted is a contrast of lightness, which still works for people with color-vision differences.
 5. **It's used sparingly.** The surprise only works if it's rare. A common rule of thumb (from interior design, not a law) is about 60% main base, 30% second base and 10% accent.
 
-**The two exceptions, and why they still work:**
+**The exceptions, and why they still work:**
 - **#7 Mandarin / forest / yellow** is warm on warm: the yellow is only about 20° from the orange. It works because the yellow is much lighter than both bases, and forest green provides the opposite-temperature contrast. It's the least "surprising" of the set and reads as earthy and cohesive instead.
 - **#8 Onyx / indigo / mint** has a cool accent on a cool base. It works because the mint is about 110° from the indigo and much lighter, so the jump in hue and lightness does what warmth does in the others.
 - **#5 Marshmallow / violet / pink** is the softest: pink is only about 60° from violet. The surprise comes from the temperature flip (cool violet to warm pink), not distance.
+- **#12 Tangerine / white / acid lime** is warm on warm, about 53° apart. It works on lightness and saturation instead: the lime is nearly the lightest color possible (17.5:1 against black) and fully saturated, so it fizzes against the deep tangerine. It's the loudest palette in the set; keep the lime to one small job, and never put it on white (1.2:1).
 
 ## 3. What the numbers warn about (contrast)
 
-- **No accent can be body text on white.** Against white, the accents range from 1.4:1 to 2.7:1, well under the 4.5:1 that normal text needs. Crimson pink (#9) is the only exception, at 4.6:1, which just passes.
-- **On dark bases, accents pass easily** (cantaloupe on midnight 10:1, baby pink on midnight abyss 11:1, mint on onyx 7.5:1). Dark-base palettes can use the accent for links and highlights.
-- **Text on an accent button should be dark.** Every accent scores 4.6–14.7:1 against black, and 1.4–4.6:1 against white.
-- **Several base pairs are too close in lightness for text on each other:** sky blue/white 1.7, onyx/indigo 1.8, mandarin/forest 1.6, seal/navy 1.4. Use those pairs for areas and sections, not text on top of each other.
-- **Pink and red accents (#1, #3, #5, #9) look like error colors.** Error messages need an icon and words, not color alone, and a red that's clearly different from the accent.
+- **No accent can be body text on white.** Against white, the accents range from 1.2:1 (acid lime) to 2.6:1, well under the 4.5:1 that normal text needs. Crimson pink (#9) is the only exception, at 4.6:1, which just passes.
+- **On dark bases, accents pass easily** (cantaloupe on midnight 10:1, baby pink on midnight abyss 11:1, blush peach on forest green 8.7:1, mint on onyx 7.5:1). Dark-base palettes can use the accent for links and highlights.
+- **Text on an accent button should be dark.** Every accent scores 4.6–17.5:1 against black, and 1.2–4.6:1 against white.
+- **Several base pairs are too close in lightness for text on each other:** sky blue/white 1.7, lagoon blue/cloud white 1.5, onyx/indigo 1.8, mandarin/forest 1.6, seal/navy 1.4. Use those pairs for areas and sections, not text on top of each other.
+- **Pink and red accents (#1, #3, #5, #9, #13) look like error colors.** Error messages need an icon and words, not color alone, and a red that's clearly different from the accent.
 
 ## 4. Rules for the Designer and Builder
 
@@ -54,3 +59,8 @@ Measured with a script on the hex values above (hue angle on the color wheel, WC
 7. **Dark mode:** swap the base roles (dark base becomes the background), and keep the accent. Re-run the contrast check.
 8. **One palette per direction.** Across a demo's 2–3 directions, use at least two different palettes, and say in one line why each suits the client.
 9. **The Auditor checks** the token file has only the three brand hues plus neutrals, the accent appears on the main call to action, and the contrast table matches the built page (axe-core's color-contrast rule).
+
+## 5. The interactive library
+
+Henry's palette library shows all thirteen on a sample page (hero, section, call to action), with click-to-copy hex codes and each palette's text contrast results. It's a private Artifact page: https://claude.ai/artifact/FhbF2EMWpgFqU8XgJWhymm (Henry shares it from its Share menu). **This file stays the source of truth:** when a palette is added or changed here, the library is updated to match, not the other way round.
+
