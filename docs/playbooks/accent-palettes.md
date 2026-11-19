@@ -6,6 +6,10 @@
 
 Henry keeps these as good starting points. **The names and hex values are Henry's** (he confirmed all thirteen on Nov 12, 2026; the first nine were Claude's guesses until then, and the ones marked CSS are standard CSS named colors). The interactive library in section 5 shows each one on a sample page.
 
+**For agents:** the same thirteen are in [`palettes.json`](palettes.json) (names, hex values, roles and contrast ratios, so an agent can read them exactly), and [`palette-swatches.png`](palette-swatches.png) shows them as paint swatches at a glance. When a palette changes, update this table, the JSON and the swatch sheet together.
+
+![Henry's thirteen palettes as paint swatches: base 1, base 2 and accent for each](palette-swatches.png)
+
 | # | Base 1 | Base 2 | Accent | Suits (starting guess) |
 | --- | --- | --- | --- | --- |
 | 1 | Sky blue `#87CEEB` (CSS skyblue) | White `#FFFFFF` | Hot pink `#FF69B4` (CSS hotpink) | Friendly consumer apps, kids' and family services, events |

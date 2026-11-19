@@ -1,0 +1,305 @@
+{
+  "_about": "Henry's approved website palettes for Studio (docs/playbooks/accent-palettes.md is the source of truth; keep both in step). Roles: base_1 about 60% of the page, base_2 about 30%, accent about 10% (main call to action plus at most one or two highlights). contrast holds WCAG ratios; text needs 4.5, large text and buttons 3.",
+  "updated": "2026-11-19",
+  "palettes": [
+    {
+      "id": 1,
+      "base_1": {
+        "name": "Sky blue",
+        "hex": "#87CEEB"
+      },
+      "base_2": {
+        "name": "White",
+        "hex": "#FFFFFF"
+      },
+      "accent": {
+        "name": "Hot pink",
+        "hex": "#FF69B4"
+      },
+      "suits": "Friendly consumer apps, kids' and family services, events",
+      "contrast": {
+        "base_1_vs_base_2": 1.7,
+        "accent_vs_base_1": 1.5,
+        "accent_vs_base_2": 2.6,
+        "accent_vs_white": 2.6,
+        "accent_vs_black": 7.9
+      }
+    },
+    {
+      "id": 2,
+      "base_1": {
+        "name": "Midnight black",
+        "hex": "#0B0D12"
+      },
+      "base_2": {
+        "name": "Electric blue",
+        "hex": "#1F51FF"
+      },
+      "accent": {
+        "name": "Cantaloupe orange",
+        "hex": "#FFA62F"
+      },
+      "suits": "SaaS, dev tools, tech products",
+      "contrast": {
+        "base_1_vs_base_2": 3.4,
+        "accent_vs_base_1": 9.9,
+        "accent_vs_base_2": 2.9,
+        "accent_vs_white": 2.0,
+        "accent_vs_black": 10.7
+      }
+    },
+    {
+      "id": 3,
+      "base_1": {
+        "name": "Deep blue",
+        "hex": "#0B2D6B"
+      },
+      "base_2": {
+        "name": "White",
+        "hex": "#FFFFFF"
+      },
+      "accent": {
+        "name": "Bubblegum pink",
+        "hex": "#FF8FC7"
+      },
+      "suits": "Fintech, education, nonprofits that want warmth",
+      "contrast": {
+        "base_1_vs_base_2": 13.1,
+        "accent_vs_base_1": 6.2,
+        "accent_vs_base_2": 2.1,
+        "accent_vs_white": 2.1,
+        "accent_vs_black": 10.0
+      }
+    },
+    {
+      "id": 4,
+      "base_1": {
+        "name": "Charcoal black",
+        "hex": "#232629"
+      },
+      "base_2": {
+        "name": "Royal blue",
+        "hex": "#4169E1"
+      },
+      "accent": {
+        "name": "Tangerine orange",
+        "hex": "#F28500"
+      },
+      "suits": "Agencies, B2B services, sport",
+      "contrast": {
+        "base_1_vs_base_2": 3.1,
+        "accent_vs_base_1": 5.9,
+        "accent_vs_base_2": 1.9,
+        "accent_vs_white": 2.6,
+        "accent_vs_black": 8.1
+      }
+    },
+    {
+      "id": 5,
+      "base_1": {
+        "name": "Marshmallow white",
+        "hex": "#F8F5F0"
+      },
+      "base_2": {
+        "name": "Galactic violet",
+        "hex": "#5B2A86"
+      },
+      "accent": {
+        "name": "Bubblegum pink",
+        "hex": "#FF8FC7"
+      },
+      "suits": "Beauty, wellness, creators",
+      "contrast": {
+        "base_1_vs_base_2": 9.1,
+        "accent_vs_base_1": 1.9,
+        "accent_vs_base_2": 4.7,
+        "accent_vs_white": 2.1,
+        "accent_vs_black": 10.0
+      }
+    },
+    {
+      "id": 6,
+      "base_1": {
+        "name": "Aqua jade",
+        "hex": "#3FB8A0"
+      },
+      "base_2": {
+        "name": "Midnight abyss",
+        "hex": "#0A1A2F"
+      },
+      "accent": {
+        "name": "Baby pink",
+        "hex": "#F4C2C2"
+      },
+      "suits": "Clinics, spas, health and care",
+      "contrast": {
+        "base_1_vs_base_2": 7.1,
+        "accent_vs_base_1": 1.6,
+        "accent_vs_base_2": 11.1,
+        "accent_vs_white": 1.6,
+        "accent_vs_black": 13.3
+      }
+    },
+    {
+      "id": 7,
+      "base_1": {
+        "name": "Mandarin orange",
+        "hex": "#F37A1F"
+      },
+      "base_2": {
+        "name": "Forest green",
+        "hex": "#228B22"
+      },
+      "accent": {
+        "name": "Crest yellow",
+        "hex": "#F9D648"
+      },
+      "suits": "Food, cafés, outdoor, farms and markets",
+      "contrast": {
+        "base_1_vs_base_2": 1.6,
+        "accent_vs_base_1": 1.9,
+        "accent_vs_base_2": 3.1,
+        "accent_vs_white": 1.4,
+        "accent_vs_black": 14.7
+      }
+    },
+    {
+      "id": 8,
+      "base_1": {
+        "name": "Onyx black",
+        "hex": "#353839"
+      },
+      "base_2": {
+        "name": "Electric indigo",
+        "hex": "#6F00FF"
+      },
+      "accent": {
+        "name": "Tropical mint",
+        "hex": "#6FE3B0"
+      },
+      "suits": "AI tools, gaming, nightlife",
+      "contrast": {
+        "base_1_vs_base_2": 1.8,
+        "accent_vs_base_1": 7.5,
+        "accent_vs_base_2": 4.3,
+        "accent_vs_white": 1.6,
+        "accent_vs_black": 13.3
+      }
+    },
+    {
+      "id": 9,
+      "base_1": {
+        "name": "Seal blue",
+        "hex": "#1E3A5F"
+      },
+      "base_2": {
+        "name": "Navy blue",
+        "hex": "#000080"
+      },
+      "accent": {
+        "name": "Crimson pink",
+        "hex": "#E0245E"
+      },
+      "suits": "Law, finance, consulting with some personality",
+      "contrast": {
+        "base_1_vs_base_2": 1.4,
+        "accent_vs_base_1": 2.5,
+        "accent_vs_base_2": 3.5,
+        "accent_vs_white": 4.6,
+        "accent_vs_black": 4.6
+      }
+    },
+    {
+      "id": 10,
+      "base_1": {
+        "name": "Forest green",
+        "hex": "#012B1D"
+      },
+      "base_2": {
+        "name": "Jungle green",
+        "hex": "#01B36C"
+      },
+      "accent": {
+        "name": "Blush peach",
+        "hex": "#FEB192"
+      },
+      "suits": "Sustainability, gardening and landscaping, outdoor, wellness",
+      "contrast": {
+        "base_1_vs_base_2": 5.6,
+        "accent_vs_base_1": 8.7,
+        "accent_vs_base_2": 1.6,
+        "accent_vs_white": 1.8,
+        "accent_vs_black": 11.9
+      }
+    },
+    {
+      "id": 11,
+      "base_1": {
+        "name": "Royal purple",
+        "hex": "#723CD6"
+      },
+      "base_2": {
+        "name": "White",
+        "hex": "#FCFFFF"
+      },
+      "accent": {
+        "name": "Sunglow gold",
+        "hex": "#EDB158"
+      },
+      "suits": "Education, coaching, premium services, events",
+      "contrast": {
+        "base_1_vs_base_2": 6.3,
+        "accent_vs_base_1": 3.3,
+        "accent_vs_base_2": 1.9,
+        "accent_vs_white": 1.9,
+        "accent_vs_black": 11.0
+      }
+    },
+    {
+      "id": 12,
+      "base_1": {
+        "name": "Tangerine orange",
+        "hex": "#EE5001"
+      },
+      "base_2": {
+        "name": "White",
+        "hex": "#FCFFFF"
+      },
+      "accent": {
+        "name": "Acid lime",
+        "hex": "#C8FD03"
+      },
+      "suits": "Fitness, youth sport, bold consumer launches",
+      "contrast": {
+        "base_1_vs_base_2": 3.6,
+        "accent_vs_base_1": 3.0,
+        "accent_vs_base_2": 1.2,
+        "accent_vs_white": 1.2,
+        "accent_vs_black": 17.5
+      }
+    },
+    {
+      "id": 13,
+      "base_1": {
+        "name": "Lagoon blue",
+        "hex": "#7BDFF2"
+      },
+      "base_2": {
+        "name": "Cloud white",
+        "hex": "#FCFFFF"
+      },
+      "accent": {
+        "name": "Bubblegum pink",
+        "hex": "#F2B5D4"
+      },
+      "suits": "Kids' activities, swim schools, desserts and cafés, playful brands",
+      "contrast": {
+        "base_1_vs_base_2": 1.5,
+        "accent_vs_base_1": 1.1,
+        "accent_vs_base_2": 1.7,
+        "accent_vs_white": 1.7,
+        "accent_vs_black": 12.3
+      }
+    }
+  ]
+}
